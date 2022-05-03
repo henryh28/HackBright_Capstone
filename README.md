@@ -1,4 +1,4 @@
-# HackBright Capstone Project
+# HackBright Capstone Project !(/static/img/ch_logo.png")
 
 {project name} is a platform that lets a group of people make decisions on what to do, faster so they spend more time doing and less time deciding.
 
@@ -18,3 +18,5 @@ Filename | Description |
 
 ## Contributing Author
 *Henry Hsu* [Github](https://github.com/henryh28)
+
+![My Spirit Animal](/static/img/spirit_animal.jpg")
