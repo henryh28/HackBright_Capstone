@@ -1,4 +1,4 @@
-# HackBright Capstone Project &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![logo](static/img/ch_logo.png?raw=true")
+# HackBright Capstone Project &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ![logo](static/img/ch_logo.png?raw=true")
 
 {project name} is a platform that lets a group of people make decisions on what to do, faster so they spend more time doing and less time deciding.
 
