@@ -32,7 +32,7 @@ class User (db.Model):
 
     def __repr__(self):
         """ Returns user info """
-        return (f"< User user_id: {self.user_id} | first_name: {self.first_name} | last_name: {self.last_name} | username: {self.user_name} | email: {self.email} >")
+        return (f"< User user_id: {self.user_id} | first_name: {self.first_name} | last_name: {self.last_name} | user_name: {self.user_name} | email: {self.email} >")
 
 
 
