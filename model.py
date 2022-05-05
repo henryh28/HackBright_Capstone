@@ -26,7 +26,7 @@ class User (db.Model):
     password = db.Column(db.String)
     email = db.Column(db.String, unique = True)
 
-    # document related tables here
+    # document related columns here
 
     events = db.relationship('Event', secondary = user_events, backref = 'participants')
 
@@ -49,6 +49,7 @@ class Event (db.Model):
     def __repr__(self):
         """ Returns event info """
         return (f"< Event event_id: {self.event_id} | room_location: {self.room_location} | description: {self.description} >")
+
 
 
 class Choice (db.Model):
@@ -79,7 +80,6 @@ class Vote (db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     choice_id = db.Column(db.Integer, db.ForeignKey("choices.choice_id"))
-
     user = db.relationship("User", backref = "votes")
     choice = db.relationship("Choice", backref = "votes")
 

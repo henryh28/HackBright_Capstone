@@ -1,0 +1,22 @@
+
+.flex_container {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.index_welcome_pic {
+    display: flex;
+    padding: 50px;
+}
+
+.index_main {
+    display: flex;
+    padding: 50px;
+}
+
+.flash-message {
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}

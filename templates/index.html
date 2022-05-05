@@ -1,13 +1,23 @@
 {% extends 'base.html' %}
-{% block title %} Project placeholder {% endblock %}
+{% block title %} Here there be dragons {% endblock %}
 
 
 {% block body %}
-Here there be dragons<br>
 
-<li><a href="/room/<roomcode>"> Testing room </a></li>
 
-<li><a href="/test">Feature Test</a></li>
+<div class = "flex_container">
+    
+    <div id = "index_welcome_pic">
+        <img src="/static/img/spirit_animal.jpg" />
+    </div>
 
+    <div id = "index_main">
+        <p><a href="/account"> Account Creation / Login</a></p>
+
+        <p><a href="/room/<roomcode>"> Testing room </a></p>
+
+        <p><a href="/test">Feature Test</a></p>
+    </div>
+</div>
 {% endblock %}
 
