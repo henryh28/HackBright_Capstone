@@ -8,7 +8,6 @@ import jinja2, crud, os, requests
 
 
 
-
 app = Flask(__name__)
 app.secret_key = "temp"
 
@@ -29,14 +28,6 @@ def homepage():
         session['user_name'] = None
 
     return render_template("index.html") 
-
-@app.route ("/room/<room_url>")
-def display_event(room_url):
-    """ Renders an Event """
-
-    print (" at room: ", room_url)
-
-    return render_template("room.html")
 
 
 @app.route ("/account", methods=["POST", "GET"])
@@ -72,11 +63,10 @@ def login():
 
     if request.method == "POST":
         uname = request.form['uname']
-        email = request.form['email']
         pw = request.form['password']
 
         existing_user = crud.get_user_by(user_name=uname)
-            
+
         if existing_user:
             if pw == existing_user.password:
                 session['user'] = existing_user.user_id
@@ -98,38 +88,98 @@ def logout():
 
     return redirect("/")
 
-# ================= API Related Routes =================
 
-# Get API data
-@app.route ("/search", methods = ["POST"])
-def shows():
-    """ Run API searches to find relevant data for choices """
+# ================= Event/Room Related Routes =================
 
-    print ("=================== processing ==========================")
-    type = request.form['type']
-    title = request.form['title']
-    print (" form search data: ", request.form)
-    print ("type: ", type)
-    title2 = "-".join(request.form['title'].split(" ")).lower()
-    print (" title 2: : : : :  : ", title2)
+# Create a room
+@app.route ("/create_room", methods = ["POST", "GET"])
+def create_room():
+    """ Create a room to host the users and choices for this event """
+
+    if request.method == "POST":
+        description = request.form['description']
+        new_room = crud.create_event(description)
+        db.session.add(new_room)
+        db.session.commit()
+
+        return redirect("/all_rooms")
+    else:
+        return render_template("room_create.html")
+
+
+# Enter a specific room
+@app.route ("/room/<room_code>")
+def enter_room(room_code):
+    """ Enter a specific room via provided room_code """
+ 
+    room = crud.get_events_by(room_code = room_code)
+
+    return render_template("room.html", room = room)
+
+
+# ================= Choice Related Routes =================
+
+# Display relevant info about a choice
+
+@app.route ("/details/<item_code>")
+def item_detail(item_code):
+    """ View details regarding a speific choice """
+
+    choice = crud.get_choice_by(choice_id = item_code)
+
+    title = choice.title
+    rawg_title = "-".join(title.split(" ")).lower()
 
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
         'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-        'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': title2, 'search_exact': True}]
+        'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
     }
 
-    api_url = api_dict[type][0]
-    payload = api_dict[type][1]
+    api_url = api_dict[choice.type][0]
+    payload = api_dict[choice.type][1]
 
+    
+ 
     results = requests.get(api_url, params=payload)
     data = results.json()
-
 
     print ("   @@@ JSON data: ", data)
 
 
-    return render_template("display.html", data = data)
+    return render_template("item_details.html", choice = choice)
+
+# ================= API Related Routes =================
+
+# Get API data
+@app.route ("/search", methods = ["GET", "POST"])
+def shows():
+    """ Run API searches to find relevant data for choices """
+
+    if request.method == "POST":
+
+        print ("=================== processing ==========================")
+        type = request.form['type']
+        title = request.form['title']
+        rawg_title = "-".join(request.form['title'].split(" ")).lower()
+
+        api_dict = {
+            'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+            'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
+            'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
+        }
+
+        api_url = api_dict[type][0]
+        payload = api_dict[type][1]
+
+        results = requests.get(api_url, params=payload)
+        data = results.json()
+
+        print ("   @@@ JSON data: ", data)
+
+        return render_template("display.html", data = data)
+    else:
+        return render_template("search.html")
 
 
 @app.route ("/results/")
@@ -150,12 +200,17 @@ def test():
 
     # replace with feature/code/function to test
 
-
-
-
     return render_template("test.html")
 
 
+# list all rooms
+@app.route ("/all_rooms")
+def all_rooms():
+    """ lists all events """
+
+    all_events = crud.get_all_events()
+
+    return render_template("all_rooms.html", all_events = all_events)
 
 
 

@@ -16,13 +16,34 @@
     <body>
         {% block nav %} 
             <div name='nav_bar' class='navbar'>
-                <button class="col-md-1 offset-md-6" id="btn-home">Home</button>
+                <button class="col-md-1" id="btn-home">Home</button>
                 <button class="col-md-1" id='btn-create-room'>Create a Room</button>
                 <button class="col-md-1" id='btn-join-room'>Join a Room</button>
-                <button class="col-md-1" id='btn-logout'>Logout</button>
-                <p class="col-md-2">Logged in: {{ session['user_name'] }}</p>
+
+                <div class="col-md-4"></div>
+
+                {% if session['user'] %}
+                    <div class="col-md-5">
+                        <div class = "offset-md-6">Logged in: {{ session['user_name'] }}
+                            <button class="offset-md-4" id='btn-logout'>Logout</button>
+                        </div>
+                    </div>
+                {% else %}
+                <div class="col-md-5">
+                    <form method="POST">
+                        <label for="uname">Username: </label>
+                        <input type="text" id="uname" name="uname">
+                        <label for="password">Password: </label>
+                        <input type="text" id="password" name="password">
+                        <input type="submit" formaction = "/login" value="Log In">
+                    </form><br>
+                </div>                    
+                {% endif %}
+
             </div>
         {% endblock %}
+
+        <div class="spacer">&nbsp;</div>
 
         {% for message in get_flashed_messages() %}
             <div class="flex_container">

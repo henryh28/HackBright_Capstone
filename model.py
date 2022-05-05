@@ -41,14 +41,14 @@ class Event (db.Model):
     __tablename__ = 'events'
 
     event_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
-    room_location = db.Column(db.String)
+    room_code = db.Column(db.String, unique = True)
     description = db.Column(db.String)
 
     # choices: all choices submitted for this event
 
     def __repr__(self):
         """ Returns event info """
-        return (f"< Event event_id: {self.event_id} | room_location: {self.room_location} | description: {self.description} >")
+        return (f"< Event event_id: {self.event_id} | room_code: {self.room_code} | description: {self.description} >")
 
 
 
@@ -67,7 +67,7 @@ class Choice (db.Model):
 
     def __repr__(self):
         """ Returns choice info """
-        return (f"< Choice choice_id: {self.choice_id} | type: {self.type} | title: {self.title} | event: {self.event} >")
+        return (f"< Choice choice_id: {self.choice_id} | type: {self.type} | title: {self.title} >")
 
 
 
