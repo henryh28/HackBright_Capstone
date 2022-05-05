@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %} Create a room {% endblock %}
+
+
+
+{% block body %}
+
+<div class="flex_container">
+    <h2>Create a Room</h2>
+
+    <div id = "create_room">
+        <form method="POST" action="/create_room">
+
+            <div class="form-group">
+                <label for="description">Description: </label>
+                <input type="text" class="form-control" name="description"><br>
+            </div>
+            
+            <input type="submit" value="Create Room">
+        </form>
+    </div>    
+  </div>
+
+{% endblock %}
+
+

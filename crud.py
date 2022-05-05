@@ -2,6 +2,7 @@
 
 from model import db, User, Event, Choice, Vote, connect_to_db
 from datetime import datetime as dt
+import random
 
 # ========== User related functions ==========
 
@@ -24,9 +25,18 @@ def get_user_by(**data):
 def create_event(description):
     """ Create and return a new Event """
 
-    room_url = "randomly_generated_room_id"
+    chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
+    room_code = None
+    room_code_size = 4
 
-    return Event(room_location = room_url, description=description)
+    while room_code == None:
+        temp_code = "".join(random.choices(chars, k = room_code_size))
+        existing_room = get_events_by(room_code = temp_code)
+
+        if not existing_room:
+            room_code = temp_code
+
+    return Event(room_code = room_code, description=description)
 
 
 def get_all_events():

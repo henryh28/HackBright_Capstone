@@ -5,31 +5,21 @@
 
 {% block body %}
 
-<h2>Game Search</h2>
-<form action="/search" method="POST">
-    <label for="game_search">Game Search</label><br>
-    <input type="hidden" name="type" value="game" />
-    <input type="text" id="game_title" name="title"><br>
-    <input type="submit" value="Find this Game">
-</form><br>
+<h2>Room: {{ room.description }}</h2>
+
+<div class="flex_container">
+    <h3>The nominess</h3>
+
+    <div class = "room_choices">
+        {% for choice in room.choices %}
+            <li><a href="/details/{{ choice.choice_id }}">{{ choice.title }}</a></li>
+        {% endfor %}
+    </div>
 
 
-<h2>Movie Search</h2>
-<form action="/search" method="POST">
-    <label for="movie_search">Movie Search</label><br>0
-    <input type="hidden" name="type" value="movie" />
-    <input type="text" id="movie_title" name="title" /><br>
-    <input type="submit" value="Find this Movie" />
-</form><br>
+</div>
 
 
-<h2>Boardgame Search</h2>
-<form action="/search" method="POST">
-    <label for="boardgame_search">Boardgame Search</label><br>
-    <input type="hidden" name="type" value="boardgame" />
-    <input type="text" id="boardgame_search" name="title" /><br>
-    <input type="submit" value="Find this boardgame">
-</form> 
 
 {% endblock %}
 

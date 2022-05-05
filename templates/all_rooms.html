@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+
+{% block title %} Display all rooms {% endblock %}
+
+{{ all_events }}
+
+{% block body %}
+
+    {% for room in all_events %}
+
+        <li> Room: <a href="/room/{{ room.room_code }}">{{ room.description}}   [{{ room.room_code}}]</a></li>
+
+    {% endfor %}
+
+{% endblock %}
+
