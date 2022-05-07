@@ -130,23 +130,19 @@ def enter_room(room_code):
 # ================= Choice Related Routes =================
 
 # Display relevant info about a choice
-
 @app.route ("/details/<item_code>")
 def item_detail(item_code):
     """ View details regarding a speific choice """
 
     choice = crud.get_choice_by(choice_id = item_code)
-
-    print (" >>>>>> choice: ", choice)
-
     title = choice.title
     rawg_title = "-".join(title.split(" ")).lower()
     details = []
 
     api_dict = {
-        'shows': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+        'show': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
         'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-        'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
+        'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
     }
 
     api_url = api_dict[choice.type][0]
@@ -155,15 +151,33 @@ def item_detail(item_code):
     results = requests.get(api_url, params=payload)
     data = results.json()
 
-    print (" ^^^^^^^^^^^^^^ data: ", data)
-
     if choice.type == "boardgame":
         details = data['games'][0]
         return render_template("item_details_bg.html", details = details)
-    elif choice.type == "shows":
+    elif choice.type == "show":
         details = data['results'][0]
         poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
-        return render_template("item_details_shows.html", details = details, poster_url=poster_url)
+        return render_template("item_details_shows.html", details = details, poster_url = poster_url)
+    elif choice.type == "vgame":
+        title= data['results'][0]['slug']
+        game_url = api_url + f"/{title}"
+        game_data = requests.get(game_url, params={"key": RAWG_KEY})
+        details = game_data.json()
+
+        return render_template("item_details_vg.html", details = details)
+
+
+# Adds a choice to a room/event
+@app.route ("/add_choice", methods = ["POST"])
+def add_choice():
+
+    title, choice_type, event_id, room_code = list(request.form.values())
+    new_choice = crud.create_choice(choice_type, title, event_id)
+
+    db.session.add(new_choice)
+    db.session.commit()
+
+    return redirect(f"/room/{ room_code }")
 
 # ================= API Related Routes =================
 

@@ -21,28 +21,30 @@ model.db.session.add_all([korra, asami, max, chloe, rachel])
 
 
 # ====== create sample events ==========
-food = crud.create_event("What we gonna eat?")
-game = crud.create_event("pick a game!")
+vgame = crud.create_event("which video game?")
+bgame = crud.create_event("pick a boardgame!")
 movie = crud.create_event("what we watchin?")
 
-model.db.session.add_all([game, food, movie])
+model.db.session.add_all([bgame, vgame, movie])
 
 
 # ====== Link Users with event/rooms ==========
-korra.events.append(food)
-asami.events.append(food)
+korra.events.append(vgame)
+asami.events.append(vgame)
 max.events.append(movie)
-max.events.append(food)
+max.events.append(vgame)
 chloe.events.append(movie)
 rachel.events.append(movie)
-chloe.events.append(game)
-korra.events.append(game)
+chloe.events.append(bgame)
+korra.events.append(bgame)
 
 
 # ====== Create choices for events ==========
-smoothie = crud.create_choice("food", "a mixed berry smoothie", 2)
-noodles = crud.create_choice("food", "a bowl of ramen", 2)
-candy = crud.create_choice("food", "a sack of caramel-peanut butter candy corn", 2)
+lis = crud.create_choice("vgame", "Life is Strange", 2)
+fallout2 = crud.create_choice("vgame", "Fallout 2", 2)
+kyrandia2 = crud.create_choice("vgame", "Kyrandia hand of fate", 2)
+dune2 = crud.create_choice("vgame", "Dune-ii", 2)
+lord = crud.create_choice("vgame", "legend of the red dragon", 2)
 
 concordia = crud.create_choice("boardgame", "Concordia", 1)
 stoneage = crud.create_choice("boardgame", "Stone age", 1)
@@ -50,11 +52,11 @@ viticulture = crud.create_choice("boardgame", "Viticulture: Essential Edition", 
 spartacus = crud.create_choice("boardgame", "Spartacus: A Game of Blood and Treachery", 1)
 machikoro = crud.create_choice("boardgame", "Machi Koro", 1)
 
-gattaca = crud.create_choice("shows", "Gattaca", 3)
-clerks = crud.create_choice("shows", "Clerks", 3)
-your_name = crud.create_choice("shows", "Your Name", 3)
+gattaca = crud.create_choice("show", "Gattaca", 3)
+clerks = crud.create_choice("show", "Clerks", 3)
+your_name = crud.create_choice("show", "Your Name", 3)
 
-model.db.session.add_all([smoothie, noodles, candy, concordia, stoneage, viticulture, spartacus, machikoro, gattaca, clerks, your_name])
+model.db.session.add_all([lis, fallout2, kyrandia2, dune2, lord, concordia, stoneage, viticulture, spartacus, machikoro, gattaca, clerks, your_name])
 
 # ====== Create Votes for Choices ==========
 chloe_game = crud.create_vote(1, 4, 7)
