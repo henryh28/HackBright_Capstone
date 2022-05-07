@@ -20,3 +20,7 @@ Filename | Description |
 *Henry Hsu* [Github](https://github.com/henryh28)
 
 ![My Spirit Animal](static/img/spirit_animal.jpg?raw=true")
+
+
+License
+Copyleft 2022.  Call my lawyer for the details
