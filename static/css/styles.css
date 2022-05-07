@@ -5,6 +5,22 @@
 }
 
 
+.item_poster > img {
+    width: 400px;
+    height: auto;
+}
+
+.bg_details {
+    padding-top: 1em;
+    font-size: 1.5em;
+}
+
+.bg_description {
+    padding-bottom: 1em;
+    padding-right: 2em;
+    padding-left: 2em;
+    margin-bottom: 1em;
+}
 
 .index_welcome_pic {
     display: flex;

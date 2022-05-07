@@ -108,14 +108,24 @@ def create_room():
 
 
 # Enter a specific room
-@app.route ("/room/<room_code>")
+@app.route ("/room/<room_code>", methods = ["POST", "GET"])
 def enter_room(room_code):
     """ Enter a specific room via provided room_code """
  
-    room = crud.get_events_by(room_code = room_code)
 
-    return render_template("room.html", room = room)
+    if request.method == "GET":
+        room = crud.get_events_by(room_code = room_code)
 
+        return render_template("room.html", room = room)
+    else:
+        room_code = request.form['room_code']
+        room = crud.get_events_by(room_code = room_code)
+
+        if room:
+            return render_template("room.html", room = room)
+        else:
+            flash("Invalid room code")
+            return redirect("/")
 
 # ================= Choice Related Routes =================
 
@@ -127,11 +137,14 @@ def item_detail(item_code):
 
     choice = crud.get_choice_by(choice_id = item_code)
 
+    print (" >>>>>> choice: ", choice)
+
     title = choice.title
     rawg_title = "-".join(title.split(" ")).lower()
+    details = []
 
     api_dict = {
-        'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+        'shows': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
         'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
         'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
     }
@@ -139,15 +152,18 @@ def item_detail(item_code):
     api_url = api_dict[choice.type][0]
     payload = api_dict[choice.type][1]
 
-    
- 
     results = requests.get(api_url, params=payload)
     data = results.json()
 
-    print ("   @@@ JSON data: ", data)
+    print (" ^^^^^^^^^^^^^^ data: ", data)
 
-
-    return render_template("item_details.html", choice = choice)
+    if choice.type == "boardgame":
+        details = data['games'][0]
+        return render_template("item_details_bg.html", details = details)
+    elif choice.type == "shows":
+        details = data['results'][0]
+        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
+        return render_template("item_details_shows.html", details = details, poster_url=poster_url)
 
 # ================= API Related Routes =================
 
@@ -181,14 +197,6 @@ def shows():
     else:
         return render_template("search.html")
 
-
-@app.route ("/results/")
-def display_data():
-    """ Displays processed data for choices """
-
-
-
-    return render_template("display.html")
 
 
 # ================= Development Related Routes =================

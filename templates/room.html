@@ -8,9 +8,9 @@
 <h2>Room: {{ room.description }}</h2>
 
 <div class="flex_container">
-    <h3>The nominess</h3>
-
     <div class = "room_choices">
+        <h3>The nominees</h3>
+
         {% for choice in room.choices %}
             <li><a href="/details/{{ choice.choice_id }}">{{ choice.title }}</a></li>
         {% endfor %}
