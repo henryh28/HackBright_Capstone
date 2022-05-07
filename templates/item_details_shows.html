@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %} details['original_title'] {% endblock %}
+
+
+
+{% block body %}
+
+<h2>{{ details['original_title'] }}</h2>
+
+<div class = "flex_container">
+
+    <div class = "show_details col-md-2">
+        year: {{ details['release_date'] }}<br>
+    </div>
+
+    <div class = "show_description col-md-6">
+        {{ details['overview'] }}
+    </div>
+
+    <div class = "item_poster col-md-3">
+        <img src={{ poster_url }}>
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+

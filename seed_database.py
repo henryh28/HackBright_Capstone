@@ -44,15 +44,15 @@ smoothie = crud.create_choice("food", "a mixed berry smoothie", 2)
 noodles = crud.create_choice("food", "a bowl of ramen", 2)
 candy = crud.create_choice("food", "a sack of caramel-peanut butter candy corn", 2)
 
-concordia = crud.create_choice("game", "Concordia", 1)
-stoneage = crud.create_choice("game", "Stoneage", 1)
-viticulture = crud.create_choice("game", "Viticulture", 1)
-spartacus = crud.create_choice("game", "Spartacus", 1)
-machikoro = crud.create_choice("game", "Machi Koro", 1)
+concordia = crud.create_choice("boardgame", "Concordia", 1)
+stoneage = crud.create_choice("boardgame", "Stone age", 1)
+viticulture = crud.create_choice("boardgame", "Viticulture: Essential Edition", 1)
+spartacus = crud.create_choice("boardgame", "Spartacus: A Game of Blood and Treachery", 1)
+machikoro = crud.create_choice("boardgame", "Machi Koro", 1)
 
-gattaca = crud.create_choice("movie", "Gattaca", 3)
-clerks = crud.create_choice("movie", "Clerks", 3)
-your_name = crud.create_choice("movie", "Your Name", 3)
+gattaca = crud.create_choice("shows", "Gattaca", 3)
+clerks = crud.create_choice("shows", "Clerks", 3)
+your_name = crud.create_choice("shows", "Your Name", 3)
 
 model.db.session.add_all([smoothie, noodles, candy, concordia, stoneage, viticulture, spartacus, machikoro, gattaca, clerks, your_name])
 
