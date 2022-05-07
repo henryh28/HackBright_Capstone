@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ details['name'] }} {% endblock %}
+
+
+
+{% block body %}
+
+<h2> {{ details['name'] }} </h2>
+
+<div class = "flex_container">
+    <div class = "bg_details col-md-2">
+        Released: {{ details['released'] }}<br>
+        Metacritic: {{ details['metacritic'] }}<br>
+    </div>
+
+    <div class = "bg_description col-md-6">
+        {{ details['description'] | safe }}
+    </div>
+
+    <div class = "bg_thumb item_poster col-md-3">
+        <img src = {{ details['background_image'] }}>&nbsp;
+        <img src = {{ details['background_image_additional'] }}>
+    </div>
+
+</div>
+
+
+
+
+
+{% endblock %}
+
+

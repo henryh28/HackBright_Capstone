@@ -146,7 +146,7 @@ def item_detail(item_code):
     api_dict = {
         'shows': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
         'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-        'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
+        'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
     }
 
     api_url = api_dict[choice.type][0]
@@ -155,16 +155,20 @@ def item_detail(item_code):
     results = requests.get(api_url, params=payload)
     data = results.json()
 
-    print (" ^^^^^^^^^^^^^^ data: ", data)
-
     if choice.type == "boardgame":
         details = data['games'][0]
         return render_template("item_details_bg.html", details = details)
     elif choice.type == "shows":
         details = data['results'][0]
         poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
-        return render_template("item_details_shows.html", details = details, poster_url=poster_url)
+        return render_template("item_details_shows.html", details = details, poster_url = poster_url)
+    elif choice.type == "vgame":
+        title= data['results'][0]['slug']
+        game_url = api_url + f"/{title}"
+        game_data = requests.get(game_url, params={"key": RAWG_KEY})
+        details = game_data.json()
 
+        return render_template("item_details_vg.html", details = details)
 # ================= API Related Routes =================
 
 # Get API data
