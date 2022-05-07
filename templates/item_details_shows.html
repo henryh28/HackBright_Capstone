@@ -14,8 +14,8 @@
         year: {{ details['release_date'] }}<br>
     </div>
 
-    <div class = "show_description col-md-6">
-        {{ details['overview'] }}
+    <div class = "item_description col-md-6">
+        {{ details['overview'] | safe }}
     </div>
 
     <div class = "item_poster col-md-3">

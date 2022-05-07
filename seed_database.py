@@ -52,9 +52,9 @@ viticulture = crud.create_choice("boardgame", "Viticulture: Essential Edition", 
 spartacus = crud.create_choice("boardgame", "Spartacus: A Game of Blood and Treachery", 1)
 machikoro = crud.create_choice("boardgame", "Machi Koro", 1)
 
-gattaca = crud.create_choice("shows", "Gattaca", 3)
-clerks = crud.create_choice("shows", "Clerks", 3)
-your_name = crud.create_choice("shows", "Your Name", 3)
+gattaca = crud.create_choice("show", "Gattaca", 3)
+clerks = crud.create_choice("show", "Clerks", 3)
+your_name = crud.create_choice("show", "Your Name", 3)
 
 model.db.session.add_all([lis, fallout2, kyrandia2, dune2, lord, concordia, stoneage, viticulture, spartacus, machikoro, gattaca, clerks, your_name])
 

@@ -1,9 +1,24 @@
+html, body  {
+    height: 100%;
+}
+
 
 .flex_container {
     display: flex;
     justify-content: space-evenly;
+    border-style: solid;
+    border-width: 2px;
 }
 
+.room_participants {
+    border-style: solid;
+    border-width: 1px;
+    border-color: cornflowerblue;
+}
+
+.event_room {
+    height: 75%;
+}
 
 .item_poster > img {
     width: 400px;
@@ -15,11 +30,16 @@
     font-size: 1.5em;
 }
 
-.bg_description {
+.item_description {
     padding-bottom: 1em;
     padding-right: 2em;
     padding-left: 2em;
     margin-bottom: 1em;
+
+    height: 350px;
+    overflow-y: auto;
+
+
 }
 
 .index_welcome_pic {

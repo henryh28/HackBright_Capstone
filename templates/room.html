@@ -1,14 +1,35 @@
 {% extends 'base.html' %}
 
-{% block title %} Room for Event {% endblock %}
+{% block title %} {{ room.description }} {% endblock %}
 
 
 {% block body %}
 
 <h2>Room: {{ room.description }}</h2>
 
-<div class="flex_container">
-    <div class = "room_choices">
+<div class="flex_container event_room">
+    <div class = "add_choices col">
+        <form method="POST">
+            <div class="form-group">
+                <label for="choice_title">Search: </label>
+                <input type="text" name="choice_title"><br>
+            </div>
+
+            <label for="choice_type" id="choice_type">Title: </label> 
+            <select name="choice_type">
+                <option value="boardgame">Boardgame</option>
+                <option value="vgame">Video Game</option>
+                <option value="show">Show</option>
+            </select>
+
+            <input type="hidden" name="event_id" value={{ room.event_id }} />
+            <input type="hidden" name="room_code" value={{ room.room_code }} />
+
+            <input type="submit" formaction = "/add_choice" value="Search">
+        </form>
+    </div>
+
+    <div class = "room_choices col-md-6">
         <h3>The nominees</h3>
 
         {% for choice in room.choices %}
@@ -16,7 +37,9 @@
         {% endfor %}
     </div>
 
-
+    <div class = "room_participants col-md-3">
+        All Participants:
+    </div>
 </div>
 
 
