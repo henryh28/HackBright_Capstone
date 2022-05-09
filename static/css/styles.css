@@ -10,6 +10,32 @@ html, body  {
     border-width: 2px;
 }
 
+.room_choices {
+    background-color: aquamarine;
+    overflow-y: auto;
+}
+
+.vertical_flex {
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+
+}
+
+.search_result_container {
+    border-style: solid;
+    border-width: 2px;
+    height: 200px;
+    overflow-y: auto;
+
+}
+
+.search_result_item {
+    border-style: solid;
+    border-width: 1px;
+}
+
+
 .room_participants {
     border-style: solid;
     border-width: 1px;
@@ -19,6 +45,9 @@ html, body  {
 .event_room {
     height: 75%;
 }
+
+.
+
 
 .item_poster > img {
     width: 400px;
