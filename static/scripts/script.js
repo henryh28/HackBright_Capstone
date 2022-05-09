@@ -21,6 +21,8 @@
 */
 
 function addItemToRoom(event) {
+    console.log("active")
+/*
     alert (" -----> " + event.currentTarget.innerHTML);
     console.log(event.currentTarget.innerHTML)
 
@@ -33,7 +35,7 @@ function addItemToRoom(event) {
     fetch('/add_choice', requestOptions)
         .then(resonse => response.json())
         .then(data => console.log(data))
-
+*/
 }
 
 

@@ -18,12 +18,14 @@
                 <select name="choice_type">
                     <option value="boardgame">Boardgame</option>
                     <option value="vgame">Video Game</option>
-                    <option value="show">Show</option>
+                    <option value="movie">Movie</option>
+                    <option value="tv">TV</option>
                 </select>
     
                 <input type="hidden" name="event_id" value={{ room.event_id }} />
                 <input type="hidden" name="room_code" value={{ room.room_code }} />
                 <input type="hidden" name="create_choice" value=0 />
+
                 <div class="form-group">
                     <label for="choice_title">Search: </label>
                     <input type="text" name="choice_title"><br>
@@ -38,12 +40,13 @@
         <div class = "search_result_container">
             <form method="POST">
             {% for record in search_results %}
-                <button type="submit" formaction = "/add_choice" name="title" value="{{ record.name }}"> {{ record.name }} </button>
-                <input type="hidden" name="choice_type" value={{ choice_type }} />
-                <input type="hidden" name="event_id" value={{ room.event_id }} />
-                <input type="hidden" name="room_code" value={{ room.room_code }} />
-                <input type="hidden" name="create_choice" value=1 />
-
+                <div class = "search_result_item">
+                    <button type="submit" formaction = "/add_choice" name="choice_title" value="{{ record.title }}"> {{ record.title }} </button>
+                    <input type="hidden" name="choice_type" value={{ choice_type }} />
+                    <input type="hidden" name="event_id" value={{ room.event_id }} />
+                    <input type="hidden" name="room_code" value={{ room.room_code }} />
+                    <input type="hidden" name="create_choice" value=1 />
+                </div>
             {% endfor %}
             </form>
         </div>

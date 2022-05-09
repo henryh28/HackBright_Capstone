@@ -19,7 +19,6 @@ html, body  {
     display: flex;
     flex-direction: column;
     padding: 1em;
-
 }
 
 .search_result_container {
@@ -27,7 +26,6 @@ html, body  {
     border-width: 2px;
     height: 200px;
     overflow-y: auto;
-
 }
 
 .search_result_item {
@@ -45,8 +43,6 @@ html, body  {
 .event_room {
     height: 75%;
 }
-
-.
 
 
 .item_poster > img {
