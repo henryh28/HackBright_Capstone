@@ -7,7 +7,6 @@ from flask_session import Session
 import jinja2, crud, os, requests
 
 
-
 app = Flask(__name__)
 app.secret_key = "temp"
 
@@ -15,6 +14,9 @@ TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
 BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
+
+
+
 
 # ================= System Related Routes =================
 
@@ -115,7 +117,6 @@ def enter_room(room_code):
 
     if request.method == "GET":
         room = crud.get_events_by(room_code = room_code)
-
         return render_template("room.html", room = room)
     else:
         room_code = request.form['room_code']
@@ -140,9 +141,10 @@ def item_detail(item_code):
     details = []
 
     api_dict = {
-        'show': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+        'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+        'tv': ["https://api.themoviedb.org/3/search/tv", {"api_key": TMDB_KEY, 'query': title}],
         'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-        'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
+        'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title}]
     }
 
     api_url = api_dict[choice.type][0]
@@ -151,10 +153,11 @@ def item_detail(item_code):
     results = requests.get(api_url, params=payload)
     data = results.json()
 
+
     if choice.type == "boardgame":
         details = data['games'][0]
         return render_template("item_details_bg.html", details = details)
-    elif choice.type == "show":
+    elif choice.type == "movie" or choice.type =="tv":
         details = data['results'][0]
         poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
         return render_template("item_details_shows.html", details = details, poster_url = poster_url)
@@ -171,13 +174,57 @@ def item_detail(item_code):
 @app.route ("/add_choice", methods = ["POST"])
 def add_choice():
 
-    title, choice_type, event_id, room_code = list(request.form.values())
-    new_choice = crud.create_choice(choice_type, title, event_id)
+#    choice_type, event_id, room_code, create_choice, title = (request.form.values())
 
-    db.session.add(new_choice)
-    db.session.commit()
+    title = request.form['choice_title']
+    choice_type = request.form['choice_type']
+    event_id = request.form['event_id']
+    room_code = request.form['room_code']
+    create_choice = request.form['create_choice']
 
-    return redirect(f"/room/{ room_code }")
+    rawg_title = "-".join(title.split(" ")).lower()
+    room = crud.get_events_by(room_code=room_code)
+    details = []
+
+    api_dict = {
+        'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
+        'tv': ["https://api.themoviedb.org/3/search/tv", {"api_key": TMDB_KEY, 'query': title}],
+        'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
+        'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title}]
+    }
+
+    api_url = api_dict[choice_type][0]
+    payload = api_dict[choice_type][1]
+
+    results = requests.get(api_url, params=payload)
+    data = results.json()
+
+    if create_choice == "1":
+        new_choice = crud.create_choice(choice_type, title, event_id)
+        db.session.add(new_choice)
+        db.session.commit()
+
+        return redirect(f"/room/{room_code}")
+
+    if choice_type == "movie":
+        details = data['results']
+#        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
+        return render_template("room.html", room = room, search_results = details, choice_type = choice_type)
+    elif choice_type == "tv":
+        for item in data['results']:
+            details.append({"title": item['name']})
+
+        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+    elif choice_type == "boardgame":
+        for item in data['games']:
+            details.append({"title": item['name']})
+
+        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+    elif choice_type == "vgame":
+        for item in data['results']:
+            details.append({"title": item['name']})
+
+        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
 
 # ================= API Related Routes =================
 
@@ -187,8 +234,6 @@ def shows():
     """ Run API searches to find relevant data for choices """
 
     if request.method == "POST":
-
-        print ("=================== processing ==========================")
         type = request.form['type']
         title = request.form['title']
         rawg_title = "-".join(request.form['title'].split(" ")).lower()
@@ -204,8 +249,6 @@ def shows():
 
         results = requests.get(api_url, params=payload)
         data = results.json()
-
-        print ("   @@@ JSON data: ", data)
 
         return render_template("display.html", data = data)
     else:
