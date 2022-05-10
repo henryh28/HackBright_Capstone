@@ -226,6 +226,19 @@ def add_choice():
 
         return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
 
+
+# Remove existing choice from a room/event
+@app.route ("/remove_choice", methods = ["POST"])
+def remove_choice():
+    """ Remove the selected choice from the room """
+
+    delete_target = crud.get_choice_by(choice_id = request.form['choice_id'])
+    db.session.delete(delete_target)
+    db.session.commit()
+
+    return redirect(f"/room/{request.form['room_code']}")
+
+
 # ================= API Related Routes =================
 
 # Get API data

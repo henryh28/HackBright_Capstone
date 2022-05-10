@@ -1,5 +1,6 @@
 """ Define CRUD operations for models """
 
+from secrets import choice
 from model import db, User, Event, Choice, Vote, connect_to_db
 from datetime import datetime as dt
 import random
@@ -64,6 +65,7 @@ def get_all_choices():
 def get_choice_by(**data):
     """ Search for and return a choice by specified parameters """
     return Choice.query.filter_by(**data).first()
+
 
 # ========== Vote related functions ==========
 
