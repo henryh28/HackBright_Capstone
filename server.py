@@ -174,17 +174,20 @@ def item_detail(item_code):
 @app.route ("/add_choice", methods = ["POST"])
 def add_choice():
 
-#    choice_type, event_id, room_code, create_choice, title = (request.form.values())
+    itemData = dict(request.form) if request.form else request.get_json()
 
-    title = request.form['choice_title']
-    choice_type = request.form['choice_type']
-    event_id = request.form['event_id']
-    room_code = request.form['room_code']
-    create_choice = request.form['create_choice']
+    title = itemData['choice_title']
+    choice_type = itemData['choice_type']
+    event_id = itemData['event_id']
+    room_code = itemData['room_code']
+    create_choice = itemData['create_choice']
 
     rawg_title = "-".join(title.split(" ")).lower()
     room = crud.get_events_by(room_code=room_code)
     details = []
+
+#    print (f" &&&& title: {title} type: {choice_type} event_id: {event_id} room_code: {room_code} create_choice: {create_choice}")
+#    choice_type, event_id, room_code, create_choice, title = (request.form.values())
 
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],

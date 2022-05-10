@@ -39,6 +39,10 @@
         <!-- Create visual representation of matching search results -->
         <div class = "search_result_container">
             {% for record in search_results %}
+            <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
+                {{ record.title }}
+            </div>
+            <!--- 
                 <form method="POST">
                     <div class = "search_result_item">
                         <button type="submit" formaction = "/add_choice" name="choice_title" value="{{ record.title }}"> {{ record.title }} </button>
@@ -48,6 +52,7 @@
                         <input type="hidden" name="create_choice" value=1 />
                     </div>
                 </form>
+            --->                
             {% endfor %}
         </div>
     </div>
