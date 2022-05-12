@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %} Profile Page {% endblock %}
+
+
+{% block body %}
+
+    <div class="flex_container">
+        <div class="user_info_details">
+            First Name: {{ user.first_name }} <br>
+            Last Name: {{ user.last_name }} <br>
+            email: {{ user.email }} <br>
+            password: {{ user.password }} <br>
+
+        </div>
+
+        <div class="edit_details">
+            Change Password Form<br>
+            <form action="/view_user_profile" method="POST">
+                <label>Current Password:</label> <input type="text" name="current_pw" maxlength="50"><br>
+                <label>New Password:</label> <input type="text" name="new_pw" maxlength="50"><br>
+                <label>Confirm New Password:</label> <input type="text" name="confirm_new_pw" maxlength="50"><br>
+                <input type="submit" value="Change Password">
+            </form>
+            No, we don't enforce weird non-sense character combination <br>
+            for your password <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">because</a> 
+            <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">they</a> 
+            <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">don't</a> 
+            <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">work!</a>
+
+        </div>
+    </div>
+{% endblock %}
+
+
+

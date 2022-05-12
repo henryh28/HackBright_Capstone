@@ -89,7 +89,7 @@ input[type='radio'] {
 }
 
 
-/* Item detail related*/
+/* Item detail related */
 
 .item_poster > img {
     width: 400px;
@@ -112,7 +112,7 @@ input[type='radio'] {
 }
 
 
-/* Results related*/
+/* Results related */
 #display_voting_results {
     display: flex;
     margin-left: 3em;
@@ -133,5 +133,10 @@ input[type='radio'] {
     border-color: lightcoral;
 }
 
+
+/* Form related */
+.edit_details > form > label {
+    width: 200px;
+}
 
 

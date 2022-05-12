@@ -2,6 +2,7 @@
 
 // Navbar button to go to route "/"
 document.querySelector("#btn-home").addEventListener("click", () => {
+    
     window.location = "/";
 })
 
@@ -9,6 +10,11 @@ document.querySelector("#btn-home").addEventListener("click", () => {
 // Navbar button to create a room
 document.querySelector("#btn-create-room").addEventListener("click", () => {
     window.location = "/create_room";
+})
+
+// Navbar button to view user profile
+document.querySelector("#btn-view-user-profile").addEventListener("click", () => {
+    window.location = "/view_user_profile";
 })
 
 
