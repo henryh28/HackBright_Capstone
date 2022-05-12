@@ -16,34 +16,38 @@
     <body>
         {% block nav %} 
             <div name='nav_bar' class='navbar'>
-                <button class="col-md-1" id="btn-home">Home</button>
-                <button class="col-md-1" id='btn-create-room'>Create a Room</button>
-                <form method="POST">
-                    <input type="submit" formaction = "/room/code" value="Join Room">
-                    <label for="room_code">Room Code: </label>
-                    <input type="text" id="btn-room-code" name="room_code" class="col-md-2" maxlength="4">
-                </form><br>
-
-
-                <div class="col-md-1"></div>
-
-                {% if session['user'] %}
-                    <div class="col-md-5">
-                        <div class = "offset-md-5">Logged in: {{ session['user_name'] }}
-                            <button class="offset-md-5" id='btn-logout'>Logout</button>
-                        </div>
-                    </div>
-                {% else %}
-                <div class="col-md-5">
+                <!-- Left side Menu items -->
+                <div class="menuitems">
                     <form method="POST">
-                        <label for="uname">Username: </label>
-                        <input type="text" id="uname" name="uname">
-                        <label for="password">Password: </label>
-                        <input type="text" id="password" name="password">
-                        <input type="submit" formaction = "/login" value="Log In">
+                        <button type="button" id="btn-home">Home</button>
+                        <button type="button" id='btn-create-room'>Create a Room</button>
+                        <input type="submit" formaction = "/room/code" value="Join Room">
+                        <label for="room_code">Room Code: </label>
+                        <input type="text" id="btn-room-code" name="room_code" class="col-md-1" maxlength="4">
                     </form><br>
-                </div>                    
-                {% endif %}
+                </div>
+
+
+                <!-- Right side user related UI elements -->
+                <div class="user_status col-md-5">
+                    {% if session['user'] %}
+                        <div class="col-md-7 offset-md-1">
+                            <button type="button" id="btn-view-user-profile">View Profile</button>
+                            Logged in: {{ session['user_name'] }}
+                            &emsp;<button id="btn-logout">Logout</button>
+                        </div>
+                    {% else %}
+                    <div>
+                        <form method="POST">
+                            <label for="uname">Username: </label>
+                            <input type="text" id="uname" name="uname">
+                            <label for="password">Password: </label>
+                            <input type="text" id="password" name="password">
+                            <input type="submit" formaction = "/login" value="Log In">
+                        </form><br>
+                    </div>                    
+                    {% endif %}
+                </div>
 
             </div>
         {% endblock %}

@@ -59,21 +59,28 @@
 
 
     <!-- Begin center flexbox to list current choices -->
-    <div class = "room_choices col-md-4" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+    <div class = "room_choices col-md-5" ondragover="onDragOver(event);" ondrop="onDrop(event);">
         <h3>The nominees</h3>
 
-        {% for choice in room.choices %}
         <form method="POST">
-            <div class = "room_choice_items">
-                <button type="submit" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button>
-                <input type="hidden" name="room_code" value={{ room.room_code }} />
-                <a href="/details/{{ choice.choice_id }}">{{ choice.title }}</a><br>
-            </div>
-        </form>
-        {% endfor %}
-    </div>
 
-    <div class = "room_participants col-md-3">
+            {% for choice in room.choices %}
+                <div class = "room_choice_items">
+                    {% if room.voting_style == 'fptp' %}
+                        &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                    {% endif %}
+                    <a href="/details/{{ choice.choice_id }}">{{ choice.title }}</a>
+                    <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
+                    <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
+                </div>
+            {% endfor %}
+            <input type="hidden" name="room_code" value={{ room.room_code }} />                    
+            <input type="hidden" name="vote_strength" value= "1" />                    
+            <button type="submit" formaction = "/submit_vote">Submit Vote / View Results</button>
+        </form>
+</div>
+
+    <div class = "room_participants col-md-2">
         All Participants:
     </div>
 </div>

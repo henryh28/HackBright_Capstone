@@ -1,10 +1,12 @@
 """ Server for HackBright capstone project """
 
 from hashlib import new
+from multiprocessing.dummy import current_process
 from flask import Flask, render_template, request, flash, session, redirect
 from model import connect_to_db, db, User
-from flask_session import Session
 import jinja2, crud, os, requests
+from flask_bcrypt import Bcrypt
+#from flask_session import Session
 
 
 app = Flask(__name__)
@@ -16,9 +18,7 @@ BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
 
 
-
-
-# ================= System Related Routes =================
+# ================= System Related  =================
 
 # Homepage
 @app.route ("/")
@@ -31,53 +31,23 @@ def homepage():
 
     return render_template("index.html") 
 
-
-@app.route ("/account", methods=["POST", "GET"])
-def create_account():
-    """ Allows for an user to create an account """
-
-    if request.method == "POST":
-        fname = request.form['fname']
-        lname = request.form['lname']
-        uname = request.form['uname']
-        email = request.form['email']
-        pw = request.form['password']
-
-        new_user = crud.get_user_by(user_name=uname)
-        if not new_user:
-            new_user = crud.get_user_by(email=email)
-            
-        if new_user:
-            flash("That user already exists")
-        else:
-            new_user = crud.create_user(fname, lname, uname, pw, email)
-            db.session.add(new_user)
-            db.session.commit()
-
-        return redirect("/")
-    else:
-        return render_template("account.html")
-
-
 @app.route ("/login", methods = ["POST"])
 def login():
     """ Authenticates user for login """
 
-    if request.method == "POST":
-        uname = request.form['uname']
-        pw = request.form['password']
+    uname = request.form['uname']
+    pw = request.form['password']
 
-        existing_user = crud.get_user_by(user_name=uname)
+    existing_user = crud.get_user_by(user_name=uname)
 
-        if existing_user:
-            if pw == existing_user.password:
-                session['user'] = existing_user.user_id
-                session['user_name'] = existing_user.user_name
-            else:
-                flash("Incorrect password")
-
+    if existing_user:
+        if Bcrypt().check_password_hash(existing_user.password, pw):
+            session['user'] = existing_user.user_id
+            session['user_name'] = existing_user.user_name
         else:
-            flash("Incorrect credentials")
+            flash("Incorrect password")
+    else:
+        flash("Incorrect credentials")
 
     return redirect("/")
 
@@ -91,16 +61,79 @@ def logout():
     return redirect("/")
 
 
-# ================= Event/Room Related Routes =================
+# ================= User related  =================
+
+@app.route ("/account", methods=["POST", "GET"])
+def create_account():
+    """ Allows for an user to create an account """
+    # GET methods retrieves form for user account creation
+    # POST method processes form from account creation
+
+    if request.method == "POST":
+        fname = request.form['fname']
+        lname = request.form['lname']
+        uname = request.form['uname']
+        email = request.form['email']
+        pw = request.form['password']
+
+        existing_user_name = crud.get_user_by(user_name=uname)
+        existing_email = crud.get_user_by(email=email)
+
+        if existing_user_name:
+            flash("That username is already in use")
+        if existing_email:
+            flash("That email is already in use")
+            
+        if not existing_email and not existing_user_name:
+            hashed_password = Bcrypt().generate_password_hash(pw).decode('UTF-8')
+            new_user = crud.create_user(fname, lname, uname, hashed_password, email)
+            db.session.add(new_user)
+            db.session.commit()
+
+        return redirect("/")
+    else:
+        return render_template("account.html")
+
+
+# View profile for current user
+@app.route ("/view_user_profile", methods=["GET","POST"])
+def view_user_profile():
+    """ Display detailed info for the logged in user """
+    # GET method displays user info
+    # POST method processes user's change password request
+
+    current_user = crud.get_user_by(user_id = session['user'])
+
+    if request.method == "GET":
+        return render_template("view_profile.html", user=current_user)    
+
+    elif request.method == "POST":
+        if current_user.password == request.form['current_pw']:
+            if request.form['new_pw'] == request.form['confirm_new_pw']:
+                current_user.password = request.form['new_pw']
+                db.session.add(current_user)
+                db.session.commit()
+                flash ("Password successfully changed!")
+            else:
+                flash ("'New Password' and 'Confirm New Password' value does not match!")
+        else:
+            flash ("Invalid password, calling the Feds.")
+
+        return redirect(request.url)
+
+
+# ================= Event/Room Related =================
 
 # Create a room
 @app.route ("/create_room", methods = ["POST", "GET"])
 def create_room():
     """ Create a room to host the users and choices for this event """
+    # GET method loads form for room creation
+    # POST method processes form from room creation page
 
     if request.method == "POST":
         description = request.form['description']
-        new_room = crud.create_event(description)
+        new_room = crud.create_event(description, request.form['voting_style'])
         db.session.add(new_room)
         db.session.commit()
 
@@ -128,7 +161,7 @@ def enter_room(room_code):
             flash("Invalid room code")
             return redirect("/")
 
-# ================= Choice Related Routes =================
+# ================= Choice Related =================
 
 # Display relevant info about a choice
 @app.route ("/details/<item_code>")
@@ -241,38 +274,33 @@ def remove_choice():
 
     return redirect(f"/room/{request.form['room_code']}")
 
+# ================= Results Related =================
+@app.route ("/submit_vote", methods = ["POST"])
+def submit_vote():
+    """ Process submitted votes """
 
-# ================= API Related Routes =================
+    all_votes_for_choices = []
+    room_code = request.form['room_code']
+    vote_strength = request.form['vote_strength']
+    user_id = session['user'] if session['user'] else None
 
-# Get API data
-@app.route ("/search", methods = ["GET", "POST"])
-def shows():
-    """ Run API searches to find relevant data for choices """
+    if 'choice_id' in request.form:
+        choice_id = request.form['choice_id']
+        vote = crud.create_vote(vote_strength, user_id, choice_id)
+        db.session.add(vote)
+        db.session.commit()
 
-    if request.method == "POST":
-        type = request.form['type']
-        title = request.form['title']
-        rawg_title = "-".join(request.form['title'].split(" ")).lower()
+    room = crud.get_events_by(room_code = room_code)
+    room_choices = room.choices #list
 
-        api_dict = {
-            'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
-            'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-            'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
-        }
+    for choices in room_choices:
+        all_votes_for_choices.append(choices.votes)
 
-        api_url = api_dict[type][0]
-        payload = api_dict[type][1]
-
-        results = requests.get(api_url, params=payload)
-        data = results.json()
-
-        return render_template("display.html", data = data)
-    else:
-        return render_template("search.html")
+    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices)
 
 
 
-# ================= Development Related Routes =================
+# ================= Development Related =================
 
 # for testing
 @app.route ("/test")
@@ -288,11 +316,9 @@ def test():
 @app.route ("/all_rooms")
 def all_rooms():
     """ lists all events """
-
     all_events = crud.get_all_events()
 
     return render_template("all_rooms.html", all_events = all_events)
-
 
 
 if __name__ == "__main__":

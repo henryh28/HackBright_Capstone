@@ -2,6 +2,7 @@
 
 import os, json, model, server, crud
 from datetime import datetime as dt
+from flask_bcrypt import Bcrypt
 
 os.system('dropdb hb_capstone')
 os.system('createdb hb_capstone')
@@ -11,19 +12,25 @@ model.db.create_all()
 
 
 # ====== create sample users ==========
-korra = crud.create_user('korra', 'korra', 'avatar', 'test', 'korra@test.com')
-asami = crud.create_user('asami', 'sato', 'korrasami', 'test', 'asami@test.com')
-max = crud.create_user('max', 'caulfield', 'mad_max', 'test', 'max@blackwell.edu')
-chloe = crud.create_user('chloe', 'price', 'captain_chloe', 'test', 'chloe@arcadia.bay')
-rachel = crud.create_user('rachel', 'amber', 'rach', 'test', 'rachel@blackwell.edu')
+
+korra_pw = hashed_password = Bcrypt().generate_password_hash('test').decode('UTF-8')
+korra = crud.create_user('korra', 'korra', 'avatar', korra_pw, 'korra@test.com')
+asami_pw = hashed_password = Bcrypt().generate_password_hash('test').decode('UTF-8')
+asami = crud.create_user('asami', 'sato', 'korrasami', asami_pw, 'asami@test.com')
+max_pw = hashed_password = Bcrypt().generate_password_hash('test').decode('UTF-8')
+max = crud.create_user('max', 'caulfield', 'mad_max', max_pw, 'max@blackwell.edu')
+chloe_pw = hashed_password = Bcrypt().generate_password_hash('test').decode('UTF-8')
+chloe = crud.create_user('chloe', 'price', 'captain_chloe', chloe_pw, 'chloe@arcadia.bay')
+rachel_pw = hashed_password = Bcrypt().generate_password_hash('test').decode('UTF-8')
+rachel = crud.create_user('rachel', 'amber', 'rach', rachel_pw, 'rachel@blackwell.edu')
 
 model.db.session.add_all([korra, asami, max, chloe, rachel])
 
 
 # ====== create sample events ==========
-vgame = crud.create_event("which video game?")
-bgame = crud.create_event("pick a boardgame!")
-movie = crud.create_event("what we watchin?")
+vgame = crud.create_event("which video game?", "fptp")
+bgame = crud.create_event("pick a boardgame!", "fptp")
+movie = crud.create_event("what we watchin?", "fptp")
 
 model.db.session.add_all([bgame, vgame, movie])
 

@@ -7,18 +7,25 @@
 {% block body %}
 
 <div class="flex_container">
-    <h2>Create a Room</h2>
+    <div>
+        <h2>Create a Room</h2>
+
+        Explanation text goes here
+    </div>
 
     <div id = "create_room">
-        <form method="POST" action="/create_room">
+        <div class="form-group">
+            <form method="POST" action="/create_room">
 
-            <div class="form-group">
                 <label for="description">Description: </label>
                 <input type="text" class="form-control" name="description"><br>
-            </div>
-            
-            <input type="submit" value="Create Room">
-        </form>
+
+                <input type="radio" name="voting_style" value="fptp" checked="checked">
+                <label for="voting_style">First Past the Post</label><br><br>
+
+                <input type="submit" value="Create Room">
+            </form>
+        </div>
     </div>    
   </div>
 

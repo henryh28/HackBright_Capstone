@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block title %} {{ room.description }} voting results {% endblock %}
+
+
+{% block body %}
+
+<div id="display_voting_results">
+
+    <div id="display_voting_choices">
+        {% for choice in room_choices %}
+            <div class="result_choices">
+                {{ choice.title }}
+            </div>
+        {% endfor %}
+    </div>
+
+    <div id="display_votes">
+        {% for choice in room_choices %}
+            <div class="result_choices">
+                {% for vote in choice.votes %}
+                    <img src = "/static/img/vote_block.png">
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+
+
+</div>
+
+{% endblock %}
+
+
+
+
