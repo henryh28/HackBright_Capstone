@@ -16,9 +16,7 @@ BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
 
 
-
-
-# ================= System Related Routes =================
+# ================= System Related  =================
 
 # Homepage
 @app.route ("/")
@@ -31,6 +29,38 @@ def homepage():
 
     return render_template("index.html") 
 
+@app.route ("/login", methods = ["POST"])
+def login():
+    """ Authenticates user for login """
+
+    if request.method == "POST":
+        uname = request.form['uname']
+        pw = request.form['password']
+
+        existing_user = crud.get_user_by(user_name=uname)
+
+        if existing_user:
+            if pw == existing_user.password:
+                session['user'] = existing_user.user_id
+                session['user_name'] = existing_user.user_name
+            else:
+                flash("Incorrect password")
+        else:
+            flash("Incorrect credentials")
+
+    return redirect("/")
+
+@app.route ("/logout")
+def logout():
+    """ Logs current user out of the system """
+
+    session['user'] = None
+    session['user_name'] = None
+
+    return redirect("/")
+
+
+# ================= User related  =================
 
 @app.route ("/account", methods=["POST", "GET"])
 def create_account():
@@ -58,40 +88,7 @@ def create_account():
     else:
         return render_template("account.html")
 
-
-@app.route ("/login", methods = ["POST"])
-def login():
-    """ Authenticates user for login """
-
-    if request.method == "POST":
-        uname = request.form['uname']
-        pw = request.form['password']
-
-        existing_user = crud.get_user_by(user_name=uname)
-
-        if existing_user:
-            if pw == existing_user.password:
-                session['user'] = existing_user.user_id
-                session['user_name'] = existing_user.user_name
-            else:
-                flash("Incorrect password")
-
-        else:
-            flash("Incorrect credentials")
-
-    return redirect("/")
-
-@app.route ("/logout")
-def logout():
-    """ Logs current user out of the system """
-
-    session['user'] = None
-    session['user_name'] = None
-
-    return redirect("/")
-
-
-# ================= Event/Room Related Routes =================
+# ================= Event/Room Related =================
 
 # Create a room
 @app.route ("/create_room", methods = ["POST", "GET"])
@@ -100,7 +97,7 @@ def create_room():
 
     if request.method == "POST":
         description = request.form['description']
-        new_room = crud.create_event(description)
+        new_room = crud.create_event(description, request.form['voting_style'])
         db.session.add(new_room)
         db.session.commit()
 
@@ -128,7 +125,7 @@ def enter_room(room_code):
             flash("Invalid room code")
             return redirect("/")
 
-# ================= Choice Related Routes =================
+# ================= Choice Related =================
 
 # Display relevant info about a choice
 @app.route ("/details/<item_code>")
@@ -241,38 +238,33 @@ def remove_choice():
 
     return redirect(f"/room/{request.form['room_code']}")
 
+# ================= Results Related =================
+@app.route ("/submit_vote", methods = ["POST"])
+def submit_vote():
+    """ Process submitted votes """
 
-# ================= API Related Routes =================
+    all_votes_for_choices = []
+    room_code = request.form['room_code']
+    vote_strength = request.form['vote_strength']
+    user_id = session['user'] if session['user'] else None
 
-# Get API data
-@app.route ("/search", methods = ["GET", "POST"])
-def shows():
-    """ Run API searches to find relevant data for choices """
+    if 'choice_id' in request.form:
+        choice_id = request.form['choice_id']
+        vote = crud.create_vote(vote_strength, user_id, choice_id)
+        db.session.add(vote)
+        db.session.commit()
 
-    if request.method == "POST":
-        type = request.form['type']
-        title = request.form['title']
-        rawg_title = "-".join(request.form['title'].split(" ")).lower()
+    room = crud.get_events_by(room_code = room_code)
+    room_choices = room.choices #list
 
-        api_dict = {
-            'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
-            'boardgame': ["https://api.boardgameatlas.com/api/search", {"client_id": BGATLAS_KEY, 'name': title}],
-            'game': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title, 'search_exact': True}]
-        }
+    for choices in room_choices:
+        all_votes_for_choices.append(choices.votes)
 
-        api_url = api_dict[type][0]
-        payload = api_dict[type][1]
-
-        results = requests.get(api_url, params=payload)
-        data = results.json()
-
-        return render_template("display.html", data = data)
-    else:
-        return render_template("search.html")
+    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices)
 
 
 
-# ================= Development Related Routes =================
+# ================= Development Related =================
 
 # for testing
 @app.route ("/test")
@@ -288,11 +280,9 @@ def test():
 @app.route ("/all_rooms")
 def all_rooms():
     """ lists all events """
-
     all_events = crud.get_all_events()
 
     return render_template("all_rooms.html", all_events = all_events)
-
 
 
 if __name__ == "__main__":

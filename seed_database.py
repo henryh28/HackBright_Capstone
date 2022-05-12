@@ -21,9 +21,9 @@ model.db.session.add_all([korra, asami, max, chloe, rachel])
 
 
 # ====== create sample events ==========
-vgame = crud.create_event("which video game?")
-bgame = crud.create_event("pick a boardgame!")
-movie = crud.create_event("what we watchin?")
+vgame = crud.create_event("which video game?", "fptp")
+bgame = crud.create_event("pick a boardgame!", "fptp")
+movie = crud.create_event("what we watchin?", "fptp")
 
 model.db.session.add_all([bgame, vgame, movie])
 

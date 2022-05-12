@@ -42,6 +42,7 @@ class Event (db.Model):
 
     event_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     room_code = db.Column(db.String, unique = True)
+    voting_style = db.Column(db.String)
     description = db.Column(db.String)
 
     # choices: all choices submitted for this event
@@ -82,6 +83,7 @@ class Vote (db.Model):
     choice_id = db.Column(db.Integer, db.ForeignKey("choices.choice_id"))
     user = db.relationship("User", backref = "votes")
     choice = db.relationship("Choice", backref = "votes")
+
 
     def __repr__(self):
         """ Returns vote info """
