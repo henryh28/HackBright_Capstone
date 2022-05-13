@@ -114,9 +114,10 @@ def view_user_profile():
         return render_template("view_profile.html", user=current_user)    
 
     elif request.method == "POST":
-        if current_user.password == request.form['current_pw']:
+        if Bcrypt().check_password_hash(current_user.password, request.form['current_pw']):
+#        if current_user.password == request.form['current_pw']:
             if request.form['new_pw'] == request.form['confirm_new_pw']:
-                current_user.password = request.form['new_pw']
+                current_user.password = Bcrypt().generate_password_hash(request.form['new_pw']).decode('UTF-8')
                 db.session.add(current_user)
                 db.session.commit()
                 flash ("Password successfully changed!")
@@ -329,5 +330,5 @@ def all_rooms():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug = False)
+    app.run(host="0.0.0.0", debug = True)
 
