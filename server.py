@@ -61,6 +61,12 @@ def logout():
     return redirect("/")
 
 
+@app.errorhandler(404)
+def page_not_found(event):
+    """ Custom error handler for 404 errors """
+
+    return render_template("404.html")
+
 # ================= User related  =================
 
 @app.route ("/account", methods=["POST", "GET"])
@@ -323,5 +329,5 @@ def all_rooms():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug = True)
+    app.run(host="0.0.0.0", debug = False)
 
