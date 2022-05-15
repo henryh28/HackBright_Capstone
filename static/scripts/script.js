@@ -1,5 +1,6 @@
 
 
+
 // Navbar button to go to route "/"
 document.querySelector("#btn-home").addEventListener("click", () => {
     

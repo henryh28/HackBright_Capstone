@@ -1,16 +1,20 @@
 """ Server for HackBright capstone project """
 
+from argparse import Namespace
 from hashlib import new
 from multiprocessing.dummy import current_process
-from flask import Flask, render_template, request, flash, session, redirect
+#from socket import SocketIO
+from flask import Flask, render_template, request, flash, session, redirect, copy_current_request_context
 from model import connect_to_db, db, User
 import jinja2, crud, os, requests
 from flask_bcrypt import Bcrypt
+from flask_socketio import SocketIO, emit, join_room, leave_room
 #from flask_session import Session
 
 
 app = Flask(__name__)
 app.secret_key = "temp"
+socketio = SocketIO(app)
 
 TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
@@ -115,7 +119,6 @@ def view_user_profile():
 
     elif request.method == "POST":
         if Bcrypt().check_password_hash(current_user.password, request.form['current_pw']):
-#        if current_user.password == request.form['current_pw']:
             if request.form['new_pw'] == request.form['confirm_new_pw']:
                 current_user.password = Bcrypt().generate_password_hash(request.form['new_pw']).decode('UTF-8')
                 db.session.add(current_user)
@@ -314,9 +317,69 @@ def submit_vote():
 def test():
     """ feature testing """
 
-    # replace with feature/code/function to test
-
     return render_template("test.html")
+
+
+
+
+# ================= SocketIO Related =================
+
+@socketio.on('connect')
+def connected():
+    print ("------- connected ----------")
+#    emit('my_response', {'data': " testing 123"})
+    on_join({'username': 'greg'})
+    emit("join", {'username': 'bob'})
+
+
+@socketio.on('disconnect')
+def disconnected():
+    print ("------- disconnected ----------")
+
+@socketio.on('user_added')
+def user_added(message):
+    print ("--------- User added -----------")
+    emit("userAddedResponse", {'data': message}, broadcast = True)
+
+
+@socketio.on('join')
+def on_join(data):
+    username = data['username']
+#    room = data['room']
+    room = crud.get_events_by(event_id = 1)
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    join_room(room)
+    print (" ======= user joined room 1")
+    emit('my_response', {'data': username + " >>> joined this room <<<", 'count': session['receive_count']})
+
+
+def messageReceived(methods = ["POST", "GET"]):
+    print ("message received!")
+
+@socketio.on('my_event')
+def handle_chat(message):
+ 
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    print (session['receive_count'], " >>>>>>>>>>> am i here? ", message)
+#    socketio.send(".... socket send msg", json, callback=messageReceived)
+    emit('my_response', {'data': message['data'], 'count': session['receive_count']})
+
+@socketio.on('my_broadcast_event')
+def test_broadcast_message(message):
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response', {'data': message['data'], 'count': session['receive_count']}, broadcast = True)
+
+@socketio.on('disconnect_request')
+def disconnect_request():
+
+    print (" >>>>> who called me? ")
+    @copy_current_request_context
+    def can_disconnect():
+        print ("seriousl...........")
+        socketio.disconnect()
+
+    session['receive_count'] = session.get('receive_count', 0) + 1
+    emit('my_response', {'data': 'Disconnected', 'count': session['receive_count']}, callback = can_disconnect)
 
 
 # list all rooms
@@ -330,5 +393,6 @@ def all_rooms():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug = True)
+    #app.run(host="0.0.0.0", debug = True)
+    socketio.run(app, debug = True)
 
