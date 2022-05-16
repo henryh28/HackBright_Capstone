@@ -324,12 +324,13 @@ def test():
 
 # ================= SocketIO Related =================
 
+'''
 @socketio.on('connect')
 def connected():
     print ("------- connected ----------")
-#    emit('my_response', {'data': " testing 123"})
-    on_join({'username': 'greg'})
-    emit("join", {'username': 'bob'})
+    username = session['user_name'] if session['user_name'] != None else "Anonymous"
+    emit('my_response', {'username': username, 'data': " joined this room !"})
+'''
 
 
 @socketio.on('disconnect')
@@ -356,13 +357,15 @@ def on_join(data):
 def messageReceived(methods = ["POST", "GET"]):
     print ("message received!")
 
-@socketio.on('my_event')
+@socketio.on('chat')
 def handle_chat(message):
  
     session['receive_count'] = session.get('receive_count', 0) + 1
-    print (session['receive_count'], " >>>>>>>>>>> am i here? ", message)
+#    print (session['receive_count'], " >>>>>>>>>>> am i here? ", message)
+    username = session['user_name'] if session['user_name'] != None else "Anonymous"
+
 #    socketio.send(".... socket send msg", json, callback=messageReceived)
-    emit('my_response', {'data': message['data'], 'count': session['receive_count']})
+    emit('my_response', {'username': username, 'data': message['data'], 'count': session['receive_count']})
 
 @socketio.on('my_broadcast_event')
 def test_broadcast_message(message):

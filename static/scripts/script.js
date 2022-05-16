@@ -1,5 +1,44 @@
 
 
+// Chat function
+$(document).ready(function() {
+    var socket = io();
+
+    socket.on('my_response', function(msg, cb) {
+//        alert("message : " + JSON.stringify(msg))
+        $('#room_chat_box').append('<br>' + $('<div/>').text(msg.username + ': ' + msg.data).html());
+        document.getElementById('room_chat_input').value = '';
+        
+        if (cb)
+            cb();
+    });
+
+    socket.on('connect', function() {
+        socket.emit('chat', {data: 'connected to the SocketServer...'});
+    });
+
+
+    $('form#form_room_chat').submit(function(event){
+        socket.emit('chat', {data: $('#room_chat_input').val()});
+        return false;
+    });
+
+    $('form#emit').submit(function(event) {
+        socket.emit('my_event', {data: $('#emit_data').val()});
+        return false;
+    });
+    $('form#broadcast').submit(function(event) {
+        socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
+        return false;
+    });
+    $('form#disconnect').submit(function(event) {
+        socket.emit('disconnect_request');
+        return false;
+    });
+});
+
+
+
 
 // Navbar button to go to route "/"
 document.querySelector("#btn-home").addEventListener("click", () => {
@@ -64,4 +103,50 @@ async function onDrop(event) {
     event.dataTransfer.clearData();
     */
 }
+
+/*
+
+/*
+<script type="text/javascript" charset="utf-8">
+    var socket = io();
+    socket.on('connect', function() {
+        socket.emit('my event', {data: 'I\'m connected!'});
+    });
+</script>
+
+$(document).ready(function() {
+
+    var socket = io();
+
+    socket.on('my_response', function(msg, cb) {
+        alert("message : " + JSON.stringify(msg))
+        $('#log').append('<br>' + $('<div/>').text('logs #' + msg.count + ': ' + msg.data).html());
+        if (cb)
+            cb();
+    });
+
+    socket.on('connect', function() {
+        socket.emit('my_event', {data: 'connected to the SocketServer...'});
+    });
+
+
+    $('form#form_room_chat').submit(function(event){
+        socket.emit('chat', {data: $('#room_chat_input').val()});
+        return false;
+    });
+
+    $('form#emit').submit(function(event) {
+        socket.emit('my_event', {data: $('#emit_data').val()});
+        return false;
+    });
+    $('form#broadcast').submit(function(event) {
+        socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
+        return false;
+    });
+    $('form#disconnect').submit(function(event) {
+        socket.emit('disconnect_request');
+        return false;
+    });
+});
+*/
 
