@@ -53,8 +53,8 @@
         </div><br>
 
         <!-- Flexbox container to list current choices -->
+        <h2>The nominees</h2>
         <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-            <h3>The nominees</h3>
 
             <form method="POST">
                 {% for choice in room.choices %}
@@ -62,9 +62,9 @@
                         {% if room.voting_style == 'fptp' %}
                             &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
                         {% endif %}
-                        <a href="/details/{{ choice.choice_id }}" class="col-md-6">{{ choice.title }}</a>
-                        <button type="button" class="btn_placeholder col-md-1.5" name="placeholder">Placeholder </button>
-                        <button type="submit" class="btn_remove col-md-1.5" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
+                        <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
+                        <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
+                        <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
                     </div>
                 {% endfor %}
                 <input type="hidden" name="room_code" value={{ room.room_code }} />                    
@@ -75,7 +75,7 @@
     </div>
 
     <div class = "chat_window col-md-4 vertical_flex">
-        <h2>Chat Window</h2>
+        <div><h2>Chat Window</h2></div>
 
         <div id="room_chat_box">
 
@@ -91,7 +91,7 @@
                 <input type="submit" value="Chat">
             </form>
         </div>
-
+        <button type="submit" id="btn_test">press me</button>
     </div>
 
 

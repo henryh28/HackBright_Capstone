@@ -3,18 +3,23 @@
 from argparse import Namespace
 from hashlib import new
 from multiprocessing.dummy import current_process
-#from socket import SocketIO
 from flask import Flask, render_template, request, flash, session, redirect, copy_current_request_context
 from model import connect_to_db, db, User
 import jinja2, crud, os, requests
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO, emit, join_room, leave_room
-#from flask_session import Session
+from flask_session import Session
+import eventlet
 
-
+eventlet.monkey_patch()
 app = Flask(__name__)
-app.secret_key = "temp"
-socketio = SocketIO(app)
+#app.secret_key = "temp"
+app.config['SECRET_KEY'] = "shanicus"
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
+
+socketio = SocketIO(app, manage_session = False)
 
 TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
@@ -32,6 +37,7 @@ def homepage():
     if 'user' not in session:
         session['user'] = None
         session['user_name'] = None
+        session['room'] = "test"
 
     return render_template("index.html") 
 
@@ -160,6 +166,8 @@ def enter_room(room_code):
 
     if request.method == "GET":
         room = crud.get_events_by(room_code = room_code)
+        print (" ---- GET room join: ", )
+#        socketio.emit('redirect')
         return render_template("room.html", room = room)
     else:
         room_code = request.form['room_code']
@@ -313,11 +321,18 @@ def submit_vote():
 # ================= Development Related =================
 
 # for testing
-@app.route ("/test")
+@app.route ("/test", methods = ["GET", "POST"])
 def test():
     """ feature testing """
 
     return render_template("test.html")
+
+
+@app.route ("/chat", methods = ["GET", "POST"])
+def chat():
+
+
+    return redirect("/test")
 
 
 
@@ -337,21 +352,26 @@ def connected():
 def disconnected():
     print ("------- disconnected ----------")
 
-@socketio.on('user_added')
-def user_added(message):
-    print ("--------- User added -----------")
-    emit("userAddedResponse", {'data': message}, broadcast = True)
-
+@socketio.on('custom_event')
+def sio_custom_event(message):
+    print (request.sid, " --------i am called --- ", message)
 
 @socketio.on('join')
-def on_join(data):
-    username = data['username']
-#    room = data['room']
-    room = crud.get_events_by(event_id = 1)
-    session['receive_count'] = session.get('receive_count', 0) + 1
+def on_join(message):
+    username = session['user_name']
+    room = "test"
+
     join_room(room)
-    print (" ======= user joined room 1")
-    emit('my_response', {'data': username + " >>> joined this room <<<", 'count': session['receive_count']})
+    print (username, " ======= user joined room : ", room)
+    emit('status', {'msg': username + " joined this room"}, room = room)
+
+@socketio.on('message')
+def handle_message(message):
+    room = "test"
+    username = session['user_name']
+    print (" =========== msg event: ", message)
+
+    emit('my_response', {'username': username, 'data': message['data']}, room = room)
 
 
 def messageReceived(methods = ["POST", "GET"]):
@@ -360,17 +380,15 @@ def messageReceived(methods = ["POST", "GET"]):
 @socketio.on('chat')
 def handle_chat(message):
  
-    session['receive_count'] = session.get('receive_count', 0) + 1
-#    print (session['receive_count'], " >>>>>>>>>>> am i here? ", message)
+    print (request.sid, " >>>>>>>>>>> am i here? ", message)
     username = session['user_name'] if session['user_name'] != None else "Anonymous"
-
+    room = "test"
 #    socketio.send(".... socket send msg", json, callback=messageReceived)
-    emit('my_response', {'username': username, 'data': message['data'], 'count': session['receive_count']})
+    emit('my_response', {'username': username, 'data': message['data']}, room = room)
 
 @socketio.on('my_broadcast_event')
 def test_broadcast_message(message):
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response', {'data': message['data'], 'count': session['receive_count']}, broadcast = True)
+    emit('my_response', {'data': message['data']}, broadcast = True)
 
 @socketio.on('disconnect_request')
 def disconnect_request():

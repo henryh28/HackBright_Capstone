@@ -14,17 +14,37 @@ $(document).ready(function() {
     });
 
     socket.on('connect', function() {
-        socket.emit('chat', {data: 'connected to the SocketServer...'});
+        socket.emit('join', {});
     });
 
 
+    socket.on('status', function(data) {
+        $('#room_chat_box').append('<br>' + $('<div/>').text(data.msg).html());
+    })
+
+    socket.on('message', function(data) {
+        socket.emit('message', {data: $('#room_chat_input').val()});
+        return false;
+
+    })
+
+
+    socket.on('redirect', function() {
+        alert(" redireting to backend")
+    })
+
+    socket.on("client_side_event", function() {
+        alert ("triggered client")
+    })
+
     $('form#form_room_chat').submit(function(event){
-        socket.emit('chat', {data: $('#room_chat_input').val()});
+//        socket.emit('chat', {data: $('#room_chat_input').val()});
+        socket.emit('message', {data: $('#room_chat_input').val()});
         return false;
     });
 
     $('form#emit').submit(function(event) {
-        socket.emit('my_event', {data: $('#emit_data').val()});
+        socket.emit('chat', {data: $('#emit_data').val()});
         return false;
     });
     $('form#broadcast').submit(function(event) {
@@ -32,9 +52,14 @@ $(document).ready(function() {
         return false;
     });
     $('form#disconnect').submit(function(event) {
-        socket.emit('disconnect_request');
+        socket.emit('message');
         return false;
     });
+
+    $('#btn_test').click(function(event) {
+        socket.emit('custom_event', "special msg LLLLLLLLLLLLLLLl")
+        return false;
+    })
 });
 
 

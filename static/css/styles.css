@@ -45,32 +45,49 @@ input[type='radio'] {
 /* room related */
 .event_room {
     display: flex;
-    align-content: flex-start;
+}
+
+.search_result_container {
+    border-style: solid;
+    border-width: 2px;
+    height: 40%;
+    overflow-y: auto;
 }
 
 .room_choices {
+    display: flex;
+    flex-direction: column;
     background-color: aquamarine;
     overflow-y: auto;
     height: 40%;
 }
 
+/* TODO: Implement uniform vertical growth for .room_choice.items for long .choice titles */
+
 .room_choice_items {
+    display: flex;
     height: 30px;
+    align-items: center;
+}
+
+.choice_title {
+    flex-grow: 1;
 }
 
 .btn_placeholder {
-    float: right;
     border-radius: 30%;
 }
 
 .btn_remove {
-    float: right;
     border-radius: 30%;
 }
 
+
+
 .chat_window {
     border-style: solid;
-    border-width: 2px;
+    border-width: 1px;
+    overflow-y: auto;
 }
 
 #room_chat_box {
@@ -81,12 +98,7 @@ input[type='radio'] {
     margin-bottom: auto;
 }
 
-.search_result_container {
-    border-style: solid;
-    border-width: 2px;
-    height: 40%;
-    overflow-y: auto;
-}
+
 
 
 .room_participants {
