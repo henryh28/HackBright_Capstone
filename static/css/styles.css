@@ -19,6 +19,20 @@ input[type='radio'] {
     padding: 50px;
 }
 
+.menu_items, .login_form {
+    display: flex;
+    align-items: center;
+}
+
+.user_login_status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 85%;
+    right: 20px;
+    text-align: right;
+}
+
 .flash-message {
     color: red;
     font-weight: bold;
@@ -64,24 +78,42 @@ input[type='radio'] {
 
 /* TODO: Implement uniform vertical growth for .room_choice.items for long .choice titles */
 
+.column_header_right {
+    flex-grow: 3;
+    max-width: 50%;
+    text-align: center;
+}
+
+.column_header_middle {
+    flex-grow: 2;
+    text-align: center;
+}
+
+.column_header_left {
+    flex-grow: 1;
+    text-align: center;
+}
+
 .room_choice_items {
     display: flex;
     height: 30px;
-    align-items: center;
+/*    align-items: center;*/
 }
 
 .choice_title {
     flex-grow: 1;
+    overflow-x: auto;
 }
 
 .btn_placeholder {
     border-radius: 30%;
+    float: right;
 }
 
 .btn_remove {
     border-radius: 30%;
+    float: right;
 }
-
 
 
 .chat_window {

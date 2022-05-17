@@ -11,7 +11,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_session import Session
 import eventlet
 
-eventlet.monkey_patch()
+#eventlet.monkey_patch()    #causes infinite recursion with requests.get to api
 app = Flask(__name__)
 #app.secret_key = "temp"
 app.config['SECRET_KEY'] = "shanicus"

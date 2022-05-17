@@ -5,13 +5,17 @@
 
 {% block body %}
 
-<h2>Room: {{ room.description }}</h2>
+<div class="flex_container room_column_titles">
+    <h2 class="column_header_right">Room: {{ room.description }}</h2>
+    <h2 class="column_header_middle">Chat Window</h2>
+    <h2 class="column_header_left">Participants</h2>
+</div>
 
 <div class="flex_container event_room">
 
-    <!-- Vertical flex box for choice search results -->
+    <!-- Left Vertical flex box column for searching/adding choices -->
     <div class = "vertical_flex col-md-6">
-        <!-- Form for searching for choices -->
+        <!-- Top Left, Form for searching for choices -->
         <div class = "add_choices">
             <form method="POST">
                 <input type="hidden" name="event_id" value={{ room.event_id }} />
@@ -32,7 +36,7 @@
             </form>
         </div><br>
 
-        <!-- Create visual representation of matching search results -->
+        <!-- Middle Left, display matching search results -->
         <div class = "search_result_container">
             {% for record in search_results %}
             <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
@@ -53,7 +57,7 @@
         </div><br>
 
         <!-- Flexbox container to list current choices -->
-        <h2>The nominees</h2>
+        <h2>Candidates</h2>
         <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
 
             <form method="POST">
@@ -74,16 +78,11 @@
         </div>
     </div>
 
+    <!-- Center column for chat functions -->
     <div class = "chat_window col-md-4 vertical_flex">
-        <div><h2>Chat Window</h2></div>
-
         <div id="room_chat_box">
-
-
-
+            <!-- Chat messages will be appended here -->
         </div>
-
-
         
         <div>
             <form id="form_room_chat" method="POST" action="#">
@@ -97,7 +96,7 @@
 
     <!-- Far right column listing room participants -->
     <div class = "room_participants col-md-2">
-        All Participants:
+        <!-- Participant names will be displayed here -->
     </div>
 </div>
 

@@ -2,3 +2,4 @@ resource
 env
 __pycache__
 secrets.sh
+flask_session

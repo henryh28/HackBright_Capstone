@@ -20,7 +20,7 @@
         {% block nav %} 
             <div name='nav_bar' class='navbar'>
                 <!-- Left side Menu items -->
-                <div class="menuitems">
+                <div class="menu_items">
                     <form method="POST">
                         <button type="button" id="btn-home">Home</button>
                         <button type="button" id='btn-create-room'>Create a Room</button>
@@ -31,16 +31,16 @@
                 </div>
 
 
-                <!-- Right side user related UI elements -->
+                <!-- Right side, user login related -->
                 <div class="user_status col-md-5">
                     {% if session['user'] %}
-                        <div class="col-md-7 offset-md-1">
+                        <div class="user_login_status">
                             <button type="button" id="btn-view-user-profile">View Profile</button>
-                            Logged in: {{ session['user_name'] }}
-                            &emsp;<button id="btn-logout">Logout</button>
+                            &emsp; Logged in: {{ session['user_name'] }} &emsp;
+                            <button id="btn-logout">Logout</button>
                         </div>
                     {% else %}
-                    <div>
+                    <div class="login_form">
                         <form method="POST">
                             <label for="uname">Username: </label>
                             <input type="text" id="uname" name="uname">
