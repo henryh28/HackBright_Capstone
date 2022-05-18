@@ -19,6 +19,20 @@ input[type='radio'] {
     padding: 50px;
 }
 
+.menu_items, .login_form {
+    display: flex;
+    align-items: center;
+}
+
+.user_login_status {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 85%;
+    right: 20px;
+    text-align: right;
+}
+
 .flash-message {
     color: red;
     font-weight: bold;
@@ -37,45 +51,94 @@ input[type='radio'] {
     display: flex;
     flex-direction: column;
     padding: 1em;
-    align-items: center;
-    justify-content: center;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.vertical_flex_wide {
+    display: flex;
+    flex-direction: column;
 }
 
 
 /* room related */
-.room_choices {
-    background-color: aquamarine;
-    overflow-y: auto;
-    height: 500px;
+.event_room {
+    display: flex;
 }
-
-.room_choice_items {
-    height: 30px;
-}
-
-.btn_placeholder {
-    float: right;
-    border-radius: 30%;
-}
-
-.btn_remove {
-    float: right;
-    border-radius: 30%;
-}
-
-
 
 .search_result_container {
     border-style: solid;
     border-width: 2px;
-    height: 400px;
+    height: 40%;
     overflow-y: auto;
 }
 
-.search_result_item {
+.room_choices {
+    display: flex;
+    flex-direction: column;
+    background-color: aquamarine;
+    overflow-y: auto;
+    height: 40%;
+}
+
+/* TODO: Implement uniform vertical growth for .room_choice.items for long .choice titles */
+
+.column_header_right {
+    flex-grow: 3;
+    max-width: 50%;
+    text-align: center;
+}
+
+.column_header_middle {
+    flex-grow: 2;
+    text-align: center;
+}
+
+.column_header_left {
+    flex-grow: 1;
+    text-align: center;
+}
+
+.room_choice_items {
+    display: flex;
+    height: 30px;
+/*    align-items: center;*/
+}
+
+.choice_title {
+    flex-grow: 1;
+    overflow-x: auto;
+}
+
+.btn_placeholder {
+    border-radius: 30%;
+    float: right;
+}
+
+.btn_remove {
+    border-radius: 30%;
+    float: right;
+}
+
+
+/* Chat related */
+.chat_window {
     border-style: solid;
     border-width: 1px;
+    overflow-y: auto;
+    height: 90%;
 }
+
+#room_chat_box {
+    margin-top: auto;
+}
+
+#room_chat_input {
+    margin-bottom: auto;
+}
+
+
+
 
 .room_participants {
     border-style: solid;

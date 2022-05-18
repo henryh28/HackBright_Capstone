@@ -1,7 +1,33 @@
 {% extends 'base.html' %}
 
+{% block title %} Chat test {% endblock %}
+
+{% block head %} 
+
+{% endblock %}
+
+
 {% block body %}
-Testing time
+
+
+<h1> This is websocket client</h1>
+
+<h1 style="background-color:white;">Socket</h1>
+<form id="emit" method="POST" action='#'>
+    <input type="text" name="emit_data" id="emit_data" placeholder="Message">
+    <input type="submit" value="Send Message">
+</form>
+<form id="broadcast" method="POST" action='#'>
+    <input type="text" name="broadcast_data" id="broadcast_data" placeholder="Message">
+    <input type="submit" value="Send Broadcast Message">
+</form>
+
+<form id="disconnect" method="POST" action="#">
+    <input type="submit" value="Disconnect Server">
+</form>
+<h2 style="background-color:white;">Logs</h2>
+<div id="room_chat_box" ></div>
+
 
 {% endblock %}
 

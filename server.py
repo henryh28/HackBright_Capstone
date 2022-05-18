@@ -1,16 +1,25 @@
 """ Server for HackBright capstone project """
 
+from argparse import Namespace
 from hashlib import new
 from multiprocessing.dummy import current_process
-from flask import Flask, render_template, request, flash, session, redirect
+from flask import Flask, render_template, request, flash, session, redirect, copy_current_request_context
 from model import connect_to_db, db, User
 import jinja2, crud, os, requests
 from flask_bcrypt import Bcrypt
-#from flask_session import Session
+from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask_session import Session
+import eventlet
 
-
+#eventlet.monkey_patch()    #causes infinite recursion with requests.get to api
 app = Flask(__name__)
-app.secret_key = "temp"
+#app.secret_key = "temp"
+app.config['SECRET_KEY'] = "shanicus"
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
+
+socketio = SocketIO(app, manage_session = False)
 
 TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
@@ -28,6 +37,7 @@ def homepage():
     if 'user' not in session:
         session['user'] = None
         session['user_name'] = None
+        session['room'] = None
 
     return render_template("index.html") 
 
@@ -114,9 +124,9 @@ def view_user_profile():
         return render_template("view_profile.html", user=current_user)    
 
     elif request.method == "POST":
-        if current_user.password == request.form['current_pw']:
+        if Bcrypt().check_password_hash(current_user.password, request.form['current_pw']):
             if request.form['new_pw'] == request.form['confirm_new_pw']:
-                current_user.password = request.form['new_pw']
+                current_user.password = Bcrypt().generate_password_hash(request.form['new_pw']).decode('UTF-8')
                 db.session.add(current_user)
                 db.session.commit()
                 flash ("Password successfully changed!")
@@ -156,6 +166,12 @@ def enter_room(room_code):
 
     if request.method == "GET":
         room = crud.get_events_by(room_code = room_code)
+        
+        session['room'] = room.event_id
+        username = session['user_name']
+        print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
+        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+
         return render_template("room.html", room = room)
     else:
         room_code = request.form['room_code']
@@ -166,6 +182,7 @@ def enter_room(room_code):
         else:
             flash("Invalid room code")
             return redirect("/")
+
 
 # ================= Choice Related =================
 
@@ -213,6 +230,8 @@ def item_detail(item_code):
 @app.route ("/add_choice", methods = ["POST"])
 def add_choice():
 
+    # todo: re-implement with sockets to allow for live updates of choices
+
     itemData = dict(request.form) if request.form else request.get_json()
 
     title = itemData['choice_title']
@@ -224,9 +243,6 @@ def add_choice():
     rawg_title = "-".join(title.split(" ")).lower()
     room = crud.get_events_by(room_code=room_code)
     details = []
-
-#    print (f" &&&& title: {title} type: {choice_type} event_id: {event_id} room_code: {room_code} create_choice: {create_choice}")
-#    choice_type, event_id, room_code, create_choice, title = (request.form.values())
 
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
@@ -309,13 +325,78 @@ def submit_vote():
 # ================= Development Related =================
 
 # for testing
-@app.route ("/test")
+@app.route ("/test", methods = ["GET", "POST"])
 def test():
     """ feature testing """
 
-    # replace with feature/code/function to test
-
     return render_template("test.html")
+
+
+# ================= SocketIO Related =================
+
+'''
+@socketio.on('connect')
+def connected():
+    print ("------- connected ----------")
+    username = session['user_name'] if session['user_name'] != None else "Anonymous"
+    emit('my_response', {'username': username, 'data': " joined this room !"})
+'''
+
+
+@socketio.on('disconnect')
+def disconnected():
+    print ("------- disconnected ---------- ")
+
+@socketio.on('custom_event')
+def custom_event(message):
+    print (request.sid, " --------  custom event --- ", message)
+
+@socketio.on('join')
+def on_join(message):
+    print (request.sid, " >>> join event msg: ", message)
+    username = session['user_name']
+    room = session['room']
+
+    join_room(room)
+    print (username, " >>> socket join event <<< ", room)
+    emit('status', {'msg': username + " joined this room"}, room = room)
+
+@socketio.on('message')
+def handle_message(message):
+    room = session['room']
+    username = session['user_name']
+    print (" =========== msg event: ", message)
+
+    emit('my_response', {'username': username, 'data': message['data']}, room = room)
+#    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
+
+
+def messageReceived():
+    print ("  &&&&&&&&& callback function triggered")
+
+# @socketio.on('chat')
+# def handle_chat(message):
+#  
+#     print (request.sid, " >>>>>>>>>>> am i here? ", message)
+#     username = session['user_name'] if session['user_name'] != None else "Anonymous"
+#     room = session['room']
+# #    socketio.send(".... socket send msg", json, callback=messageReceived)
+#     emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
+
+@socketio.on('my_broadcast_event')
+def test_broadcast_message(message):
+    emit('my_response', {'data': message['data']}, broadcast = True)
+
+@socketio.on('disconnect_request')
+def disconnect_request():
+
+    print (" >>>>> disconnect request ")
+    @copy_current_request_context
+    def can_disconnect():
+        print ("disconnecting <<<<<<")
+        socketio.disconnect()
+
+    emit('my_response', {'data': 'Disconnected'}, callback = can_disconnect)
 
 
 # list all rooms
@@ -329,5 +410,6 @@ def all_rooms():
 
 if __name__ == "__main__":
     connect_to_db(app)
-    app.run(host="0.0.0.0", debug = False)
+    #app.run(host="0.0.0.0", debug = True)
+    socketio.run(app, debug = True)
 

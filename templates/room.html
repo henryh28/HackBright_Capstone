@@ -5,38 +5,38 @@
 
 {% block body %}
 
-<h2>Room: {{ room.description }}</h2>
+<div class="flex_container room_column_titles">
+    <h2 class="column_header_right">Room: {{ room.description }}</h2>
+    <h2 class="column_header_middle">Chat Window</h2>
+    <h2 class="column_header_left">Participants</h2>
+</div>
 
 <div class="flex_container event_room">
 
-    <!-- Vertical flex box for choice search results -->
-    <div class = "vertical_flex col">
-        <div class = "add_choices col-md-4">
+    <!-- Left Vertical flex box column for searching/adding choices -->
+    <div class = "vertical_flex col-md-6">
+        <!-- Top Left, Form for searching for choices -->
+        <div class = "add_choices">
             <form method="POST">
-    
-                <label for="choice_type" id="choice_type">Title: </label> 
+                <input type="hidden" name="event_id" value={{ room.event_id }} />
+                <input type="hidden" name="room_code" value={{ room.room_code }} />
+                <input type="hidden" name="create_choice" value=0 />
+
+                <label for="choice_type" id="choice_type">Type: </label> 
                 <select name="choice_type">
                     <option value="boardgame">Boardgame</option>
                     <option value="vgame">Video Game</option>
                     <option value="movie">Movie</option>
                     <option value="tv">TV</option>
                 </select>
-    
-                <input type="hidden" name="event_id" value={{ room.event_id }} />
-                <input type="hidden" name="room_code" value={{ room.room_code }} />
-                <input type="hidden" name="create_choice" value=0 />
 
-                <div class="form-group">
-                    <label for="choice_title">Search: </label>
-                    <input type="text" name="choice_title"><br>
-                </div>
-
-                <input type="submit" formaction = "/add_choice" value="Search">
+                <label for="choice_title">Title: </label>
+                <input type="text" name="choice_title">                        
+                <input type="submit" formaction = "/add_choice" value="Search">                        
             </form>
-        </div>    
+        </div><br>
 
-
-        <!-- Create visual representation of matching search results -->
+        <!-- Middle Left, display matching search results -->
         <div class = "search_result_container">
             {% for record in search_results %}
             <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
@@ -54,34 +54,51 @@
                 </form>
             --->                
             {% endfor %}
+        </div><br>
+
+        <!-- Flexbox container to list current choices -->
+        <h2>Candidates</h2>
+        <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+
+            <form method="POST">
+                {% for choice in room.choices %}
+                    <div class = "room_choice_items">
+                        {% if room.voting_style == 'fptp' %}
+                            &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                        {% endif %}
+                        <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
+                        <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
+                        <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
+                    </div>
+                {% endfor %}
+                <input type="hidden" name="room_code" value={{ room.room_code }} />                    
+                <input type="hidden" name="vote_strength" value= "1" />                    
+                <button type="submit" formaction = "/submit_vote">Submit Vote / View Results</button>
+            </form>
         </div>
     </div>
 
+    <!-- Center column for chat functions -->
+    <div class="vertical_flex_wide col-md-4">
+        <div class = "chat_window vertical_flex">
+            <div id="room_chat_box">
+                <!-- Chat messages will be appended here -->
+            </div>            
+        </div>
+    
+        <div>
+            <form id="form_room_chat" method="POST" action="#">
+                <input type="text" class="col-md-10" name="room_chat_input" id="room_chat_input" placeholder="Type your message here">
+                <input type="submit" value="Chat">
+            </form>
+        </div>
+        <button type="submit" id="btn_test">press me</button>
+    </div>
 
-    <!-- Begin center flexbox to list current choices -->
-    <div class = "room_choices col-md-5" ondragover="onDragOver(event);" ondrop="onDrop(event);">
-        <h3>The nominees</h3>
 
-        <form method="POST">
-
-            {% for choice in room.choices %}
-                <div class = "room_choice_items">
-                    {% if room.voting_style == 'fptp' %}
-                        &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
-                    {% endif %}
-                    <a href="/details/{{ choice.choice_id }}">{{ choice.title }}</a>
-                    <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
-                    <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
-                </div>
-            {% endfor %}
-            <input type="hidden" name="room_code" value={{ room.room_code }} />                    
-            <input type="hidden" name="vote_strength" value= "1" />                    
-            <button type="submit" formaction = "/submit_vote">Submit Vote / View Results</button>
-        </form>
-</div>
-
+    <!-- Far right column listing room participants -->
     <div class = "room_participants col-md-2">
-        All Participants:
+        <!-- Participant names will be displayed here -->
     </div>
 </div>
 

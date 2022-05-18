@@ -9,6 +9,9 @@
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+        
         {% block head %} {% endblock %}
 
     </head>
@@ -17,7 +20,7 @@
         {% block nav %} 
             <div name='nav_bar' class='navbar'>
                 <!-- Left side Menu items -->
-                <div class="menuitems">
+                <div class="menu_items">
                     <form method="POST">
                         <button type="button" id="btn-home">Home</button>
                         <button type="button" id='btn-create-room'>Create a Room</button>
@@ -28,16 +31,16 @@
                 </div>
 
 
-                <!-- Right side user related UI elements -->
+                <!-- Right side, user login related -->
                 <div class="user_status col-md-5">
                     {% if session['user'] %}
-                        <div class="col-md-7 offset-md-1">
+                        <div class="user_login_status">
                             <button type="button" id="btn-view-user-profile">View Profile</button>
-                            Logged in: {{ session['user_name'] }}
-                            &emsp;<button id="btn-logout">Logout</button>
+                            &emsp; Logged in: {{ session['user_name'] }} &emsp;
+                            <button id="btn-logout">Logout</button>
                         </div>
                     {% else %}
-                    <div>
+                    <div class="login_form">
                         <form method="POST">
                             <label for="uname">Username: </label>
                             <input type="text" id="uname" name="uname">
@@ -51,8 +54,6 @@
 
             </div>
         {% endblock %}
-
-        <div class="spacer">&nbsp;</div>
 
         {% for message in get_flashed_messages() %}
             <div class="flex_container">
