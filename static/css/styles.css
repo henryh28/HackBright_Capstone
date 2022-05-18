@@ -55,6 +55,11 @@ input[type='radio'] {
     border-width: 1px;
 }
 
+.vertical_flex_wide {
+    display: flex;
+    flex-direction: column;
+}
+
 
 /* room related */
 .event_room {
@@ -116,10 +121,12 @@ input[type='radio'] {
 }
 
 
+/* Chat related */
 .chat_window {
     border-style: solid;
     border-width: 1px;
     overflow-y: auto;
+    height: 90%;
 }
 
 #room_chat_box {

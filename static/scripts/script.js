@@ -3,39 +3,26 @@
 // Chat function
 $(document).ready(function() {
     var socket = io();
-
-    socket.on('my_response', function(msg, cb) {
-//        alert("message : " + JSON.stringify(msg))
-        $('#room_chat_box').append('<br>' + $('<div/>').text(msg.username + ': ' + msg.data).html());
-        document.getElementById('room_chat_input').value = '';
-        
-        if (cb)
-            cb();
-    });
-
+    
     socket.on('connect', function() {
         socket.emit('join', {});
     });
-
 
     socket.on('status', function(data) {
         $('#room_chat_box').append('<br>' + $('<div/>').text(data.msg).html());
     })
 
-    socket.on('message', function(data) {
-        socket.emit('message', {data: $('#room_chat_input').val()});
-        return false;
+    
+    socket.on('my_response', function(msg, cb) {
+//        alert("message : " + JSON.stringify(msg))
+        $('#room_chat_box').append('<br>' + $('<div/>').text(msg.username + ': ' + msg.data).html());
+        document.getElementById('room_chat_box').scrollIntoView({ behavior: 'smooth', block: 'end' });
+        document.getElementById('room_chat_input').value = '';
 
-    })
-
-
-    socket.on('redirect', function() {
-        alert(" redireting to backend")
-    })
-
-    socket.on("client_side_event", function() {
-        alert ("triggered client")
-    })
+        if (cb)
+            cb();
+    });
+        
 
     $('form#form_room_chat').submit(function(event){
 //        socket.emit('chat', {data: $('#room_chat_input').val()});
@@ -57,17 +44,14 @@ $(document).ready(function() {
     });
 
     $('#btn_test').click(function(event) {
-        socket.emit('custom_event', "special msg LLLLLLLLLLLLLLLl")
-        return false;
+        socket.emit('message', {data: " has disconnected"});
     })
 });
 
 
 
-
 // Navbar button to go to route "/"
 document.querySelector("#btn-home").addEventListener("click", () => {
-    
     window.location = "/";
 })
 
@@ -87,7 +71,6 @@ document.querySelector("#btn-view-user-profile").addEventListener("click", () =>
 document.querySelector("#btn-logout").addEventListener("click", () => {
     window.location = "/logout";
 })
-
 
 
 // Drag n drop div elements to attach a selected choice to a room/event
@@ -128,50 +111,4 @@ async function onDrop(event) {
     event.dataTransfer.clearData();
     */
 }
-
-/*
-
-/*
-<script type="text/javascript" charset="utf-8">
-    var socket = io();
-    socket.on('connect', function() {
-        socket.emit('my event', {data: 'I\'m connected!'});
-    });
-</script>
-
-$(document).ready(function() {
-
-    var socket = io();
-
-    socket.on('my_response', function(msg, cb) {
-        alert("message : " + JSON.stringify(msg))
-        $('#log').append('<br>' + $('<div/>').text('logs #' + msg.count + ': ' + msg.data).html());
-        if (cb)
-            cb();
-    });
-
-    socket.on('connect', function() {
-        socket.emit('my_event', {data: 'connected to the SocketServer...'});
-    });
-
-
-    $('form#form_room_chat').submit(function(event){
-        socket.emit('chat', {data: $('#room_chat_input').val()});
-        return false;
-    });
-
-    $('form#emit').submit(function(event) {
-        socket.emit('my_event', {data: $('#emit_data').val()});
-        return false;
-    });
-    $('form#broadcast').submit(function(event) {
-        socket.emit('my_broadcast_event', {data: $('#broadcast_data').val()});
-        return false;
-    });
-    $('form#disconnect').submit(function(event) {
-        socket.emit('disconnect_request');
-        return false;
-    });
-});
-*/
 

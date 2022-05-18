@@ -37,7 +37,7 @@ def homepage():
     if 'user' not in session:
         session['user'] = None
         session['user_name'] = None
-        session['room'] = "test"
+        session['room'] = None
 
     return render_template("index.html") 
 
@@ -166,8 +166,12 @@ def enter_room(room_code):
 
     if request.method == "GET":
         room = crud.get_events_by(room_code = room_code)
-        print (" ---- GET room join: ", )
-#        socketio.emit('redirect')
+        
+        session['room'] = room.event_id
+        username = session['user_name']
+        print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
+        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+
         return render_template("room.html", room = room)
     else:
         room_code = request.form['room_code']
@@ -178,6 +182,7 @@ def enter_room(room_code):
         else:
             flash("Invalid room code")
             return redirect("/")
+
 
 # ================= Choice Related =================
 
@@ -224,6 +229,8 @@ def item_detail(item_code):
 # Adds a choice to a room/event
 @app.route ("/add_choice", methods = ["POST"])
 def add_choice():
+
+    # todo: re-implement with sockets to allow for live updates of choices
 
     itemData = dict(request.form) if request.form else request.get_json()
 
@@ -350,41 +357,43 @@ def connected():
 
 @socketio.on('disconnect')
 def disconnected():
-    print ("------- disconnected ----------")
+    print ("------- disconnected ---------- ")
 
 @socketio.on('custom_event')
-def sio_custom_event(message):
+def custom_event(message):
     print (request.sid, " --------i am called --- ", message)
 
 @socketio.on('join')
 def on_join(message):
+    print (request.sid, " >>> what is join event msg: ", message)
     username = session['user_name']
-    room = "test"
+    room = session['room']
 
     join_room(room)
-    print (username, " ======= user joined room : ", room)
+    print (username, " >>> socket join event <<< ", room)
     emit('status', {'msg': username + " joined this room"}, room = room)
 
 @socketio.on('message')
 def handle_message(message):
-    room = "test"
+    room = session['room']
     username = session['user_name']
     print (" =========== msg event: ", message)
 
     emit('my_response', {'username': username, 'data': message['data']}, room = room)
+#    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 
-def messageReceived(methods = ["POST", "GET"]):
-    print ("message received!")
+def messageReceived():
+    print ("  &&&&&&&&& callback function triggered")
 
-@socketio.on('chat')
-def handle_chat(message):
- 
-    print (request.sid, " >>>>>>>>>>> am i here? ", message)
-    username = session['user_name'] if session['user_name'] != None else "Anonymous"
-    room = "test"
-#    socketio.send(".... socket send msg", json, callback=messageReceived)
-    emit('my_response', {'username': username, 'data': message['data']}, room = room)
+# @socketio.on('chat')
+# def handle_chat(message):
+#  
+#     print (request.sid, " >>>>>>>>>>> am i here? ", message)
+#     username = session['user_name'] if session['user_name'] != None else "Anonymous"
+#     room = session['room']
+# #    socketio.send(".... socket send msg", json, callback=messageReceived)
+#     emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 @socketio.on('my_broadcast_event')
 def test_broadcast_message(message):
