@@ -1,6 +1,5 @@
 
-
-// Chat function
+// Real time chat & Room choice updates
 $(document).ready(function() {
     var socket = io();
     
@@ -22,6 +21,16 @@ $(document).ready(function() {
         if (cb)
             cb();
     });
+
+    // Real time update of current room choices for all connected clients
+    socket.on('update_choices', function(data) {
+
+        // Ensures other connected clients dont get re-routed if in item detail view
+        if (window.location.href.indexOf('details') === -1) {
+            window.location = `/room/${data.room_code}`
+        } 
+    })
+
         
 
     $('form#form_room_chat').submit(function(event){

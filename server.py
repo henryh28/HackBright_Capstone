@@ -162,6 +162,8 @@ def create_room():
 @app.route ("/room/<room_code>", methods = ["POST", "GET"])
 def enter_room(room_code):
     """ Enter a specific room via provided room_code """
+    # GET method >> for development only. enters room directly. remove for production <<
+    # POST method allows for user to join a room based on 4 character code
  
 
     if request.method == "GET":
@@ -209,7 +211,6 @@ def item_detail(item_code):
     results = requests.get(api_url, params=payload)
     data = results.json()
 
-
     if choice.type == "boardgame":
         details = data['games'][0]
         return render_template("item_details_bg.html", details = details)
@@ -238,7 +239,7 @@ def add_choice():
     choice_type = itemData['choice_type']
     event_id = itemData['event_id']
     room_code = itemData['room_code']
-    create_choice = itemData['create_choice']
+    create_choice = itemData['create_choice']  # 1 adds selected item as choice to room/event
 
     rawg_title = "-".join(title.split(" ")).lower()
     room = crud.get_events_by(room_code=room_code)
@@ -261,6 +262,8 @@ def add_choice():
         new_choice = crud.create_choice(choice_type, title, event_id)
         db.session.add(new_choice)
         db.session.commit()
+
+        socketio.emit('update_choices', {'room_code': room_code}, room = session['room'])
 
         return redirect(f"/room/{room_code}")
 
@@ -293,6 +296,11 @@ def remove_choice():
     delete_target = crud.get_choice_by(choice_id = request.form['choice_id'])
     db.session.delete(delete_target)
     db.session.commit()
+
+    room = crud.get_events_by(event_id = session['room'])
+    print (" ^^^^^^^^ deleting from room : ", room)
+
+    socketio.emit('update_choices', {'room_code': room.room_code}, room = session['room'])
 
     return redirect(f"/room/{request.form['room_code']}")
 
