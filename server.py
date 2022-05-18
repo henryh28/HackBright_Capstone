@@ -244,9 +244,6 @@ def add_choice():
     room = crud.get_events_by(room_code=room_code)
     details = []
 
-#    print (f" &&&& title: {title} type: {choice_type} event_id: {event_id} room_code: {room_code} create_choice: {create_choice}")
-#    choice_type, event_id, room_code, create_choice, title = (request.form.values())
-
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
         'tv': ["https://api.themoviedb.org/3/search/tv", {"api_key": TMDB_KEY, 'query': title}],
@@ -335,15 +332,6 @@ def test():
     return render_template("test.html")
 
 
-@app.route ("/chat", methods = ["GET", "POST"])
-def chat():
-
-
-    return redirect("/test")
-
-
-
-
 # ================= SocketIO Related =================
 
 '''
@@ -361,11 +349,11 @@ def disconnected():
 
 @socketio.on('custom_event')
 def custom_event(message):
-    print (request.sid, " --------i am called --- ", message)
+    print (request.sid, " --------  custom event --- ", message)
 
 @socketio.on('join')
 def on_join(message):
-    print (request.sid, " >>> what is join event msg: ", message)
+    print (request.sid, " >>> join event msg: ", message)
     username = session['user_name']
     room = session['room']
 
@@ -402,14 +390,13 @@ def test_broadcast_message(message):
 @socketio.on('disconnect_request')
 def disconnect_request():
 
-    print (" >>>>> who called me? ")
+    print (" >>>>> disconnect request ")
     @copy_current_request_context
     def can_disconnect():
-        print ("seriousl...........")
+        print ("disconnecting <<<<<<")
         socketio.disconnect()
 
-    session['receive_count'] = session.get('receive_count', 0) + 1
-    emit('my_response', {'data': 'Disconnected', 'count': session['receive_count']}, callback = can_disconnect)
+    emit('my_response', {'data': 'Disconnected'}, callback = can_disconnect)
 
 
 # list all rooms
