@@ -12,7 +12,6 @@ $(document).ready(function() {
         $('#room_chat_box').append('<br>' + $('<div/>').text(data.msg).html());
     })
 
-    
     socket.on('my_response', function(msg, cb) {
 //        alert("message : " + JSON.stringify(msg))
         $('#room_chat_box').append('<br>' + $('<div/>').text(msg.username + ': ' + msg.data).html());
