@@ -36,7 +36,7 @@
             </form>
         </div><br>
 
-        <!-- Middle Left, display matching search results -->
+        <!-- Left middle, display matching search results -->
         <div class = "search_result_container">
             {% for record in search_results %}
             <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
@@ -73,9 +73,22 @@
                 {% endfor %}
                 <input type="hidden" name="room_code" value={{ room.room_code }} />                    
                 <input type="hidden" name="vote_strength" value= "1" />                    
-                <button type="submit" formaction = "/submit_vote">Submit Vote / View Results</button>
-            </form>
         </div>
+        <div class="flex_container_min">
+            <label for="chart_type" id="chart_type" class=col-md-2>Chart Type:  &emsp;</label> 
+            <select name="chart_type" class="col-md-3">
+                <option value="bar">Bar</option>
+                <option value="pie">Pie</option>
+                <option value="doughnut">Donut</option>
+                <option value="line">Line</option>
+                <option value="polarArea">Polar</option>
+                <option value="radar">Radar</option>
+            </select>
+            <div class="col-md-2"></div>
+            <button type="submit" formaction="/submit_vote" class="col-md-4">Submit Vote / View Results</button> 
+
+        </div>
+            </form>
     </div>
 
     <!-- Center column for chat functions -->

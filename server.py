@@ -3,13 +3,14 @@
 from argparse import Namespace
 from hashlib import new
 from multiprocessing.dummy import current_process
-from flask import Flask, render_template, request, flash, session, redirect, copy_current_request_context
+from flask import Flask, render_template, request, flash, session, redirect, copy_current_request_context, jsonify
 from model import connect_to_db, db, User
 import jinja2, crud, os, requests
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_session import Session
 import eventlet
+import json
 
 #eventlet.monkey_patch()    #causes infinite recursion with requests.get to api
 app = Flask(__name__)
@@ -230,9 +231,6 @@ def item_detail(item_code):
 # Adds a choice to a room/event
 @app.route ("/add_choice", methods = ["POST"])
 def add_choice():
-
-    # todo: re-implement with sockets to allow for live updates of choices
-
     itemData = dict(request.form) if request.form else request.get_json()
 
     title = itemData['choice_title']
@@ -298,7 +296,6 @@ def remove_choice():
     db.session.commit()
 
     room = crud.get_events_by(event_id = session['room'])
-    print (" ^^^^^^^^ deleting from room : ", room)
 
     socketio.emit('update_choices', {'room_code': room.room_code}, room = session['room'])
 
@@ -309,10 +306,12 @@ def remove_choice():
 def submit_vote():
     """ Process submitted votes """
 
-    all_votes_for_choices = []
+#    all_votes_for_choices = []
     room_code = request.form['room_code']
     vote_strength = request.form['vote_strength']
     user_id = session['user'] if session['user'] else None
+    chart_type = request.form['chart_type']
+    results = {'chart_type': chart_type}
 
     if 'choice_id' in request.form:
         choice_id = request.form['choice_id']
@@ -323,10 +322,14 @@ def submit_vote():
     room = crud.get_events_by(room_code = room_code)
     room_choices = room.choices #list
 
-    for choices in room_choices:
-        all_votes_for_choices.append(choices.votes)
+#    for choices in room_choices:
+#        all_votes_for_choices.append(choices.votes)
 
-    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices)
+    for choice in room_choices:
+        results[choice.title] = len(choice.votes)
+
+#    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices, data=data)
+    return render_template("results.html", room = room, results=results, chart_type=chart_type)
 
 
 
