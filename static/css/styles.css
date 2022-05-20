@@ -47,6 +47,13 @@ input[type='radio'] {
     border-width: 2px;
 }
 
+
+.flex_container_min {
+    display: flex;
+    justify-content: center;
+    text-align: right;
+}
+
 .vertical_flex {
     display: flex;
     flex-direction: column;
@@ -76,7 +83,7 @@ input[type='radio'] {
 .room_choices {
     display: flex;
     flex-direction: column;
-    background-color: aquamarine;
+    background-color: seashell;
     overflow-y: auto;
     height: 40%;
 }
@@ -153,6 +160,15 @@ input[type='radio'] {
 
 /* Item detail related */
 
+
+.show_details {
+    height: 300px;
+    font-size: 1.5em;
+    padding: .5em;
+    margin-bottom: 1em;
+}
+
+
 .item_poster > img {
     width: 400px;
     height: auto;
@@ -164,9 +180,7 @@ input[type='radio'] {
 }
 
 .item_description {
-    padding-bottom: 1em;
-    padding-right: 2em;
-    padding-left: 2em;
+    padding: 1em;
     margin-bottom: 1em;
 
     height: 350px;
@@ -177,7 +191,9 @@ input[type='radio'] {
 /* Results related */
 #display_voting_results {
     display: flex;
-    margin-left: 3em;
+    border-style: solid;
+    border-width: 2px;
+    margin: 2em;
 }
 
 #display_voting_choices {
@@ -193,6 +209,48 @@ input[type='radio'] {
 .result_choices {
     height: 30px;
     border-color: lightcoral;
+}
+
+#chart_container {
+    width: 65%;
+    height: 65%;
+    margin: 0 auto;
+}
+
+#chart_container.bar {
+    width: 85%;
+    height: 85%;
+    margin: 0 auto;
+}
+
+#chart_container.pie {
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+}
+
+#chart_container.doughnut {
+    width: 45%;
+    height: 45%;
+    margin: 0 auto;
+}
+
+#chart_container.line {
+    width: 85%;
+    height: 85%;
+    margin: 0 auto;
+}
+
+#chart_container.polarArea {
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+}
+
+#chart_container.radar {
+    width: 65%;
+    height: 65%;
+    margin: 0 auto;
 }
 
 

@@ -6,22 +6,26 @@
 
 {% block body %}
 
-<h2> {{ details['name'] }} </h2>
-
 <div class = "flex_container">
-    <div class = "bg_details col-md-2">
-        Released: {{ details['released'] }}<br>
-        Metacritic: {{ details['metacritic'] }}<br>
+    <div class = "vertical_flex_wide col-md-4">
+        <h2> {{ details['name'] }} </h2>
+
+        <div class = "bg_details">
+            Released: {{ details['released'] }}<br>
+            Metacritic: {{ details['metacritic'] }}<br>
+        </div>
+
+        <div class = "bg_thumb item_poster col-md-3">
+            <img src = {{ details['background_image'] }}>&nbsp;
+            <img src = {{ details['background_image_additional'] }}>
+        </div>    
     </div>
 
-    <div class = "item_description col-md-6">
+
+    <div class = "item_description">
         {{ details['description'] | safe }}
     </div>
 
-    <div class = "bg_thumb item_poster col-md-3">
-        <img src = {{ details['background_image'] }}>&nbsp;
-        <img src = {{ details['background_image_additional'] }}>
-    </div>
 
 </div>
 

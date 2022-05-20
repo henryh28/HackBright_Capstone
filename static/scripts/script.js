@@ -1,4 +1,5 @@
 
+// todo: extract out socket related script to
 // Real time chat & Room choice updates
 $(document).ready(function() {
     var socket = io();
@@ -39,6 +40,12 @@ $(document).ready(function() {
         return false;
     });
 
+    $('#btn_test').click(function(event) {
+        socket.emit('message', {data: " has disconnected"});
+    })
+
+
+/*
     $('form#emit').submit(function(event) {
         socket.emit('chat', {data: $('#emit_data').val()});
         return false;
@@ -51,10 +58,7 @@ $(document).ready(function() {
         socket.emit('message');
         return false;
     });
-
-    $('#btn_test').click(function(event) {
-        socket.emit('message', {data: " has disconnected"});
-    })
+*/
 });
 
 

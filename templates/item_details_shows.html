@@ -6,20 +6,27 @@
 
 {% block body %}
 
-<h2>{{ details['original_title'] }}</h2>
-
 <div class = "flex_container">
-    <div class = "show_details col-md-2">
-        year: {{ details['release_date'] }} {{ details['first_air_date'] }}<br>
+
+    <div class = "vertical_flex_wide col-md-4">
+        <h2>{{ details['original_title'] }}</h2>
+
+        <div class = "show_details">
+            year: {{ details['release_date'] }} {{ details['first_air_date'] }}<br>
+        </div>
+
+        <div class = "item_poster">
+            <img src={{ poster_url }}>
+        </div>
+    
     </div>
 
-    <div class = "item_description col-md-6">
+    <div class = "item_description">
         {{ details['overview'] | safe }}
     </div>
 
-    <div class = "item_poster col-md-3">
-        <img src={{ poster_url }}>
-    </div>
+
+
 
 </div>
 
