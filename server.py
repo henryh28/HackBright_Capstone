@@ -9,6 +9,7 @@ import jinja2, crud, os, requests
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_session import Session
+from flask_babel import Babel
 import eventlet
 import json
 
@@ -340,8 +341,18 @@ def submit_vote():
 def test():
     """ feature testing """
 
+
+
     return render_template("test.html")
 
+@app.route ("/api")
+def api_test():
+    response_data = {
+        "bunny": "shanny",
+        "best": True
+    }
+
+    return render_template("react_test.html", response_data=response_data)
 
 # ================= SocketIO Related =================
 
