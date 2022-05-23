@@ -166,22 +166,29 @@ def enter_room(room_code):
     """ Enter a specific room via provided room_code """
     # GET method >> for development only. enters room directly. remove for production <<
     # POST method allows for user to join a room based on 4 character code
- 
+
+    print (request.method, "   METHOD & code : > ", room_code)
+
+    if room_code == "----":
+        room_code = request.form['room_code']
+
+    room = crud.get_events_by(room_code = room_code)
+
+    if room:
+        session['room'] = room.event_id
+    
+    username = session['user_name']
+
 
     if request.method == "GET":
-        room = crud.get_events_by(room_code = room_code)
         
-        session['room'] = room.event_id
-        username = session['user_name']
         print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
         socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
 
         return render_template("room.html", room = room)
     else:
-        room_code = request.form['room_code']
-        room = crud.get_events_by(room_code = room_code)
-
         if room:
+            socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
             return render_template("room.html", room = room)
         else:
             flash("Invalid room code")
