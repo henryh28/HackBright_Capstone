@@ -64,7 +64,10 @@
                 {% for choice in room.choices %}
                     <div class = "room_choice_items">
                         {% if room.voting_style == 'fptp' %}
-                            &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                            &emsp;
+                            <div class="room_choice_items-radio">
+                                <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                            </div>
                         {% endif %}
                         <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
                         <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>

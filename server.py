@@ -341,18 +341,13 @@ def submit_vote():
 def test():
     """ feature testing """
 
-
-
     return render_template("test.html")
 
-@app.route ("/api")
-def api_test():
-    response_data = {
-        "bunny": "shanny",
-        "best": True
-    }
+@app.route ("/react_test")
+def react_test():
+    """ testing react features"""
 
-    return render_template("react_test.html", response_data=response_data)
+    return render_template("react_test.html")
 
 # ================= SocketIO Related =================
 

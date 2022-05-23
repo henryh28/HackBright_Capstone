@@ -1,9 +1,22 @@
-<!DOCTYPE html>
-    <html>
-    <body>
-        <body style='margin: 0'></body>
-        <div style="width: 100%; height: 100%" id="entryContainer"></div>
-        All of the entries: 
-        {{ response_data }}
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block title %} React test {% endblock %}
+
+
+
+{% block body %}
+
+
+<h1> React stuff here </h1>
+
+
+<div id = "react_anchor">
+    React Div
+
+</div>
+
+
+<script src='/static/scripts/react_test.jsx' type="text/jsx"></script>
+{% endblock %}
+
+
