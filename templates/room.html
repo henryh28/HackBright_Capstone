@@ -39,7 +39,7 @@
         <!-- Left middle, display matching search results -->
         <div class = "search_result_container">
             {% for record in search_results %}
-            <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
+            <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" onDragEnd="onDragEnd(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
                 {{ record.title }}
             </div>
             <!--- 
@@ -64,7 +64,10 @@
                 {% for choice in room.choices %}
                     <div class = "room_choice_items">
                         {% if room.voting_style == 'fptp' %}
-                            &emsp;<input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                            &emsp;
+                            <div class="room_choice_items-radio">
+                                <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                            </div>
                         {% endif %}
                         <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
                         <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>

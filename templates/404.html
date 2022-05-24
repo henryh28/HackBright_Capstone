@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{% block title %} {% endblock %}</title>
+        <title>404</title>
         <meta charset='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1, user-scalable=no' />
         <link rel='stylesheet' href='/static/css/404.css' />
     </head>
 
     <body>
-        {% block body %} 
         <div class="vertical_flex">
             <div class="error_text">
                 404: The page you're looking for does not exist<br>
@@ -21,9 +20,10 @@
                 <img src="/static/img/bunny404.jpg">
             </div>
 
-            <script src='/static/scripts/script.js'></script>            
         </div>
-        {% endblock %}        
+
+        <script src='/static/scripts/script.js'></script>
+
     </body>
 </html>
 

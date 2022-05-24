@@ -42,9 +42,13 @@ function draw_results(data) {
         }],
         options: {
             maintainAspectRatio: false,
-            responsive: false
+            responsive: false, 
+            scales: {
+                y: {
+                    stepSize: 1
+                }
+            }
         }
-
     }})
 
 

@@ -3,6 +3,7 @@
 /* general related */
 html, body  {
     height: 100%;
+    padding-top: 40px;
 }
 
 input[type='radio'] { 
@@ -31,6 +32,7 @@ input[type='radio'] {
     max-width: 85%;
     right: 20px;
     text-align: right;
+    color: white;
 }
 
 .flash-message {
@@ -38,6 +40,14 @@ input[type='radio'] {
     font-weight: bold;
     font-size: 20px;
 }
+
+
+
+.copyleft {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
 
 /* Flex container related */
 .flex_container {
@@ -61,6 +71,7 @@ input[type='radio'] {
     border-style: solid;
     border-width: 1px;
 }
+
 
 .vertical_flex_wide {
     display: flex;
@@ -108,23 +119,29 @@ input[type='radio'] {
 
 .room_choice_items {
     display: flex;
-    height: 30px;
-/*    align-items: center;*/
+    padding-top: 2px;
+    padding-bottom: 2px;
+    gap: 10px;
+/*    height: 30px; */
+}
+
+.room_choice_items-radio {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .choice_title {
     flex-grow: 1;
-    overflow-x: auto;
+/*    overflow-x: auto; */
 }
 
 .btn_placeholder {
-    border-radius: 30%;
-    float: right;
+    border-radius: 8px;
 }
 
 .btn_remove {
-    border-radius: 30%;
-    float: right;
+    border-radius: 8px;
 }
 
 
@@ -143,9 +160,6 @@ input[type='radio'] {
 #room_chat_input {
     margin-bottom: auto;
 }
-
-
-
 
 .room_participants {
     border-style: solid;
@@ -182,7 +196,6 @@ input[type='radio'] {
 .item_description {
     padding: 1em;
     margin-bottom: 1em;
-
     height: 350px;
     overflow-y: auto;
 }
@@ -258,5 +271,3 @@ input[type='radio'] {
 .edit_details > form > label {
     width: 200px;
 }
-
-
