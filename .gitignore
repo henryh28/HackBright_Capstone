@@ -3,3 +3,6 @@ env
 __pycache__
 secrets.sh
 flask_session
+package-lock.json
+node_modules/
+

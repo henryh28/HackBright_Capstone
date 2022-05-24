@@ -40,6 +40,7 @@ def homepage():
         session['user'] = None
         session['user_name'] = None
         session['room'] = None
+        session['room_code'] = None
 
     return render_template("index.html") 
 
@@ -167,33 +168,45 @@ def enter_room(room_code):
     # GET method >> for development only. enters room directly. remove for production <<
     # POST method allows for user to join a room based on 4 character code
 
-    print (request.method, "   METHOD & code : > ", room_code)
+    session['room_code'] = room_code
 
-    if room_code == "----":
+    if request.method == "POST":
         room_code = request.form['room_code']
+        session['room_code'] = room_code
 
     room = crud.get_events_by(room_code = room_code)
 
     if room:
         session['room'] = room.event_id
-    
-    username = session['user_name']
-
-
-    if request.method == "GET":
-        
-        print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
-        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-
-        return render_template("room.html", room = room)
+        username = session['user_name']
     else:
-        if room:
-            socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-            return render_template("room.html", room = room)
-        else:
-            flash("Invalid room code")
-            return redirect("/")
+        flash("Invalid room code")
+        return redirect("/")    
+ 
+    socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+    return render_template("room.html", room = room)
 
+
+#    if request.method == "GET":
+#        
+#        print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
+#        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+#
+#        return render_template("room.html", room = room)
+#    else:
+#        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+#        return render_template("room.html", room = room)
+
+
+# Removes a user from joined room
+@app.route ("/leave_room")
+def leave_room():
+    """ Remove user from room channel """
+
+    session['room_code'] = None
+    session['room'] = None
+
+    return redirect("/")
 
 # ================= Choice Related =================
 

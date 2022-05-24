@@ -1,4 +1,11 @@
 
+// Toggle Menu
+$("#menu-toggle").click(function (e) {
+    e.preventDefault();
+    $("#wrapper").toggleClass("toggled");
+});
+
+
 // todo: extract out socket related script to
 // Real time chat & Room choice updates
 $(document).ready(function() {
@@ -84,16 +91,31 @@ document.querySelector("#btn-logout").addEventListener("click", () => {
     window.location = "/logout";
 })
 
+// Navbar button to view user profile
+function view_user_profile(event) {
+    window.location = "/view_user_profile";
+}
+
+// Navbar button to log user out
+function user_logout(event) {
+    window.location = "/logout";
+}
+
 
 // Drag n drop div elements to attach a selected choice to a room/event
 function onDragStart(event) {
     event.dataTransfer.setData('text/plain', event.target.id);
-    event.currentTarget.style.backgroundColor = 'mistyrose';
+    event.currentTarget.style.backgroundColor = 'lavender';
+}
+
+function onDragEnd(event) {
+    event.currentTarget.style.backgroundColor = 'inherit';
 }
 
 function onDragOver(event) {
     event.preventDefault();   
 }
+
 
 async function onDrop(event) {
     const id = event.dataTransfer.getData('text')

@@ -1,7 +1,5 @@
-
 'use strict';
 
-alert(" loaded jsx file")
 
 function Test() {
 

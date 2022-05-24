@@ -3,6 +3,7 @@
 /* general related */
 html, body  {
     height: 100%;
+    padding-top: 40px;
 }
 
 input[type='radio'] { 
@@ -31,6 +32,7 @@ input[type='radio'] {
     max-width: 85%;
     right: 20px;
     text-align: right;
+    color: white;
 }
 
 .flash-message {
@@ -38,6 +40,14 @@ input[type='radio'] {
     font-weight: bold;
     font-size: 20px;
 }
+
+
+
+.copyleft {
+    display: inline-block;
+    transform: rotate(180deg);
+}
+
 
 /* Flex container related */
 .flex_container {
@@ -61,6 +71,7 @@ input[type='radio'] {
     border-style: solid;
     border-width: 1px;
 }
+
 
 .vertical_flex_wide {
     display: flex;
