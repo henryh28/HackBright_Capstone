@@ -25,6 +25,7 @@ class User (db.Model):
     user_name = db.Column(db.String, unique = True)
     password = db.Column(db.String)
     email = db.Column(db.String, unique = True)
+    chat_color = db.Column(db.String)
 
     # document related columns here
 

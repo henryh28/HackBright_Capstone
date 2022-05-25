@@ -7,9 +7,9 @@ import random
 
 # ========== User related functions ==========
 
-def create_user(fname, lname, uname, pw, email):
+def create_user(fname, lname, uname, pw, email, chat_color="#223CC1"):
     """ Create and return a new User """
-    return User(first_name=fname, last_name=lname, user_name=uname, password=pw, email=email)
+    return User(first_name=fname, last_name=lname, user_name=uname, password=pw, email=email, chat_color=chat_color)
 
 
 def get_all_users():

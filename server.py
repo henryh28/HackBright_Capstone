@@ -41,6 +41,7 @@ def homepage():
         session['user_name'] = None
         session['room'] = None
         session['room_code'] = None
+        session['user_chat_color'] = None
 
     return render_template("index.html") 
 
@@ -57,6 +58,7 @@ def login():
         if Bcrypt().check_password_hash(existing_user.password, pw):
             session['user'] = existing_user.user_id
             session['user_name'] = existing_user.user_name
+            session['user_chat_color'] = existing_user.chat_color
         else:
             flash("Incorrect password")
     else:
@@ -70,6 +72,8 @@ def logout():
 
     session['user'] = None
     session['user_name'] = None
+    session['room'] = None
+    session['room_code'] = None
 
     return redirect("/")
 
@@ -140,6 +144,17 @@ def view_user_profile():
 
         return redirect(request.url)
 
+@app.route ("/set_chat_color")
+def set_chat_color():
+    """ Sets chat color """
+
+    current_user = crud.get_user_by(user_id = session['user'])
+    new_color = f"#{request.args.get('color')}"
+    current_user.chat_color = new_color
+    db.session.commit()
+    session['user_chat_color'] = new_color
+
+    return redirect("/view_user_profile")
 
 # ================= Event/Room Related =================
 
@@ -169,16 +184,14 @@ def enter_room(room_code):
     # GET method >> for development only. enters room directly. remove for production <<
     # POST method allows for user to join a room based on 4 character code
 
-    session['room_code'] = room_code
-
     if request.method == "POST":
         room_code = request.form['room_code']
-        session['room_code'] = room_code
 
     room = crud.get_events_by(room_code = room_code)
 
     if room:
         session['room'] = room.event_id
+        session['room_code'] = room_code
         username = session['user_name']
     else:
         flash("Invalid room code")
@@ -223,6 +236,17 @@ def remove_room():
 
 
     return redirect("/view_user_profile")
+
+
+
+# list all rooms
+@app.route ("/all_rooms")
+def all_rooms():
+    """ lists all events """
+    all_events = crud.get_all_events()
+
+    return render_template("all_rooms.html", all_events = all_events)
+
 
 # ================= Choice Related =================
 
@@ -418,9 +442,13 @@ def on_join(message):
 def handle_message(message):
     room = session['room']
     username = session['user_name']
-    print (" =========== msg event: ", message)
+    print (session['user_chat_color'], " =========== msg event: ", message)
 
-    emit('my_response', {'username': username, 'data': message['data']}, room = room)
+    if session['user_chat_color'] == None:
+        flash (" tell henry that the chat color setting is broken")
+        session['user_chat_color'] = 'black'
+
+    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color']}, room = room)
 #    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 
@@ -451,14 +479,6 @@ def disconnect_request():
 
     emit('my_response', {'data': 'Disconnected'}, callback = can_disconnect)
 
-
-# list all rooms
-@app.route ("/all_rooms")
-def all_rooms():
-    """ lists all events """
-    all_events = crud.get_all_events()
-
-    return render_template("all_rooms.html", all_events = all_events)
 
 
 if __name__ == "__main__":

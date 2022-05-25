@@ -55,6 +55,9 @@
 
                             <ul class="dropdown-menu" aria-labelledby="nav-dropdown">
                                 <li><a href="/create_room" class="dropdown-item">Create Room</a> </li>
+                                {% if session['room_code'] != None %}
+                                    <li><a href="/room/{{ session['room_code'] }}" class="dropdown-item">Rejoin Room [{{ session['room_code'] }}]</a> </li>
+                                {% endif %}
                                 <li><a href="/leave_room" class="dropdown-item">Leave Room</a> </li>
                             </ul>
 

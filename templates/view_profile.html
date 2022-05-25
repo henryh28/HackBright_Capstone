@@ -14,11 +14,11 @@
                 password hash: {{ user.password }} <br>    
             </div><br>
 
-            <div>
+            <div class="user_created_rooms">
                 <span>Created Rooms</span>
 
                 <form method="POST">
-                    <table class="user_created_rooms">
+                    <table>
 
                         <tr>
                             <th>Room Code</th>
@@ -29,33 +29,47 @@
                             <td class="td_room_code">
                                 <button type="submit" class="btn_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}"> - </button>
 
-                                type {{ room.room_code }}</td>
+                                &emsp; {{ room.room_code }}</td>
                             <td>{{ room.description }}</td>                        
                         </tr>
                         {% endfor %}
                     </table>
                 </form>
 
-            </div>
+            </div> <!-- Closes .user_created_rooms -->
     
-        </div>
+        </div> <!-- Closes .vertical_flex -->
 
-        <div class="edit_details">
-            Change Password Form<br>
-            <form action="/view_user_profile" method="POST">
-                <label>Current Password:</label> <input type="text" name="current_pw" maxlength="50"><br>
-                <label>New Password:</label> <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
-                <label>Confirm New Password:</label> <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
-                <input type="submit" value="Change Password">
-            </form>
+        <div class="vertical_flex_min edit_details">
+            <div class="flex_container_min">
+                <form action="/view_user_profile" method="POST">
+                    <label>Current Password:</label> <input type="text" name="current_pw" maxlength="50"><br>
+                    <label>New Password:</label> <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
+                    <label>Confirm New Password:</label> <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
+                    <input type="submit" value="Change Password">
+                </form>
+            </div>
+
             No, we don't enforce weird non-sense character combination <br>
             for your password because <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">there're</a> 
             <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">more</a> 
             <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">important</a> 
-            <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">factors!</a>
+            <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">factors!</a>    
+
+            <br><br><br>
+            <div>
+
+                Pick your chat message color:
+
+                <input id="color_picker" type="color" value={{ user.chat_color }} onchange=change_chat_color(this.value)>
+                <br>
+                Current color: {{ user.chat_color }}
+
+            </div>
+
 
         </div>
-    </div>
+    </div> <!-- Closes .flex_container -->
 {% endblock %}
 
 

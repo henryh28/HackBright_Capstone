@@ -275,22 +275,31 @@ input[type='radio'] {
 
 
 /* User Profile Related */
+
 .user_created_rooms {
+    height: 350px;
+    overflow-y: auto;
+}
+
+table {
     width: 100%;
     border: 2px double royalblue;
+    border-collapse: collapse;
     padding: 0.5 rem;
 }
 
 th {
     background-color: lightsteelblue;
+    position: sticky;
 }
 
-table, th, td {
+th, td {
     border: 2px double royalblue;
 }
 
 .td_room_code {
-    background-color: mintcream;
+    background-image: linear-gradient(to right, honeydew, white);
+
 }
 
 
