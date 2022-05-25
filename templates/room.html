@@ -28,6 +28,7 @@
                     <option value="vgame">Video Game</option>
                     <option value="movie">Movie</option>
                     <option value="tv">TV</option>
+                    <option value="custom">Custom</option>
                 </select>
 
                 <label for="choice_title">Title: </label>
@@ -56,7 +57,7 @@
             {% endfor %}
         </div><br>
 
-        <!-- Flexbox container to list current choices -->
+        <!-- Flexbox container to list current choices, also target for drag n drop -->
         <h2>Candidates</h2>
         <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
 
@@ -69,7 +70,12 @@
                                 <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
                             </div>
                         {% endif %}
-                        <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
+
+                        {% if choice.type != "custom" %}
+                            <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
+                        {% else %}
+                            <span class="choice_title">{{ choice.title }}</span>
+                        {% endif %}
                         <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
                         <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
                     </div>

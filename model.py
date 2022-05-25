@@ -46,6 +46,7 @@ class Event (db.Model):
     room_code = db.Column(db.String, unique = True)
     voting_style = db.Column(db.String)
     description = db.Column(db.String)
+    chatlog = db.Column(db.Text)
 
     # choices: all choices submitted for this event
 

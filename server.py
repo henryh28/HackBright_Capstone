@@ -315,9 +315,10 @@ def add_choice():
     room_code = itemData['room_code']
     create_choice = itemData['create_choice']  # 1 adds selected item as choice to room/event
 
-    rawg_title = "-".join(title.split(" ")).lower()
+    rawg_title = "-".join(title.split(" ")).lower()  # used for searching to rawg.io
     room = crud.get_events_by(room_code=room_code)
     details = []
+
 
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
@@ -326,12 +327,14 @@ def add_choice():
         'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title}]
     }
 
-    api_url = api_dict[choice_type][0]
-    payload = api_dict[choice_type][1]
+    if choice_type != "custom":
+        api_url = api_dict[choice_type][0]
+        payload = api_dict[choice_type][1]
 
-    results = requests.get(api_url, params=payload)
-    data = results.json()
+        results = requests.get(api_url, params=payload)
+        data = results.json()
 
+    # 1 adds selected item as choice to room/event
     if create_choice == "1":
         new_choice = crud.create_choice(choice_type, title, event_id)
         db.session.add(new_choice)
@@ -340,6 +343,7 @@ def add_choice():
         socketio.emit('update_choices', {'room_code': room_code}, room = session['room'])
 
         return redirect(f"/room/{room_code}")
+
 
     if choice_type == "movie":
         details = data['results']
@@ -360,6 +364,10 @@ def add_choice():
             details.append({"title": item['name']})
 
         return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+    elif choice_type == "custom":
+        details.append({"title": title})
+
+        return render_template("room.html", room = room, search_results = details, choice_type = choice_type)
 
 
 # Remove existing choice from a room/event
@@ -455,15 +463,17 @@ def on_join(message):
 
 @socketio.on('message')
 def handle_message(message):
-    room = session['room']
+    chatroom_id = session['room']
     username = session['user_name']
-    print (session['user_chat_color'], " =========== msg event: ", message)
+    print (type(message['data']), " =========== msg event: ", message)
+
 
     if session['user_chat_color'] == None:
         flash (" tell henry that the chat color setting is broken")
         session['user_chat_color'] = 'black'
 
-    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color'], 'chat_bg_color': session['user_chat_bg_color']}, room = room)
+
+    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color'], 'chat_bg_color': session['user_chat_bg_color']}, room = chatroom_id) #room is reserved keyword
 #    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 
