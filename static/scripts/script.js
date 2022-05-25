@@ -21,7 +21,7 @@ $(document).ready(function() {
 
     socket.on('my_response', function(msg, cb) {
 //        alert("message : " + JSON.stringify(msg))
-        const chat_text = '<br >' + `<span style="color: ${msg.chat_color}">` + '<strong>' + msg.username + '</strong>' + ' : ' + msg.data + '</span>'
+        const chat_text = '<br >' + `<span style="color: ${msg.chat_color}; background-color: ${msg.chat_bg_color}">` + '<strong>' + msg.username + '</strong>' + ' : ' + msg.data + '</span>'
 
         $('#room_chat_box').append(chat_text);
         document.getElementById('room_chat_box').scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -98,6 +98,12 @@ document.querySelector("#btn-logout").addEventListener("click", () => {
 // Updates user's chat color preference
 function change_chat_color(event) {
     url_loc = `/set_chat_color?color=${event.substring(1)}`    
+    window.location = url_loc
+}
+
+// Updates user's chat bg color preference
+function change_chat_bg_color(event) {
+    url_loc = `/set_chat_bg_color?color=${event.substring(1)}`    
     window.location = url_loc
 }
 

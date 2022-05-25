@@ -60,10 +60,11 @@
             <div>
 
                 Pick your chat message color:
-
-                <input id="color_picker" type="color" value={{ user.chat_color }} onchange=change_chat_color(this.value)>
+                <input id="chat_color_picker" type="color" value={{ user.chat_color }} onchange=change_chat_color(this.value)>
                 <br>
-                Current color: {{ user.chat_color }}
+                Pick your chat message background color:
+                <input id="chat_bg_color_picker" type="color" value={{ user.chat_bg_color }} onchange=change_chat_bg_color(this.value)>
+                <br>
 
             </div>
 

@@ -42,6 +42,7 @@ def homepage():
         session['room'] = None
         session['room_code'] = None
         session['user_chat_color'] = None
+        session['user_chat_bg_color'] = None
 
     return render_template("index.html") 
 
@@ -74,6 +75,8 @@ def logout():
     session['user_name'] = None
     session['room'] = None
     session['room_code'] = None
+    session['user_chat_color'] = None
+    session['user_chat_bg_color'] = None
 
     return redirect("/")
 
@@ -156,6 +159,18 @@ def set_chat_color():
 
     return redirect("/view_user_profile")
 
+@app.route ("/set_chat_bg_color")
+def set_chat_bg_color():
+    """ Sets chat background color """
+
+    current_user = crud.get_user_by(user_id = session['user'])
+    new_color = f"#{request.args.get('color')}"
+    current_user.chat_bg_color = new_color
+    db.session.commit()
+    session['user_chat_bg_color'] = new_color
+
+    return redirect("/view_user_profile")
+
 # ================= Event/Room Related =================
 
 # Create a room
@@ -198,7 +213,7 @@ def enter_room(room_code):
         return redirect("/")    
  
     socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-    return render_template("room.html", room = room)
+    return render_template("room.html", room = room, username=username)
 
 
 #    if request.method == "GET":
@@ -448,7 +463,7 @@ def handle_message(message):
         flash (" tell henry that the chat color setting is broken")
         session['user_chat_color'] = 'black'
 
-    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color']}, room = room)
+    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color'], 'chat_bg_color': session['user_chat_bg_color']}, room = room)
 #    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 
