@@ -152,7 +152,8 @@ def create_room():
 
     if request.method == "POST":
         description = request.form['description']
-        new_room = crud.create_event(description, request.form['voting_style'])
+        admin_id = session['user'] if session['user'] != None else 0
+        new_room = crud.create_event(description, request.form['voting_style'], admin_id)
         db.session.add(new_room)
         db.session.commit()
 
@@ -198,15 +199,30 @@ def enter_room(room_code):
 #        return render_template("room.html", room = room)
 
 
-# Removes a user from joined room
 @app.route ("/leave_room")
 def leave_room():
-    """ Remove user from room channel """
+    """ Remove user from joined room """
 
     session['room_code'] = None
     session['room'] = None
 
     return redirect("/")
+
+@app.route ("/remove_event", methods=["POST"])
+def remove_room():
+    """ Remove a room from the database """
+
+    remove_event = crud.get_events_by(event_id = request.form['event_id'])
+
+    if session['user'] == remove_event.admin_id:
+        db.session.delete(remove_event)
+        db.session.commit()
+        flash("room deleted!")
+    else:
+        flash("You're not authorized to delete this room")
+
+
+    return redirect("/view_user_profile")
 
 # ================= Choice Related =================
 

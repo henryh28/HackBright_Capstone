@@ -47,6 +47,9 @@ class Event (db.Model):
 
     # choices: all choices submitted for this event
 
+    admin_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
+    admin = db.relationship("User", backref = "rooms")
+
     def __repr__(self):
         """ Returns event info """
         return (f"< Event event_id: {self.event_id} | room_code: {self.room_code} | description: {self.description} >")
@@ -65,6 +68,7 @@ class Choice (db.Model):
     event = db.relationship("Event", backref = "choices")
 
     # votes: all votes submitted for this choice
+    # admin: the User that created the room
 
     def __repr__(self):
         """ Returns choice info """

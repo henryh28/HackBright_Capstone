@@ -36,7 +36,7 @@
 
                 <a href="/" class="navbar-brand mb-0 h1">
                     <img class="d-inline-block align-top" src="/static/img/ch_logo.png" width="30" height="30" /> 
-                    Navbar
+                    BunnyBeenz
                 </a>
 
                 <button type="button" class="navbar-toggler" 
@@ -47,11 +47,6 @@
                 
                 <div id="navbar-collapse" class="collapse navbar-collapse">
                     <ul class="navbar-nav">
-                        <li class="nav-item acive">
-                            <a href="/" class="nav-link">
-                                Home
-                            </a>
-                        </li>
 
                         <li class="nav-item dropdown">
                             <a href="#" id="nav-dropdown" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -64,6 +59,22 @@
                             </ul>
 
                         </li>
+
+
+                        <li class="nav-item dropdown">
+                            <a href="#" id="nav-dropdown-user" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
+                                User
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="nav-dropdown-">
+                                <li><a href="/account" class="dropdown-item">Create Account</a></li>
+                                {% if session['user'] %}
+                                <li><a href="/view_user_profile" class="dropdown-item">View/Edit User Profile</a></li>
+                                {% endif %}
+                                <li><a href="/logout" class="dropdown-item">Logout</a></li>
+                            </ul>
+                        </li>
+
 
                         <li class="nav-item dropdown">
                             <a href="#" id="nav-dropdown-test" class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
@@ -78,11 +89,6 @@
 
                         </li>
 
-                        <li class="nav-item acive">
-                            <a href="/" class="nav-link">
-                                Misc
-                            </a>
-                        </li>
 
                     </ul>
 
@@ -97,7 +103,6 @@
 
                 {% if session['user'] %}
                 <div class="user_login_status">
-                    <button type="button" id="btn-view-user-profile" onClick="view_user_profile(event)">View Profile</button>
                     &emsp; Logged in: {{ session['user_name'] }} &emsp;
                     <button id="btn-logout" onClick="user_logout(event)">Logout</button>
                 </div>

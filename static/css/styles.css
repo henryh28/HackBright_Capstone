@@ -271,3 +271,29 @@ input[type='radio'] {
 .edit_details > form > label {
     width: 200px;
 }
+
+
+
+/* User Profile Related */
+.user_created_rooms {
+    width: 100%;
+    border: 2px double royalblue;
+    padding: 0.5 rem;
+}
+
+th {
+    background-color: lightsteelblue;
+}
+
+table, th, td {
+    border: 2px double royalblue;
+}
+
+.td_room_code {
+    background-color: mintcream;
+}
+
+
+
+
+

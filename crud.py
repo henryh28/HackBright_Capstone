@@ -23,7 +23,7 @@ def get_user_by(**data):
 
 # ========== Event related functions ==========
 
-def create_event(description, voting_style):
+def create_event(description, voting_style, admin_id):
     """ Create and return a new Event """
 
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -37,7 +37,7 @@ def create_event(description, voting_style):
         if not existing_room:
             room_code = temp_code
 
-    return Event(room_code = room_code, voting_style=voting_style, description=description)
+    return Event(room_code = room_code, voting_style=voting_style, description=description, admin_id=admin_id)
 
 
 def get_all_events():
