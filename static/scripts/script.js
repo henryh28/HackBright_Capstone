@@ -21,7 +21,9 @@ $(document).ready(function() {
 
     socket.on('my_response', function(msg, cb) {
 //        alert("message : " + JSON.stringify(msg))
-        $('#room_chat_box').append('<br>' + $('<div/>').text(msg.username + ': ' + msg.data).html());
+        const chat_text = '<br >' + `<span style="color: ${msg.chat_color}">` + '<strong>' + msg.username + '</strong>' + ' : ' + msg.data + '</span>'
+
+        $('#room_chat_box').append(chat_text);
         document.getElementById('room_chat_box').scrollIntoView({ behavior: 'smooth', block: 'end' });
         document.getElementById('room_chat_input').value = '';
 
@@ -91,6 +93,15 @@ document.querySelector("#btn-logout").addEventListener("click", () => {
     window.location = "/logout";
 })
 
+
+
+// Updates user's chat color preference
+function change_chat_color(event) {
+    url_loc = `/set_chat_color?color=${event.substring(1)}`    
+    window.location = url_loc
+}
+
+
 // Navbar button to view user profile
 function view_user_profile(event) {
     window.location = "/view_user_profile";
@@ -100,6 +111,7 @@ function view_user_profile(event) {
 function user_logout(event) {
     window.location = "/logout";
 }
+
 
 
 // Drag n drop div elements to attach a selected choice to a room/event

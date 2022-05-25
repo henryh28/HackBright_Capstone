@@ -7,9 +7,9 @@ import random
 
 # ========== User related functions ==========
 
-def create_user(fname, lname, uname, pw, email):
+def create_user(fname, lname, uname, pw, email, chat_color="#223CC1"):
     """ Create and return a new User """
-    return User(first_name=fname, last_name=lname, user_name=uname, password=pw, email=email)
+    return User(first_name=fname, last_name=lname, user_name=uname, password=pw, email=email, chat_color=chat_color)
 
 
 def get_all_users():
@@ -23,7 +23,7 @@ def get_user_by(**data):
 
 # ========== Event related functions ==========
 
-def create_event(description, voting_style):
+def create_event(description, voting_style, admin_id):
     """ Create and return a new Event """
 
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -37,7 +37,7 @@ def create_event(description, voting_style):
         if not existing_room:
             room_code = temp_code
 
-    return Event(room_code = room_code, voting_style=voting_style, description=description)
+    return Event(room_code = room_code, voting_style=voting_style, description=description, admin_id=admin_id)
 
 
 def get_all_events():
