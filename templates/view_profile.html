@@ -5,32 +5,28 @@
 
 {% block body %}
 
-    <div class="flex_container">
-        <div class="vertical_flex">
-            <div class="user_info_details">
-                First Name: {{ user.first_name }} <br>
-                Last Name: {{ user.last_name }} <br>
-                email: {{ user.email }} <br>
-                password hash: {{ user.password }} <br>    
-            </div><br>
+    <div class="flex_container" style="height: 600px;">
+        <div class="vertical_flex col-md-4">
 
+            <span>Created Rooms</span>
             <div class="user_created_rooms">
-                <span>Created Rooms</span>
-
                 <form method="POST">
-                    <table>
+                    <table style="height: 500px;">
 
                         <tr>
+                            <th>Remove</th>
                             <th>Room Code</th>
                             <th>Room Description</th>
                         </tr>
                         {% for room in user.rooms %}
                         <tr>
+                            <td class="td_remove" style="text-align: center;">
+                                <button type="submit" class="btn_table_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}"> - </button>
+                            </td>
                             <td class="td_room_code">
-                                <button type="submit" class="btn_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}"> - </button>
-
-                                &emsp; {{ room.room_code }}</td>
-                            <td>{{ room.description }}</td>                        
+                                <strong>{{ room.room_code }}</strong>
+                            </td>
+                            <td><a href = "/room/{{ room.room_code }}">{{ room.description }}</a></td>                        
                         </tr>
                         {% endfor %}
                     </table>
@@ -40,36 +36,73 @@
     
         </div> <!-- Closes .vertical_flex -->
 
-        <div class="vertical_flex_min edit_details">
+        <div class="vertical_flex">
             <div class="flex_container_min">
-                <form action="/view_user_profile" method="POST">
-                    <label>Current Password:</label> <input type="text" name="current_pw" maxlength="50"><br>
-                    <label>New Password:</label> <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
-                    <label>Confirm New Password:</label> <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
-                    <input type="submit" value="Change Password">
-                </form>
-            </div>
+                <div class="vertical_flex_min">
+                    First Name: <br>
+                    Last Name:  <br>
+                    email: <br>
+                    password hash: <br>    
+                </div>
 
-            No, we don't enforce weird non-sense character combination <br>
-            for your password because <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">there're</a> 
-            <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">more</a> 
-            <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">important</a> 
-            <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">factors!</a>    
+                <div class="vertical_flex_min" style="text-align: left; padding-left: 1em;">
+                    {{ user.first_name }} <br>
+                    {{ user.last_name }} <br>
+                    {{ user.email }} <br>
+                    {{ user.password }} <br>              
+                </div>        
+            </div><br>
+
+            <div class="flex_container_min">
+                    <div class="vertical_flex_min">
+                        <form action="/view_user_profile" method="POST">
+                        <label style="height: 30px;">Current Password:</label><br>
+                        <label style="height: 30px;">New Password:</label><br>
+                        <label style="height: 30px;">Confirm New Password:</label> <br>
+                    </div>
+
+                    <div class="vertical_flex_min">
+                        &emsp; <input type="text" name="current_pw" maxlength="50"><br>
+                        &emsp; <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
+                        &emsp; <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
+                        <input type="submit" value="Change Password">
+    
+                        </form>
+                    </div>
+
+            </div>
+            <br>
+                
+            <div class="col-md-10">
+                No, we don't enforce weird non-sense character combinationfor your password because there
+                 <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">are</a> 
+                <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">more</a> 
+                <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">important</a> 
+                <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">factors!</a>    
+    
+            </div>
 
             <br><br><br>
-            <div>
 
-                Pick your chat message color:
-                <input id="chat_color_picker" type="color" value={{ user.chat_color }} onchange=change_chat_color(this.value)>
-                <br>
-                Pick your chat message background color:
-                <input id="chat_bg_color_picker" type="color" value={{ user.chat_bg_color }} onchange=change_chat_bg_color(this.value)>
-                <br>
+            <div class="flex_container_min">
+
+                <div class="vertical_flex_min">
+                    Pick your chat message color: <br>
+                    Pick your chat message background color:
+
+                </div>
+
+                <div class="vertical_flex_min">
+                    &emsp; <input id="chat_color_picker" type="color" value={{ user.chat_color }} onchange=change_chat_color(this.value)>
+                    <br>
+                    &emsp; <input id="chat_bg_color_picker" type="color" value={{ user.chat_bg_color }} onchange=change_chat_bg_color(this.value)>
+    
+                </div>
 
             </div>
 
 
-        </div>
+        </div> <!-- Closes .flex_container_min -->
     </div> <!-- Closes .flex_container -->
 {% endblock %}
 

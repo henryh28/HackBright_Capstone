@@ -349,28 +349,28 @@ def add_choice():
 #        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
         for movie in data['results']:
             details.append({"data": [movie['title'], choice_type, event_id, room_code]})
-
         return jsonify(details)
+
     elif choice_type == "tv":
         for item in data['results']:
             details.append({"data": [item['name'], choice_type, event_id, room_code]})
-
         return jsonify(details)
+
     elif choice_type == "boardgame":
         for item in data['games']:
             details.append({"data": [item['name'], choice_type, event_id, room_code]})
-
         return jsonify(details)
 #        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+
     elif choice_type == "vgame":
         for item in data['results']:
             details.append({"data": [item['name'], choice_type, event_id, room_code]})
+        return jsonify(details)
+
+    elif choice_type == "custom":
+        details.append({"data": [title, choice_type, event_id, room_code]})
 
         return jsonify(details)
-    elif choice_type == "custom":
-        details.append({"title": title})
-
-        return render_template("room.html", room = room, search_results = details, choice_type = choice_type)
 
 
 # Remove existing choice from a room/event
