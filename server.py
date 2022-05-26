@@ -42,6 +42,7 @@ def homepage():
         session['room'] = None
         session['room_code'] = None
         session['user_chat_color'] = None
+        session['user_chat_bg_color'] = None
 
     return render_template("index.html") 
 
@@ -74,6 +75,8 @@ def logout():
     session['user_name'] = None
     session['room'] = None
     session['room_code'] = None
+    session['user_chat_color'] = None
+    session['user_chat_bg_color'] = None
 
     return redirect("/")
 
@@ -156,6 +159,18 @@ def set_chat_color():
 
     return redirect("/view_user_profile")
 
+@app.route ("/set_chat_bg_color")
+def set_chat_bg_color():
+    """ Sets chat background color """
+
+    current_user = crud.get_user_by(user_id = session['user'])
+    new_color = f"#{request.args.get('color')}"
+    current_user.chat_bg_color = new_color
+    db.session.commit()
+    session['user_chat_bg_color'] = new_color
+
+    return redirect("/view_user_profile")
+
 # ================= Event/Room Related =================
 
 # Create a room
@@ -198,7 +213,7 @@ def enter_room(room_code):
         return redirect("/")    
  
     socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-    return render_template("room.html", room = room)
+    return render_template("room.html", room = room, username=username)
 
 
 #    if request.method == "GET":
@@ -300,9 +315,10 @@ def add_choice():
     room_code = itemData['room_code']
     create_choice = itemData['create_choice']  # 1 adds selected item as choice to room/event
 
-    rawg_title = "-".join(title.split(" ")).lower()
+    rawg_title = "-".join(title.split(" ")).lower()  # used for searching to rawg.io
     room = crud.get_events_by(room_code=room_code)
     details = []
+
 
     api_dict = {
         'movie': ["https://api.themoviedb.org/3/search/movie", {"api_key": TMDB_KEY, 'query': title}],
@@ -311,12 +327,14 @@ def add_choice():
         'vgame': ["https://api.rawg.io/api/games", {"key": RAWG_KEY, 'search': rawg_title}]
     }
 
-    api_url = api_dict[choice_type][0]
-    payload = api_dict[choice_type][1]
+    if choice_type != "custom":
+        api_url = api_dict[choice_type][0]
+        payload = api_dict[choice_type][1]
 
-    results = requests.get(api_url, params=payload)
-    data = results.json()
+        results = requests.get(api_url, params=payload)
+        data = results.json()
 
+    # 1 adds selected item as choice to room/event
     if create_choice == "1":
         new_choice = crud.create_choice(choice_type, title, event_id)
         db.session.add(new_choice)
@@ -326,25 +344,33 @@ def add_choice():
 
         return redirect(f"/room/{room_code}")
 
+
     if choice_type == "movie":
-        details = data['results']
 #        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
-        return render_template("room.html", room = room, search_results = details, choice_type = choice_type)
+        for movie in data['results']:
+            details.append({"data": [movie['title'], choice_type, event_id, room_code]})
+        return jsonify(details)
+
     elif choice_type == "tv":
         for item in data['results']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+        return jsonify(details)
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
     elif choice_type == "boardgame":
         for item in data['games']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+        return jsonify(details)
+#        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
     elif choice_type == "vgame":
         for item in data['results']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+        return jsonify(details)
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+    elif choice_type == "custom":
+        details.append({"data": [title, choice_type, event_id, room_code]})
+
+        return jsonify(details)
 
 
 # Remove existing choice from a room/event
@@ -440,15 +466,17 @@ def on_join(message):
 
 @socketio.on('message')
 def handle_message(message):
-    room = session['room']
+    chatroom_id = session['room']
     username = session['user_name']
-    print (session['user_chat_color'], " =========== msg event: ", message)
+    print (type(message['data']), " =========== msg event: ", message)
+
 
     if session['user_chat_color'] == None:
         flash (" tell henry that the chat color setting is broken")
         session['user_chat_color'] = 'black'
 
-    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color']}, room = room)
+
+    emit('my_response', {'username': username, 'data': message['data'], 'chat_color': session['user_chat_color'], 'chat_bg_color': session['user_chat_bg_color']}, room = chatroom_id) #room is reserved keyword
 #    emit('my_response', {'username': username, 'data': message['data']}, room = room, callback = messageReceived)
 
 

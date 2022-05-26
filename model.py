@@ -26,6 +26,7 @@ class User (db.Model):
     password = db.Column(db.String)
     email = db.Column(db.String, unique = True)
     chat_color = db.Column(db.String)
+    chat_bg_color = db.Column(db.String)
 
     # document related columns here
 
@@ -45,6 +46,7 @@ class Event (db.Model):
     room_code = db.Column(db.String, unique = True)
     voting_style = db.Column(db.String)
     description = db.Column(db.String)
+    chatlog = db.Column(db.Text)
 
     # choices: all choices submitted for this event
 
