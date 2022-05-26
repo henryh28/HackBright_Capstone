@@ -16,10 +16,12 @@
     <!-- Left Vertical flex box column for searching/adding choices -->
     <div class = "vertical_flex col-md-6">
         <!-- Top Left, Form for searching for choices -->
+
+
         <div class = "add_choices">
-            <form method="POST">
+            <form id='form_add_choices' method="POST">
                 <input type="hidden" name="event_id" value={{ room.event_id }} />
-                <input type="hidden" name="room_code" value={{ room.room_code }} />
+                <input type="hidden" name="form_room_code" value={{ room.room_code }} />
                 <input type="hidden" name="create_choice" value=0 />
 
                 <label for="choice_type" id="choice_type">Type: </label> 
@@ -33,7 +35,7 @@
 
                 <label for="choice_title">Title: </label>
                 <input type="text" name="choice_title">                        
-                <input type="submit" formaction = "/add_choice" value="Search">                        
+                <input type="submit" value="Search">                        
             </form>
         </div><br>
 
@@ -72,7 +74,7 @@
                         {% endif %}
 
                         {% if choice.type != "custom" %}
-                            <a href="/details/{{ choice.choice_id }}" class="choice_title">{{ choice.title }}</a>
+                            <a href="/details/{{ choice.choice_id }}" class="choice_title" target="popup" onclick="window.open('/details/{{ choice.choice_id }}', 'popup', 'width=1000, height=700'); return false;">{{ choice.title }}</a>
                         {% else %}
                             <span class="choice_title">{{ choice.title }}</span>
                         {% endif %}

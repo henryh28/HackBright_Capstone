@@ -1,4 +1,40 @@
 
+
+async function searchAPI(evt) {
+    evt.preventDefault();
+
+    const formData = {
+        event_id: document.querySelector('[name=event_id').value,
+        room_code: document.querySelector('[name=form_room_code').value,
+        create_choice: document.querySelector('[name=create_choice').value,
+        choice_type: document.querySelector('[name=choice_type').value,
+        choice_title: document.querySelector('[name=choice_title').value        
+    };
+
+    const requestOptions =  {
+        method: "POST",
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(formData)
+    }
+
+    const response = await fetch('/add_choice', requestOptions)
+    const apiData = await response.json()
+
+    console.log(apiData)
+    document.querySelector(".search_result_container").innerHTML = "";
+
+
+    apiData.forEach( item => 
+        $(".search_result_container").append(`<div class="search_result_item" id="${item.data[0]}" draggable="true" 
+        onDragStart="onDragStart(event)" onDragEnd="onDragEnd(event)" choice_title="${item.data[0]}" choice_type=${item.data[1]} 
+        event_id=${item.data[2]} room_code=${item.data[3]} create_choice="1">${item.data[0]} </div>`)
+    )
+}
+
+document.getElementById('form_add_choices').addEventListener('submit', searchAPI);
+
+
+
 // Toggle Menu
 $("#menu-toggle").click(function (e) {
     e.preventDefault();
@@ -155,7 +191,7 @@ async function onDrop(event) {
 
     event.dataTransfer.clearData();
     await fetch('/add_choice', requestOptions);
-    window.location = "room/" + data['room_code'];
+    window.location = "/room/" + data['room_code'];
     
     /*
     const dropZone = event.target;

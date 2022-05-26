@@ -346,24 +346,27 @@ def add_choice():
 
 
     if choice_type == "movie":
-        details = data['results']
 #        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
-        return render_template("room.html", room = room, search_results = details, choice_type = choice_type)
+        for movie in data['results']:
+            details.append({"data": [movie['title'], choice_type, event_id, room_code]})
+
+        return jsonify(details)
     elif choice_type == "tv":
         for item in data['results']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+        return jsonify(details)
     elif choice_type == "boardgame":
         for item in data['games']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+        return jsonify(details)
+#        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
     elif choice_type == "vgame":
         for item in data['results']:
-            details.append({"title": item['name']})
+            details.append({"data": [item['name'], choice_type, event_id, room_code]})
 
-        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
+        return jsonify(details)
     elif choice_type == "custom":
         details.append({"title": title})
 
