@@ -103,7 +103,7 @@ input[type='radio'] {
     flex-direction: column;
     background-color: seashell;
     overflow-y: auto;
-    height: 40%;
+    height: 150px;
 }
 
 /* TODO: Implement uniform vertical growth for .room_choice.items for long .choice titles */
@@ -132,11 +132,6 @@ input[type='radio'] {
 /*    height: 30px; */
 }
 
-.room_choice_items-radio {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
 
 .choice_title {
     flex-grow: 1;
