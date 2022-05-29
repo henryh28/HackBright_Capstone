@@ -197,8 +197,9 @@ function display_voting_method_info(event) {
     let anchor = document.getElementById("create_room_description");
 
     if (event.target.value == 'fptp') {
-        const content = '<strong>Each person gets 1 vote. The candidate with the most vote at the end wins</strong><br><br> \
-        <iframe width="650" height="375" src="https://www.youtube.com/embed/s7tWHJfhiyo" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> \
+        const content = '<strong>Each person gets 1 vote. The candidate with the most vote at the end wins</strong> <br><br> \
+        <iframe width="650" height="375" src="https://www.youtube.com/embed/s7tWHJfhiyo" title="YouTube video player" frameborder="0" \
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> \
         <br>(and why it is a bad system)'
         anchor.innerHTML = content;
         document.getElementById("donate").style.display="None";
@@ -209,8 +210,10 @@ function display_voting_method_info(event) {
         document.getElementById("donate").style.display="None";
     }
     else if (event.target.value == 'alternative') {
-        const content = '<img src="/static/img/bernie.jpg" width="90%" /> </a><br> \
-        <strong>Alternative voting explainer video <a href="https://www.youtube.com/watch?v=3Y3jE3B8HsE">here</a></strong>'
+        const content = '<strong>Rank the choices in order of your preference. Does not force you into voting defensively</strong> <br><br> \
+        <iframe width="650" height="375" src="https://www.youtube.com/embed/3Y3jE3B8HsE" title="YouTube video player" frameborder="0" \
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'
+
         anchor.innerHTML = content;
         document.getElementById("donate").style.display="block";
     }

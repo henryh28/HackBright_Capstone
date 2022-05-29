@@ -192,16 +192,25 @@ def create_room():
     # GET method loads form for room creation
     # POST method processes form from room creation page
 
+    print (" %%%%%%%%%%%%%%% create room form = ", request.form)
+
     if request.method == "POST":
         description = request.form['description']
         admin_id = session['user'] if session['user'] != None else 0
         new_room = crud.create_event(description, request.form['voting_style'], admin_id)
-        db.session.add(new_room)
-        db.session.commit()
+        
+        if request.form['voting_style'] == 'fptp':
+            db.session.add(new_room)
+            db.session.commit()
+        elif request.form['voting_style'] == 'random':
+            print (" --------> implement me (random event) <----------")
+        elif request.form['voting_style'] == 'alternative':
+            print ('  bernie!!!!!!!!!!!!!!!')
+            return render_template("room_create.html", bernie=True)
 
         return redirect("/all_rooms")
     else:
-        return render_template("room_create.html")
+        return render_template("room_create.html", bernie=False)
 
 
 # Enter a specific room
