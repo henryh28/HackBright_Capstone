@@ -340,9 +340,10 @@ def add_choice():
         db.session.add(new_choice)
         db.session.commit()
 
-        socketio.emit('update_choices', {'room_code': room_code}, room = session['room'])
+        socketio.emit('update_choices', {'choice': new_choice.as_dict()}, room = session['room'])
+#        socketio.emit('update_choices', {'room_code': room_code, 'choice': new_choice.as_dict()}, room = session['room'])
 
-        return redirect(f"/room/{room_code}")
+#        return redirect(f"/room/{room_code}")
 
 
     if choice_type == "movie":
@@ -384,7 +385,7 @@ def remove_choice():
 
     room = crud.get_events_by(event_id = session['room'])
 
-    socketio.emit('update_choices', {'room_code': room.room_code}, room = session['room'])
+    socketio.emit('refresh_room', {'room_code': room.room_code}, room = session['room'])
 
     return redirect(f"/room/{request.form['room_code']}")
 
@@ -392,6 +393,8 @@ def remove_choice():
 @app.route ("/submit_vote", methods = ["POST"])
 def submit_vote():
     """ Process submitted votes """
+
+    print (" &&&&&&&&&&&&& form: ", request.form)
 
 #    all_votes_for_choices = []
     room_code = request.form['room_code']
@@ -402,7 +405,9 @@ def submit_vote():
 
     if 'choice_id' in request.form:
         choice_id = request.form['choice_id']
+        print (" ((((((( choice id: ", choice_id)
         vote = crud.create_vote(vote_strength, user_id, choice_id)
+        print (" ??? vote : ", vote)
         db.session.add(vote)
         db.session.commit()
 

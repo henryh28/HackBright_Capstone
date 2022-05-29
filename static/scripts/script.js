@@ -20,7 +20,6 @@ async function searchAPI(evt) {
     const response = await fetch('/add_choice', requestOptions)
     const apiData = await response.json()
 
-    console.log(apiData)
     document.querySelector(".search_result_container").innerHTML = "";
 
 
@@ -69,14 +68,35 @@ $(document).ready(function() {
 
     // Real time update of current room choices for all connected clients
     socket.on('update_choices', function(data) {
+        let choice_item = `<div class = "room_choice_items"> &emsp; <input type="radio" name="choice_id" value=${data.choice.choice_id}>&nbsp;`
 
+            if (data.choice.type != "custom") {
+                choice_item = choice_item + `<a href="/details/${data.choice.choice_id}" class="choice_title" target="popup" 
+                onclick="window.open('/details/${data.choice.choice_id}', 'popup', 'width=1000, height=700'); return false;">${data.choice.title}</a>`
+            } else {
+                choice_item = choice_item + `<span class="choice_title">{{ choice.title }}</span>`
+            }
+
+            choice_item = choice_item + `<button type="button" class="btn_placeholder" name="placeholder">Placeholder </button> 
+            <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="${ data.choice.choice_id }"> Remove </button><br>
+            </div>`
+
+        const event_choice_list = document.querySelector(".room_choices")
+        event_choice_list.insertAdjacentHTML('beforeend', choice_item)
+
+        /*
         // Ensures other connected clients dont get re-routed if in item detail view
         if (window.location.href.indexOf('details') === -1) {
             window.location = `/room/${data.room_code}`
         } 
+        */
     })
 
-        
+
+    // Placeholder room refrsher
+    socket.on('refresh_room', function(data) {
+        window.location = `/room/${data.room_code}`
+    })
 
     $('form#form_room_chat').submit(function(event){
 //        socket.emit('chat', {data: $('#room_chat_input').val()});
@@ -107,21 +127,6 @@ $(document).ready(function() {
 
 
 
-// Navbar button to go to route "/"
-document.querySelector("#btn-home").addEventListener("click", () => {
-    window.location = "/";
-})
-
-
-// Navbar button to create a room
-document.querySelector("#btn-create-room").addEventListener("click", () => {
-    window.location = "/create_room";
-})
-
-// Navbar button to view user profile
-document.querySelector("#btn-view-user-profile").addEventListener("click", () => {
-    window.location = "/view_user_profile";
-})
 
 
 // Navbar button to log user out
@@ -191,7 +196,7 @@ async function onDrop(event) {
 
     event.dataTransfer.clearData();
     await fetch('/add_choice', requestOptions);
-    window.location = "/room/" + data['room_code'];
+//    window.location = "/room/" + data['room_code'];
     
     /*
     const dropZone = event.target;
