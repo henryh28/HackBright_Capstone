@@ -5,8 +5,8 @@
 
 {% block body %}
 
-    <div class="flex_container" style="height: 600px;">
-        <div class="vertical_flex col-md-4">
+    <div id="room_container" class="col-md-11">
+        <div class="vertical_flex col-md-6">
 
             <span>Created Rooms</span>
             <div class="user_created_rooms">
@@ -15,7 +15,7 @@
 
                         <tr>
                             <th>Remove</th>
-                            <th>Room Code</th>
+                            <th class="col-md-2" style="text-align: center;">Room Code</th>
                             <th>Room Description</th>
                         </tr>
                         {% for room in user.rooms %}
@@ -23,7 +23,7 @@
                             <td class="td_remove" style="text-align: center;">
                                 <button type="submit" class="btn_table_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}"> - </button>
                             </td>
-                            <td class="td_room_code">
+                            <td class="td_room_code" style="text-align: center;">
                                 <strong>{{ room.room_code }}</strong>
                             </td>
                             <td><a href = "/room/{{ room.room_code }}">{{ room.description }}</a></td>                        
@@ -36,7 +36,7 @@
     
         </div> <!-- Closes .vertical_flex -->
 
-        <div class="vertical_flex">
+        <div class="vertical_flex" >
             <div class="flex_container_min">
                 <div class="vertical_flex_min">
                     First Name: <br>
@@ -51,7 +51,9 @@
                     {{ user.email }} <br>
                     {{ user.password }} <br>              
                 </div>        
-            </div><br>
+            </div> <!-- Closes .flex_container_min (User name/email display)-->
+
+            <br>
 
             <div class="flex_container_min">
                     <div class="vertical_flex_min">
@@ -70,7 +72,7 @@
                         </form>
                     </div>
 
-            </div>
+            </div> <!-- Closes .flex_container_min (change password form)-->
             <br>
                 
             <div class="col-md-10">

@@ -77,6 +77,10 @@ class Choice (db.Model):
         """ Returns choice info """
         return (f"< Choice choice_id: {self.choice_id} | type: {self.type} | title: {self.title} >")
 
+    def as_dict(self):
+        """ Returns object's attribute as a dictionary """
+
+        return { entry.name: getattr(self, entry.name) for entry in self.__table__.columns }
 
 
 class Vote (db.Model):

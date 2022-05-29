@@ -44,6 +44,14 @@ def homepage():
         session['user_chat_color'] = None
         session['user_chat_bg_color'] = None
 
+    if session['user_name'] == None:
+        session['user_name'] = 'Anonymous'
+        session['user_chat_color'] = '#000000'
+        session['user_chat_bg_color'] = '#ffffff'
+
+
+    print (" init                   session           : ", session)
+
     return render_template("index.html") 
 
 @app.route ("/login", methods = ["POST"])
@@ -60,6 +68,7 @@ def login():
             session['user'] = existing_user.user_id
             session['user_name'] = existing_user.user_name
             session['user_chat_color'] = existing_user.chat_color
+            session['user_chat_bg_color'] = existing_user.chat_bg_color
         else:
             flash("Incorrect password")
     else:
@@ -71,12 +80,15 @@ def login():
 def logout():
     """ Logs current user out of the system """
 
-    session['user'] = None
-    session['user_name'] = None
-    session['room'] = None
-    session['room_code'] = None
-    session['user_chat_color'] = None
-    session['user_chat_bg_color'] = None
+    session.clear()
+
+#    session['user'] = None
+#    session['user_name'] = None
+#    session['room'] = None
+#    session['room_code'] = None
+#    session['user_chat_color'] = None
+#    session['user_chat_bg_color'] = None
+
 
     return redirect("/")
 
@@ -200,9 +212,12 @@ def enter_room(room_code):
     # POST method allows for user to join a room based on 4 character code
 
     if request.method == "POST":
+        print (" ^^^^^^^^^^^^^^^^^^^^^^^^^^ ", request.form)
         room_code = request.form['room_code']
 
     room = crud.get_events_by(room_code = room_code)
+
+    print (request.method, " >>>>>>>>>>>>>>>>>>> room : ", room)
 
     if room:
         session['room'] = room.event_id
@@ -211,7 +226,12 @@ def enter_room(room_code):
     else:
         flash("Invalid room code")
         return redirect("/")    
- 
+
+    print (session['room_code'], " >>>> code & id <<<< ", session['room'])
+    print (username, "   ------- user name session : ", session['user_name'])
+    print (session['user_chat_color'], "   &&&&&& color : ", session['user_chat_bg_color'])
+
+
     socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
     return render_template("room.html", room = room, username=username)
 
@@ -309,6 +329,8 @@ def item_detail(item_code):
 def add_choice():
     itemData = dict(request.form) if request.form else request.get_json()
 
+    print (" ============ data : ", itemData)
+
     title = itemData['choice_title']
     choice_type = itemData['choice_type']
     event_id = itemData['event_id']
@@ -340,9 +362,12 @@ def add_choice():
         db.session.add(new_choice)
         db.session.commit()
 
-        socketio.emit('update_choices', {'room_code': room_code}, room = session['room'])
+        print (" &&&&&&&&& here we are :>>>>>>>>>> ", new_choice.as_dict())
 
-        return redirect(f"/room/{room_code}")
+        socketio.emit('update_choices', {'choice': new_choice.as_dict()}, room = session['room'])
+#        socketio.emit('update_choices', {'room_code': room_code, 'choice': new_choice.as_dict()}, room = session['room'])
+
+#        return redirect(f"/room/{room_code}")
 
 
     if choice_type == "movie":
@@ -379,12 +404,14 @@ def remove_choice():
     """ Remove the selected choice from the room """
 
     delete_target = crud.get_choice_by(choice_id = request.form['choice_id'])
+    print (session['user_name'], " &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& target: ", delete_target)
     db.session.delete(delete_target)
     db.session.commit()
 
     room = crud.get_events_by(event_id = session['room'])
 
-    socketio.emit('update_choices', {'room_code': room.room_code}, room = session['room'])
+    print (session['room'], " ********* delete from room: ", room)
+    socketio.emit('refresh_room', {'room_code': room.room_code}, room = session['room'])
 
     return redirect(f"/room/{request.form['room_code']}")
 
@@ -392,6 +419,8 @@ def remove_choice():
 @app.route ("/submit_vote", methods = ["POST"])
 def submit_vote():
     """ Process submitted votes """
+
+    print (" &&&&&&&&&&&&& form: ", request.form)
 
 #    all_votes_for_choices = []
     room_code = request.form['room_code']
@@ -402,7 +431,9 @@ def submit_vote():
 
     if 'choice_id' in request.form:
         choice_id = request.form['choice_id']
+        print (" ((((((( choice id: ", choice_id)
         vote = crud.create_vote(vote_strength, user_id, choice_id)
+        print (" ??? vote : ", vote)
         db.session.add(vote)
         db.session.commit()
 

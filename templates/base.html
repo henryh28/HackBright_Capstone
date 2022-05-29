@@ -34,7 +34,7 @@
         <nav class="navbar navbar-dark fixed-top navbar-expand-sm bg-dark">
             <div class="container-fluid">
 
-                <a href="/" class="navbar-brand mb-0 h1">
+                <a href="https://www.youtube.com/watch?v=Xz5Tx7hNR64" class="navbar-brand mb-0 h1">
                     <img class="d-inline-block align-top" src="/static/img/ch_logo.png" width="30" height="30" /> 
                     BunnyBeenz
                 </a>
@@ -72,9 +72,10 @@
                             </a>
 
                             <ul class="dropdown-menu" aria-labelledby="nav-dropdown-">
-                                <li><a href="/account" class="dropdown-item">Create Account</a></li>
                                 {% if session['user'] %}
-                                <li><a href="/view_user_profile" class="dropdown-item">View/Edit User Profile</a></li>
+                                    <li><a href="/view_user_profile" class="dropdown-item">View/Edit User Profile</a></li>
+                                {% else %}
+                                    <li><a href="/account" class="dropdown-item">Create Account</a></li>
                                 {% endif %}
                                 <li><a href="/logout" class="dropdown-item">Logout</a></li>
                             </ul>
@@ -132,9 +133,12 @@
         {% endblock %}
 
         {% block footer %}
-            <div class="flex_container_min">
-                <footer><span class="copyleft">&copy;</span> 2022 Henry Hsu</footer>
-            </div>
+            {% if self._TemplateReference__context.name != "results.html" %}
+                <div class="flex_container_min">
+                    (for dev: {{ self._TemplateReference__context.name }})
+                    <footer><span class="copyleft">&copy;</span> 2022 Henry Hsu</footer>
+                </div>
+            {% endif %}
         {% endblock %}
 
 
