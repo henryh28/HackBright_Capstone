@@ -14,19 +14,26 @@
                     <table style="height: 500px;">
 
                         <tr>
-                            <th>Remove</th>
+                            <th class="col-md-1" style="text-align: center;">Remove</th>
+                            <th class="col-md-1" style="text-align: center;">SMS</th>
                             <th class="col-md-2" style="text-align: center;">Room Code</th>
-                            <th>Room Description</th>
+                            <th>&emsp; Room Description</th>
                         </tr>
                         {% for room in user.rooms %}
                         <tr>
-                            <td class="td_remove" style="text-align: center;">
-                                <button type="submit" class="btn_table_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}"> - </button>
+                            <td class="td_remove" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
+                                <button type="submit" class="btn_table_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}" style="width: 30px;"> - </button>
                             </td>
-                            <td class="td_room_code" style="text-align: center;">
+
+                            <td class="td_sms" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
+                                <button id="btn-sms" type="button" value={{ room.room_code}} onClick="prep_sms(value)">SMS</button>
+                            </td>
+
+                            <td class="td_room_code" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
                                 <strong>{{ room.room_code }}</strong>
                             </td>
-                            <td><a href = "/room/{{ room.room_code }}">{{ room.description }}</a></td>                        
+
+                            <td class="td_room_link" style="text-align: left; --chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">&emsp;<a href = "/room/{{ room.room_code }}">{{ room.description }}</a></td>                        
                         </tr>
                         {% endfor %}
                     </table>
@@ -58,16 +65,16 @@
             <div class="flex_container_min">
                     <div class="vertical_flex_min">
                         <form action="/view_user_profile" method="POST">
-                        <label style="height: 30px;">Current Password:</label><br>
-                        <label style="height: 30px;">New Password:</label><br>
-                        <label style="height: 30px;">Confirm New Password:</label> <br>
+                            <label style="height: 30px;">Current Password:</label><br>
+                            <label style="height: 30px;">New Password:</label><br>
+                            <label style="height: 30px;">Confirm New Password:</label> <br>
                     </div>
 
                     <div class="vertical_flex_min">
-                        &emsp; <input type="text" name="current_pw" maxlength="50"><br>
-                        &emsp; <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
-                        &emsp; <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
-                        <input type="submit" value="Change Password">
+                            &emsp; <input type="text" name="current_pw" maxlength="50"><br>
+                            &emsp; <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
+                            &emsp; <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
+                            <input type="submit" value="Change Password">
     
                         </form>
                     </div>
@@ -84,10 +91,9 @@
     
             </div>
 
-            <br><br><br>
+            <br><br>
 
             <div class="flex_container_min">
-
                 <div class="vertical_flex_min">
                     Pick your chat message color: <br>
                     Pick your chat message background color:
@@ -100,9 +106,29 @@
                     &emsp; <input id="chat_bg_color_picker" type="color" value={{ user.chat_bg_color }} onchange=change_chat_bg_color(this.value)>
     
                 </div>
-
             </div>
 
+            <br>
+
+            <div class="vertical_flex_min">
+                <form method="post">
+                    <div class="flex_container_min">
+                        <span class="col-md-2" style="text-align: left;">Phone #:</span>
+                        <span class="col-md-7" style="text-align: left;">
+                            &emsp;Message: 
+                        </span>
+                            &emsp; <button type="submit" formaction="/send_sms">Send Text</button>
+                    </div>
+
+                    <div class="flex_container_min">
+                        &emsp; <input id="phone_number" class="col-md-2" name="phone_number" type="tel" style="text-align: center;" placeholder="123-456-7890">
+                        &emsp; <input id="sms_message" class="col-md-9" name="sms_message" type="text" value="Click the 'SMS' button for the room you want to send invite to">
+                        <span class="col-md-1"></span>
+                    </div>
+
+
+                </form>
+            </div>
 
         </div> <!-- Closes .flex_container_min -->
     </div> <!-- Closes .flex_container -->

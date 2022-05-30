@@ -12,6 +12,9 @@ from flask_session import Session
 from flask_babel import Babel
 import eventlet
 import json, random
+from twilio.rest import Client
+
+
 
 #eventlet.monkey_patch()    #causes infinite recursion with requests.get to api
 app = Flask(__name__)
@@ -27,6 +30,10 @@ TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
 BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
+
+sms_client = Client(account_sid, auth_token)
 
 
 # ================= System Related  =================
@@ -48,9 +55,6 @@ def homepage():
         session['user_name'] = 'Anonymous'
         session['user_chat_color'] = '#000000'
         session['user_chat_bg_color'] = '#ffffff'
-
-
-    print (" init                   session           : ", session)
 
     return render_template("index.html") 
 
@@ -182,6 +186,28 @@ def set_chat_bg_color():
     session['user_chat_bg_color'] = new_color
 
     return redirect("/view_user_profile")
+
+@app.route ("/send_sms", methods=["POST"])
+def send_sms():
+    print (" =====++++++++++ sms : ", request.form)
+
+    phone_number = "+1" + request.form['phone_number'].replace("-","")
+    sms_content = request.form['sms_message']
+
+    print (phone_number, "  phone | msg ", sms_content)
+
+
+    message = sms_client.messages \
+                    .create(
+                        body=sms_content,
+                        from_='+19402864264',
+                        to=phone_number
+                    )
+
+    print(message.sid, " sent this message >>>>> ", message)
+
+
+    return redirect("/")
 
 # ================= Event/Room Related =================
 

@@ -204,6 +204,13 @@ function user_logout(event) {
     window.location = "/logout";
 }
 
+// Button to populate SMS message field with specific room invite
+function prep_sms(room_code) {
+    message = `Join the room @ http://localhost:5000/room/${room_code}`
+    document.getElementById("sms_message").value = message
+}
+
+
 // [room_create.html] > Displays info about the chosen voting method
 
 function display_voting_method_info(event) {
