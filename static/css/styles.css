@@ -1,6 +1,6 @@
 
 
-/* general related */
+/* ---------- General ----------*/
 html, body  {
     height: 100%;
     padding-top: 40px;
@@ -49,7 +49,7 @@ input[type='radio'] {
 }
 
 
-/* Flex container related */
+/* ---------- Flex container related ----------*/
 
 .grid_containger {
     display: grid;
@@ -86,9 +86,29 @@ input[type='radio'] {
 }
 
 
-/* room related */
+/* ---------- room_create.html ----------*/
+
+#room_container {
+    display: flex;
+    justify-content: space-evenly;
+    height: 95%;
+}
+
+.voting_method_description {
+    text-align: center;
+}
+
+#donate {
+    display: None;
+}
+
+
+
+/* ---------- room.html ----------*/
+
 .event_room {
     display: flex;
+    height: 90%;
 }
 
 .search_result_container {
@@ -106,11 +126,8 @@ input[type='radio'] {
     height: 150px;
 }
 
-/* TODO: Implement uniform vertical growth for .room_choice.items for long .choice titles */
-
 .column_header_right {
-    flex-grow: 3;
-    max-width: 50%;
+    flex-grow: 1;
     text-align: center;
 }
 
@@ -120,7 +137,8 @@ input[type='radio'] {
 }
 
 .column_header_left {
-    flex-grow: 1;
+    flex-grow: 3;
+    max-width: 50%;
     text-align: center;
 }
 
@@ -137,6 +155,7 @@ input[type='radio'] {
     flex-grow: 1;
 /*    overflow-x: auto; */
 }
+
 
 .btn_placeholder {
     border-radius: 8px;
@@ -167,15 +186,14 @@ input[type='radio'] {
     border-style: solid;
     border-width: 1px;
     border-color: cornflowerblue;
-}
-
-.event_room {
-    height: 75%;
+    height: 40%;
 }
 
 
-/* Item detail related */
 
+
+
+/* ---------- item_details_x.html ----------*/
 
 .show_details {
     height: 300px;
@@ -203,28 +221,7 @@ input[type='radio'] {
 }
 
 
-/* Results related */
-#display_voting_results {
-    display: flex;
-    border-style: solid;
-    border-width: 2px;
-    margin: 2em;
-}
-
-#display_voting_choices {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-}
-
-#display_votes {
-    width: 75%;
-}
-
-.result_choices {
-    height: 30px;
-    border-color: lightcoral;
-}
+/* ---------- results.html ----------*/
 
 #chart_container {
     width: 65%;
@@ -292,6 +289,7 @@ table {
 th {
     background-color: lightsteelblue;
     position: sticky;
+    height: 30px;
 }
 
 th, td {

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ room.description }} results {% endblock %}
+
+
+
+{% block body %}
+
+<div id="room_container">
+
+    <div class="vertical_flex_wide">
+        <h1>{{ room.description }} results!</h1>
+
+        <br>The winner is: 
+
+        <br><strong>{{ winner.title }}</strong>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+

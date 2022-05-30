@@ -23,7 +23,7 @@ def get_user_by(**data):
 
 # ========== Event related functions ==========
 
-def create_event(description, voting_style, admin_id, chatlog=""):
+def create_event(description, voting_style, admin_id, completed=False):
     """ Create and return a new Event """
 
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789'
@@ -37,7 +37,7 @@ def create_event(description, voting_style, admin_id, chatlog=""):
         if not existing_room:
             room_code = temp_code
 
-    return Event(room_code = room_code, voting_style=voting_style, description=description, admin_id=admin_id, chatlog=chatlog)
+    return Event(room_code = room_code, voting_style=voting_style, description=description, admin_id=admin_id, completed=completed)
 
 
 def get_all_events():
@@ -48,6 +48,9 @@ def get_all_events():
 def get_events_by(**data):
     """ Search for and return a event by specified parameters """
     return Event.query.filter_by(**data).first()
+
+
+
 
 # ========== Choice related functions ==========
 
