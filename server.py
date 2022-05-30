@@ -11,7 +11,7 @@ from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask_session import Session
 from flask_babel import Babel
 import eventlet
-import json
+import json, random
 
 #eventlet.monkey_patch()    #causes infinite recursion with requests.get to api
 app = Flask(__name__)
@@ -192,20 +192,17 @@ def create_room():
     # GET method loads form for room creation
     # POST method processes form from room creation page
 
-    print (" %%%%%%%%%%%%%%% create room form = ", request.form)
-
     if request.method == "POST":
         description = request.form['description']
         admin_id = session['user'] if session['user'] != None else 0
         new_room = crud.create_event(description, request.form['voting_style'], admin_id)
+        print (" >>>>>>>>>> new room: ", new_room)
         
-        if request.form['voting_style'] == 'fptp':
+        if request.form['voting_style'] in ['fptp', 'random']:
             db.session.add(new_room)
             db.session.commit()
-        elif request.form['voting_style'] == 'random':
-            print (" --------> implement me (random event) <----------")
+
         elif request.form['voting_style'] == 'alternative':
-            print ('  bernie!!!!!!!!!!!!!!!')
             return render_template("room_create.html", bernie=True)
 
         return redirect("/all_rooms")
@@ -221,12 +218,9 @@ def enter_room(room_code):
     # POST method allows for user to join a room based on 4 character code
 
     if request.method == "POST":
-        print (" ^^^^^^^^^^^^^^^^^^^^^^^^^^ ", request.form)
         room_code = request.form['room_code']
 
     room = crud.get_events_by(room_code = room_code)
-
-    print (request.method, " >>>>>>>>>>>>>>>>>>> room : ", room)
 
     if room:
         session['room'] = room.event_id
@@ -236,20 +230,22 @@ def enter_room(room_code):
         flash("Invalid room code")
         return redirect("/")    
 
-    print (session['room_code'], " >>>> code & id <<<< ", session['room'])
-    print (username, "   ------- user name session : ", session['user_name'])
-    print (session['user_chat_color'], "   &&&&&& color : ", session['user_chat_bg_color'])
 
 
-    socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-    return render_template("room.html", room = room, username=username)
+    if room.completed == True:
+        winner = crud.get_choice_by(choice_id = room.winner)
+        print (" &&&&&&&&&&&&& random winner : ", winner)
+        return render_template("voting_result.html", room = room, winner = winner)
+    else:
+        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
+        return render_template("room.html", room = room, username=username)
 
 
 #    if request.method == "GET":
-#        
+       
 #        print (room, " $$$$$$$$$$$$$$$$$$$ GET room join: ", session['room'])
 #        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
-#
+
 #        return render_template("room.html", room = room)
 #    else:
 #        socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
@@ -264,6 +260,39 @@ def leave_room():
     session['room'] = None
 
     return redirect("/")
+
+
+@app.route("/lock_room")
+def lock_room():
+    room = crud.get_events_by(event_id = session['room'])
+
+    if room.voting_style == "fptp":
+        if room.completed == False:
+            nominees = {}
+            
+            for choice in room.choices:
+                nominees[choice.title] = len(choice.votes)
+                
+            most_vote = max(nominees.values())
+            winner_title = random.choice([key for key, value in nominees.items() if value == most_vote])
+            winner = crud.get_choice_by(title = winner_title)
+            # room.winner = winner.choice_id
+            # room.completed = True
+            # db.session.commit()            
+
+    elif room.voting_style == "random":
+        if room.completed == False:
+            winner = random.choice(room.choices)
+
+    room.winner = winner.choice_id
+    room.completed = True
+    db.session.commit()
+
+
+    socketio.emit('show_winner', { 'room_code': room.room_code }, room = session['room'])
+
+    return redirect(f"/room/{room.room_code}")
+
 
 @app.route ("/remove_event", methods=["POST"])
 def remove_room():
@@ -280,7 +309,6 @@ def remove_room():
 
 
     return redirect("/view_user_profile")
-
 
 
 # list all rooms
@@ -371,11 +399,7 @@ def add_choice():
         db.session.add(new_choice)
         db.session.commit()
 
-        print (" &&&&&&&&& here we are :>>>>>>>>>> ", new_choice.as_dict())
-
-        socketio.emit('update_choices', {'choice': new_choice.as_dict()}, room = session['room'])
-#        socketio.emit('update_choices', {'room_code': room_code, 'choice': new_choice.as_dict()}, room = session['room'])
-
+        socketio.emit('update_choices', {'choice': new_choice.as_dict(), 'event_type': room.voting_style}, room = session['room'])
 #        return redirect(f"/room/{room_code}")
 
 

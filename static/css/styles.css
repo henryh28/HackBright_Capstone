@@ -157,10 +157,6 @@ input[type='radio'] {
 }
 
 
-/* room related */
-
-
-
 .btn_placeholder {
     border-radius: 8px;
 }
@@ -190,7 +186,10 @@ input[type='radio'] {
     border-style: solid;
     border-width: 1px;
     border-color: cornflowerblue;
+    height: 40%;
 }
+
+
 
 
 

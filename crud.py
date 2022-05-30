@@ -49,6 +49,9 @@ def get_events_by(**data):
     """ Search for and return a event by specified parameters """
     return Event.query.filter_by(**data).first()
 
+
+
+
 # ========== Choice related functions ==========
 
 def create_choice(type, title, event_id):

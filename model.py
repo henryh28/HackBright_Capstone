@@ -36,6 +36,10 @@ class User (db.Model):
         """ Returns user info """
         return (f"< User user_id: {self.user_id} | first_name: {self.first_name} | last_name: {self.last_name} | user_name: {self.user_name} | email: {self.email} >")
 
+    def as_dict(self):
+        """ Returns object's attribute as a dictionary """
+        return { entry.name: getattr(self, entry.name) for entry in self.__table__.columns }
+
 
 
 class Event (db.Model):
@@ -46,7 +50,8 @@ class Event (db.Model):
     room_code = db.Column(db.String, unique = True)
     voting_style = db.Column(db.String)
     description = db.Column(db.String)
-    completed = db.Column(db.Boolean)
+    winner = db.Column(db.Integer, default = None)
+    completed = db.Column(db.Boolean, default = False)
 
     # choices: all choices submitted for this event
 
@@ -55,7 +60,11 @@ class Event (db.Model):
 
     def __repr__(self):
         """ Returns event info """
-        return (f"< Event event_id: {self.event_id} | room_code: {self.room_code} | description: {self.description} >")
+        return (f"< Event event_id: {self.event_id} | room_code: {self.room_code} | voting_style: {self.voting_style} | description: {self.description} | winner: {self.winner} | completed: {self.completed} >")
+
+    def as_dict(self):
+        """ Returns object's attribute as a dictionary """
+        return { entry.name: getattr(self, entry.name) for entry in self.__table__.columns }
 
 
 
@@ -79,7 +88,6 @@ class Choice (db.Model):
 
     def as_dict(self):
         """ Returns object's attribute as a dictionary """
-
         return { entry.name: getattr(self, entry.name) for entry in self.__table__.columns }
 
 
@@ -100,6 +108,9 @@ class Vote (db.Model):
         """ Returns vote info """
         return (f"< Vote vote_id: {self.vote_id} | amount: {self.amount} | user: {self.user} | choice: {self.choice} >")
 
+    def as_dict(self):
+        """ Returns object's attribute as a dictionary """
+        return { entry.name: getattr(self, entry.name) for entry in self.__table__.columns }
 
 
 # ================== Utility functions ===================

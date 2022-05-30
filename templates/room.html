@@ -8,9 +8,9 @@
 <div id="room_container">
     <div class="vertical_flex_wide col-md-12">
         <div class = "flex_container">
-            <h2 class="column_header_left">Room: {{ room.description }} [ {{ room.room_code }} ]</h2>
-            <h2 class="column_header_middle">Chat Window</h2>
-            <h2 class="column_header_right">Participants</h2>        
+            <h2 class="column_header_left col-md-5">Room: {{ room.description }} [ {{ room.room_code }} ]</h2>
+            <h2 class="column_header_middle col-md-4">Chat Window</h2>
+            <h2 class="column_header_right col-md-2">Participants</h2>        
         </div>
 
 
@@ -67,43 +67,45 @@
                 <form method="POST">
                 <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
         
-                        {% for choice in room.choices %}
-                            <div class = "room_choice_items">
-                                {% if room.voting_style == 'fptp' %}
-                                    &emsp;
-                                    <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
-                                {% endif %}
-        
-                                {% if choice.type != "custom" %}
-                                    <a href="/details/{{ choice.choice_id }}" class="choice_title" target="popup" onclick="window.open('/details/{{ choice.choice_id }}', 'popup', 'width=1000, height=700'); return false;">{{ choice.title }}</a>
-                                {% else %}
-                                    <span class="choice_title">{{ choice.title }}</span>
-                                {% endif %}
-                                
-                                <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
-                                <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
-                            </div>
-                        {% endfor %}
-                        <input type="hidden" name="room_code" value={{ room.room_code }} />                    
-                        <input type="hidden" name="vote_strength" value= "1" />                    
-                </div>
-                <div class="flex_container_min">
-                    <h3>Candidates</h3>
-                    <div class="col-md-1"></div>
-                    <label for="chart_type" id="chart_type" class=col-md-2>Chart Type:  &emsp;</label> 
-                    <select name="chart_type" class="col-md-2">
-                        <option value="bar">Bar</option>
-                        <option value="pie">Pie</option>
-                        <option value="doughnut">Donut</option>
-                        <option value="line">Line</option>
-                        <option value="polarArea">Polar</option>
-                        <option value="radar">Radar</option>
-                    </select>
-                    <div class="col-md-2"></div>
-                    <button type="submit" formaction="/submit_vote" class="col-md-2">View Results</button> 
-        
-                </div>
-                    </form>
+                    {% for choice in room.choices %}
+                        <div class = "room_choice_items">
+                            {% if room.voting_style == 'fptp' %}
+                                &emsp;
+                                <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                            {% endif %}
+    
+                            {% if choice.type != "custom" %}
+                                <a href="/details/{{ choice.choice_id }}" class="choice_title" target="popup" onclick="window.open('/details/{{ choice.choice_id }}', 'popup', 'width=1000, height=700'); return false;">{{ choice.title }}</a>
+                            {% else %}
+                                <span class="choice_title">{{ choice.title }}</span>
+                            {% endif %}
+                            
+                            <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
+                            <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
+                        </div>
+                    {% endfor %}
+                    <input type="hidden" name="room_code" value={{ room.room_code }} />                    
+                    <input type="hidden" name="vote_strength" value= "1" />                    
+                </div> <!-- Closes .room_choices -->
+
+                    {% if room.voting_style == "fptp" %}
+                        <div class="flex_container_min">
+                            <h3>Candidates</h3>
+                            <div class="col-md-1"></div>
+                            <label for="chart_type" id="chart_type" class=col-md-2>Chart Type:  &emsp;</label> 
+                            <select name="chart_type" class="col-md-2">
+                                <option value="bar">Bar</option>
+                                <option value="pie">Pie</option>
+                                <option value="doughnut">Donut</option>
+                                <option value="line">Line</option>
+                                <option value="polarArea">Polar</option>
+                                <option value="radar">Radar</option>
+                            </select>
+                            <div class="col-md-2"></div>
+                            <button type="submit" formaction="/submit_vote" class="col-md-2">View Results</button> 
+                        </div>
+                    {% endif %}
+                </form>
             </div>
         
             <!-- Center column for chat functions -->
@@ -124,9 +126,21 @@
             </div>
         
         
-            <!-- Far right column listing room participants -->
-            <div class = "room_participants col-md-2">
-                <!-- Participant names will be displayed here -->
+            <!-- Far right column listing room participants & room functions -->
+            <div class = "vertical_flex col-md-2">
+                <div class = "room_participants">
+                    <!-- Participant names will be displayed here -->
+                </div>
+
+                <div class = "room_controls" style="text-align: center;">
+                    <strong><h3>Room Control</h3></strong>
+                    <div>
+                        {% if room.admin_id == session['user'] %}
+                            <a href="/lock_room" class="btn btn-primary">Close Room</a><br><br>
+                        {% endif %}
+                        <a href="/leave_room" class="btn btn-primary">Leave Room</a>
+                    </div>
+                </div>
             </div>
         </div>
         
