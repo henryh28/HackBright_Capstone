@@ -277,6 +277,7 @@ input[type='radio'] {
 
 .user_created_rooms {
     overflow-y: auto;
+    height: 750px;
 }
 
 table {
@@ -287,23 +288,50 @@ table {
 }
 
 th {
-    background-color: lightsteelblue;
+    background-color: aliceblue;
     position: sticky;
     height: 30px;
+    text-align: center;    
+
+    font-size: 20px;
+    color: seashell;
+    -webkit-text-stroke: 0.5px #5E0063;
+	text-shadow: -1px 1px 2px cornflowerblue,
+				  1px 1px 2px cornflowerblue,
+				  1px -1px 5px cornflowerblue,
+				  -1px -1px 5px cornflowerblue;
 }
 
-th, td {
-    border: 2px double royalblue;
+td, td a {
+    text-align: center;    
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--chat_color);
+    text-align: center;
+    letter-spacing: 2px;
+    text-shadow: 3px 3px 20px var(--chat_bg_color),
+      -2px 1px 30px var(--chat_bg_color);
+
 }
+
 
 .td_remove {
-    background-image: linear-gradient(to right, mintcream, honeydew);
+    background-image: linear-gradient(to right, aliceblue, mintcream);
+}
+
+.td_sms {
+    background-image: linear-gradient(to right, mintcream, floralwhite);
 }
 
 .td_room_code {
-    background-image: linear-gradient(to right, honeydew, white);
-
+    background-image: linear-gradient(to right, snow, white);
 }
+
+.td_room_link {
+}
+
 
 .btn_table_remove {
     transform: scale(0.75); 
