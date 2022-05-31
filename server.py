@@ -30,10 +30,12 @@ TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
 BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
+TWILIO_SID = os.environ['TWILIO_ACCOUNT_SID']
+TWILIO_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+YELP_SID = os.environ['YELP_CLIENT_ID']
+YELP_KEY = os.environ['YELP_KEY']
 
-sms_client = Client(account_sid, auth_token)
+sms_client = Client(TWILIO_SID, TWILIO_TOKEN)
 
 
 # ================= System Related  =================
@@ -102,6 +104,13 @@ def page_not_found(event):
     """ Custom error handler for 404 errors """
 
     return render_template("404.html")
+
+@app.errorhandler(500)
+def server_error(event):
+    """ Custom error handler for 500 errors """
+
+
+    return render_template("500.html")
 
 # ================= User related  =================
 
@@ -257,7 +266,6 @@ def enter_room(room_code):
         return redirect("/")    
 
 
-
     if room.completed == True:
         winner = crud.get_choice_by(choice_id = room.winner)
         print (" &&&&&&&&&&&&& random winner : ", winner)
@@ -292,6 +300,7 @@ def leave_room():
 def lock_room():
     room = crud.get_events_by(event_id = session['room'])
 
+    # Currently selects a random winner if tied for most votes
     if room.voting_style == "fptp":
         if room.completed == False:
             nominees = {}
@@ -376,7 +385,7 @@ def item_detail(item_code):
         return render_template("item_details_bg.html", details = details)
     elif choice.type == "movie" or choice.type =="tv":
         details = data['results'][0]
-        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
+        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path'] if details['poster_path'] and details['poster_path'] != None else ""
         return render_template("item_details_shows.html", details = details, poster_url = poster_url)
     elif choice.type == "vgame":
         title= data['results'][0]['slug']
@@ -399,6 +408,7 @@ def add_choice():
     event_id = itemData['event_id']
     room_code = itemData['room_code']
     create_choice = itemData['create_choice']  # 1 adds selected item as choice to room/event
+    art = itemData['art']
 
     rawg_title = "-".join(title.split(" ")).lower()  # used for searching to rawg.io
     room = crud.get_events_by(room_code=room_code)
@@ -421,7 +431,7 @@ def add_choice():
 
     # 1 adds selected item as choice to room/event
     if create_choice == "1":
-        new_choice = crud.create_choice(choice_type, title, event_id)
+        new_choice = crud.create_choice(choice_type, title, event_id, art)
         db.session.add(new_choice)
         db.session.commit()
 
@@ -430,29 +440,32 @@ def add_choice():
 
 
     if choice_type == "movie":
-#        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
         for movie in data['results']:
-            details.append({"data": [movie['title'], choice_type, event_id, room_code]})
+            art = "https://image.tmdb.org/t/p/original" + movie['poster_path'] if movie['poster_path'] and movie['poster_path'] != None else ""
+            details.append({"data": [movie['title'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "tv":
         for item in data['results']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = "https://image.tmdb.org/t/p/original" + item['poster_path'] if item['poster_path'] and item['poster_path'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "boardgame":
         for item in data['games']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = item['thumb_url'] if item['thumb_url'] and item['thumb_url'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 #        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
 
     elif choice_type == "vgame":
         for item in data['results']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = item['background_image'] if item['background_image'] and item['background_image'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "custom":
-        details.append({"data": [title, choice_type, event_id, room_code]})
+        details.append({"data": [title, choice_type, event_id, room_code, art]})
 
         return jsonify(details)
 
@@ -608,5 +621,6 @@ def disconnect_request():
 if __name__ == "__main__":
     connect_to_db(app)
     #app.run(host="0.0.0.0", debug = True)
+    # socketio.run(app, debug = False)
     socketio.run(app, debug = True)
 

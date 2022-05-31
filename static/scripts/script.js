@@ -80,7 +80,6 @@ $(document).ready(function() {
 
     // Placeholder room refrsher
     socket.on('refresh_room', function(data) {
-        alert (" punted! ")
         window.location = `/room/${data.room_code}`
     })
 
@@ -109,13 +108,15 @@ $(document).ready(function() {
 // Live update choices being added to an event/room
 async function searchAPI(evt) {
     evt.preventDefault();
+    console.log(JSON.stringify(evt))
 
     const formData = {
         event_id: document.querySelector('[name=event_id').value,
         room_code: document.querySelector('[name=form_room_code').value,
         create_choice: document.querySelector('[name=create_choice').value,
         choice_type: document.querySelector('[name=choice_type').value,
-        choice_title: document.querySelector('[name=choice_title').value
+        choice_title: document.querySelector('[name=choice_title').value,
+        art: document.querySelector('[name=art').value
     };
 
     const requestOptions = {
@@ -132,7 +133,7 @@ async function searchAPI(evt) {
     apiData.forEach( item =>
         $(".search_result_container").append(`<div class="search_result_item" id="${item.data[0]}" draggable="true"
         onDragStart="onDragStart(event)" onDragEnd="onDragEnd(event)" choice_title="${item.data[0]}" choice_type=${item.data[1]}
-        event_id=${item.data[2]} room_code=${item.data[3]} create_choice="1">${item.data[0]} </div>`)
+        event_id=${item.data[2]} room_code=${item.data[3]} create_choice="1" art=${item.data[4]}>${item.data[0]}</div>`)
 )}
 
 
@@ -160,7 +161,8 @@ async function onDrop(event) {
         'choice_type': draggableElement.getAttribute('choice_type'),
         'event_id': draggableElement.getAttribute('event_id'),
         'room_code': draggableElement.getAttribute('room_code'),
-        'create_choice': draggableElement.getAttribute('create_choice')
+        'create_choice': draggableElement.getAttribute('create_choice'),
+        'art': draggableElement.getAttribute('art')
     }
 
     const requestOptions = {

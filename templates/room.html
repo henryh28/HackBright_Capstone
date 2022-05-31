@@ -8,7 +8,7 @@
 <div id="room_container">
     <div class="vertical_flex_wide col-md-12">
         <div class = "flex_container">
-            <h2 class="column_header_left col-md-5">Room: {{ room.description }} [ {{ room.room_code }} ]</h2>
+            <h2 class="column_header_left col-md-5">[ {{ room.admin.user_name }} ]: {{ room.description }} [ {{ room.room_code }} ]</h2>
             <h2 class="column_header_middle col-md-4">Chat Window</h2>
             <h2 class="column_header_right col-md-2">Participants</h2>        
         </div>
@@ -26,7 +26,8 @@
                         <input type="hidden" name="event_id" value={{ room.event_id }} />
                         <input type="hidden" name="form_room_code" value={{ room.room_code }} />
                         <input type="hidden" name="create_choice" value=0 />
-        
+                        <input type="hidden" name="art" value="None" />
+                        
                         <label for="choice_type" id="choice_type">Type: </label> 
                         <select name="choice_type">
                             <option value="boardgame">Boardgame</option>
@@ -80,7 +81,6 @@
                                 <span class="choice_title">{{ choice.title }}</span>
                             {% endif %}
                             
-                            <button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
                             <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
                         </div>
                     {% endfor %}
@@ -157,6 +157,10 @@
     </div>
 
 
+    <div>
+
+        {{ search_results }}
+    </div>
 
 
 

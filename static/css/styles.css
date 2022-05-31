@@ -121,10 +121,11 @@ input[type='radio'] {
 .room_choices {
     display: flex;
     flex-direction: column;
-    background-color: seashell;
+    background-color: plum;
     overflow-y: auto;
     height: 150px;
 }
+
 
 .column_header_right {
     flex-grow: 1;
@@ -153,8 +154,21 @@ input[type='radio'] {
 
 .choice_title {
     flex-grow: 1;
-/*    overflow-x: auto; */
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 16;
+    color: seashell;
+    -webkit-text-stroke: 0.5px lavender;
+	text-shadow: -1px 1px 2px cornflowerblue,
+				  1px 1px 2px cornflowerblue,
+				  1px -1px 5px cornflowerblue,
+				  -1px -1px 5px cornflowerblue;
+
+
+
 }
+
+
 
 
 .btn_placeholder {
@@ -303,8 +317,6 @@ th {
 }
 
 td, td a {
-    text-align: center;    
-
     font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
     font-weight: bold;

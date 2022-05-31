@@ -16,7 +16,11 @@
         </div>
 
         <div class = "item_poster">
-            <img src={{ poster_url }}>
+            {% if details['poster_path'] and details['poster_path'] != None %}
+                <img src={{ poster_url }}>
+            {% else %}
+                No pictures
+            {% endif %}
         </div>
     
     </div>
