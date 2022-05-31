@@ -83,8 +83,13 @@ def get_all_votes():
     return Vote.query.all()
 
 
-def get_vote_by(**data):
-    """ Search for and return a vote by specified parameters """
-    return Vote.query.filter_by(**data).first()
+# def get_vote_by(**data):
+#     """ Search for and return a vote by specified parameters """
+#     return Vote.query.filter_by(**data).first()
 
+def get_votes_by(**data):
+    """ Search for and return all votes by a specific user """
+    return Vote.query.filter_by(**data).all()
+
+        
 

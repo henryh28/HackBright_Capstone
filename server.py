@@ -479,28 +479,34 @@ def remove_choice():
 def submit_vote():
     """ Process submitted votes """
 
-    print (" &&&&&&&&&&&&& form: ", request.form)
-
 #    all_votes_for_choices = []
     room_code = request.form['room_code']
     vote_strength = request.form['vote_strength']
     user_id = session['user'] if session['user'] else None
     chart_type = request.form['chart_type']
     results = {'chart_type': chart_type}
+    existing_vote = None
+
+    room = crud.get_events_by(room_code = room_code)
+    room_choices = room.choices     # retuns a list
 
     if 'choice_id' in request.form:
         choice_id = request.form['choice_id']
-        print (" ((((((( choice id: ", choice_id)
-        vote = crud.create_vote(vote_strength, user_id, choice_id)
-        print (" ??? vote : ", vote)
-        db.session.add(vote)
-        db.session.commit()
 
-    room = crud.get_events_by(room_code = room_code)
-    room_choices = room.choices #list
+    
+        for choice in room.choices:
+            for vote in choice.votes:
+                if vote.user_id == user_id:
+                    existing_vote = vote
+                    break
 
-#    for choices in room_choices:
-#        all_votes_for_choices.append(choices.votes)
+        if existing_vote != None:
+            existing_vote.choice_id = choice_id
+            db.session.commit()
+        else:
+            vote = crud.create_vote(vote_strength, user_id, choice_id)
+            db.session.add(vote)
+            db.session.commit()
 
     for choice in room_choices:
         results[choice.title] = len(choice.votes)
@@ -552,7 +558,7 @@ def on_join(message):
 
     join_room(room)
     print (username, " >>> socket join event <<< ", room)
-    emit('status', {'msg': username + " joined this room"}, room = room)
+    emit('status', {'msg': username + " joined this room", 'username': username}, room = room)
 
 @socketio.on('message')
 def handle_message(message):
