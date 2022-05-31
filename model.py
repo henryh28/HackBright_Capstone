@@ -54,6 +54,7 @@ class Event (db.Model):
     completed = db.Column(db.Boolean, default = False)
 
     # choices: all choices submitted for this event
+    # participants: all users that submitted choices for the event
 
     admin_id = db.Column(db.Integer, db.ForeignKey("users.user_id"))
     admin = db.relationship("User", backref = "rooms")
@@ -107,6 +108,9 @@ class Vote (db.Model):
     def __repr__(self):
         """ Returns vote info """
         return (f"< Vote vote_id: {self.vote_id} | amount: {self.amount} | user: {self.user} | choice: {self.choice} >")
+
+    def all_votes_by_user(self, user_id):
+        """ Returns all votes by a specific user """
 
     def as_dict(self):
         """ Returns object's attribute as a dictionary """

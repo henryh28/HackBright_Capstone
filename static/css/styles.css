@@ -182,7 +182,7 @@ input[type='radio'] {
     margin-bottom: auto;
 }
 
-.room_participants {
+#room_participants {
     border-style: solid;
     border-width: 1px;
     border-color: cornflowerblue;
