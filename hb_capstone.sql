@@ -270,6 +270,8 @@ COPY public.choices (choice_id, type, title, art, event_id) FROM stdin;
 59	movie	Anna and the Apocalypse	https://image.tmdb.org/t/p/original/pb60xSzUnS9D5iDvrV8N6QOG3ZR.jpg	10
 60	movie	Jojo Rabbit	https://image.tmdb.org/t/p/original/7GsM4mtM0worCtIVeiQt28HieeN.jpg	10
 61	boardgame	Wingspan	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629325193747.png	10
+62	tv	Arcane	https://image.tmdb.org/t/p/original/ohGz4HDYGTite1GmRhRuBMVAn03.jpg	10
+64	tv	The Legend of Korra	https://image.tmdb.org/t/p/original/nhP0VGO2GSZbL4PUgmA6Vja48aM.jpg	10
 \.
 
 
@@ -317,6 +319,7 @@ COPY public.users (user_id, first_name, last_name, user_name, password, email, c
 6	shanny	bunny	shan	$2b$12$TesWh5uES1oRYpNaG3X4TO/qeGS.Ro5bgoTG08HLz6S2e1ioR9loW	shanny@bunny.com	#ffffff	#000000
 3	max	caulfield	max	$2b$12$itl4JfiUJ47hiYQ51Ml/HOwQJMszu/eauCnKqsSKHXMy6YoYa51hu	max@blackwell.edu	#3855dc	#ffffff
 4	chloe	price	chloe	$2b$12$faM4bwoXyPEYuZR8Hl9.pOQBYuTNzVw0toZ28/5u24QFd3WtzUEIG	chloe@arcadia.bay	#932093	#9ad7f3
+7	guest	user	guest	$2b$12$iM2y0IcgFPw1EmhTDHMU3eT5NkqwDW9vupSoh31mU3V.Gu/jtokRS	guest@user.com	#223CC1	#FFFFFF
 \.
 
 
@@ -344,6 +347,15 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 17	1	2	51
 18	1	4	47
 19	1	6	48
+20	1	5	15
+21	1	5	45
+22	1	5	47
+23	1	7	50
+24	1	7	43
+25	1	7	18
+26	1	1	16
+27	1	1	44
+28	1	1	51
 \.
 
 
@@ -351,7 +363,7 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 -- Name: choices_choice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.choices_choice_id_seq', 61, true);
+SELECT pg_catalog.setval('public.choices_choice_id_seq', 64, true);
 
 
 --
@@ -365,14 +377,14 @@ SELECT pg_catalog.setval('public.events_event_id_seq', 10, true);
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 6, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 7, true);
 
 
 --
 -- Name: votes_vote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.votes_vote_id_seq', 19, true);
+SELECT pg_catalog.setval('public.votes_vote_id_seq', 28, true);
 
 
 --
