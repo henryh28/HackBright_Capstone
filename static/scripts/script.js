@@ -54,9 +54,7 @@ $(document).ready(function() {
             choice_item = choice_item + `<span class="choice_title">${data.choice.title}</span>`
         }
 
-        choice_item = choice_item + `<button type="button" class="btn_placeholder" name="placeholder">Placeholder </button>
-        <button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="${ data.choice.choice_id }"> Remove </button><br>
-        </div>`
+        choice_item = choice_item + `<button type="submit" class="btn_remove" formaction = "/remove_choice" name="choice_id" value="${ data.choice.choice_id }"> Remove </button><br></div>`
 
         const event_choice_list = document.querySelector(".room_choices")
         event_choice_list.insertAdjacentHTML('beforeend', choice_item)
