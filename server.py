@@ -76,9 +76,9 @@ def login():
             session['user_chat_color'] = existing_user.chat_color
             session['user_chat_bg_color'] = existing_user.chat_bg_color
         else:
-            flash("Incorrect password")
+            flash("Incorrect password", "warning")
     else:
-        flash("Incorrect credentials")
+        flash("Incorrect credentials", "warning")
 
     return redirect("/")
 
@@ -121,6 +121,7 @@ def create_account():
     # POST method processes form from account creation
 
     if request.method == "POST":
+
         fname = request.form['fname']
         lname = request.form['lname']
         uname = request.form['uname']
@@ -131,19 +132,22 @@ def create_account():
         existing_email = crud.get_user_by(email=email)
 
         if existing_user_name:
-            flash("That username is already in use")
+            flash("That username is already in use", "warning")
+            return render_template("account.html", details = dict(request.form))
         if existing_email:
-            flash("That email is already in use")
+            flash("That email is already in use", "warning")
+            return render_template("account.html", details = dict(request.form))
             
         if not existing_email and not existing_user_name:
             hashed_password = Bcrypt().generate_password_hash(pw).decode('UTF-8')
             new_user = crud.create_user(fname, lname, uname, hashed_password, email)
             db.session.add(new_user)
             db.session.commit()
+            flash(f"Account for {uname} created!", "message")
 
         return redirect("/")
     else:
-        return render_template("account.html")
+        return render_template("account.html", details = {})
 
 
 # View profile for current user
@@ -164,11 +168,11 @@ def view_user_profile():
                 current_user.password = Bcrypt().generate_password_hash(request.form['new_pw']).decode('UTF-8')
                 db.session.add(current_user)
                 db.session.commit()
-                flash ("Password successfully changed!")
+                flash ("Password successfully changed!", "message")
             else:
-                flash ("'New Password' and 'Confirm New Password' value does not match!")
+                flash ("'New Password' and 'Confirm New Password' value does not match!", "warning")
         else:
-            flash ("Invalid password, calling the Feds.")
+            flash ("Invalid password, calling the Feds.", "error")
 
         return redirect(request.url)
 
@@ -198,12 +202,11 @@ def set_chat_bg_color():
 
 @app.route ("/send_sms", methods=["POST"])
 def send_sms():
-    print (" =====++++++++++ sms : ", request.form)
 
     phone_number = "+1" + request.form['phone_number'].replace("-","")
     sms_content = request.form['sms_message']
 
-    print (phone_number, "  phone | msg ", sms_content)
+    print (phone_number, "  phone |**********| msg ", sms_content)
 
 
     message = sms_client.messages \
@@ -214,7 +217,7 @@ def send_sms():
                     )
 
     print(message.sid, " sent this message >>>>> ", message)
-
+    flash("Text message sent to " + phone_number, "message")
 
     return redirect("/")
 
@@ -253,6 +256,7 @@ def enter_room(room_code):
     # POST method allows for user to join a room based on 4 character code
 
     if request.method == "POST":
+        print (" &&&&&&&&&& req form: ", request.form)
         room_code = request.form['room_code']
 
     room = crud.get_events_by(room_code = room_code)
@@ -262,7 +266,7 @@ def enter_room(room_code):
         session['room_code'] = room_code
         username = session['user_name']
     else:
-        flash("Invalid room code")
+        flash("Invalid room code", "error")
         return redirect("/")    
 
 
@@ -338,9 +342,9 @@ def remove_room():
     if session['user'] == remove_event.admin_id:
         db.session.delete(remove_event)
         db.session.commit()
-        flash("room deleted!")
+        flash("room deleted!", "message")
     else:
-        flash("You're not authorized to delete this room")
+        flash("You're not authorized to delete this room", "error")
 
 
     return redirect("/view_user_profile")
@@ -525,9 +529,32 @@ def submit_vote():
         results[choice.title] = len(choice.votes)
 
 #    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices, data=data)
-    return render_template("results.html", room = room, results=results, chart_type=chart_type)
+    return render_template("results.html", room = room, results=results)
 
 
+@app.route ("/react_chart")
+def react_chart():
+    """ Fetch data to display chart using react """
+
+    print (" &&&&&&&&& Feed react chart data now!!!!!!!!!!")
+
+    room_code = "lv58"
+    room = crud.get_events_by(room_code = room_code)
+    room_choices = room.choices     # retuns a list
+    print (room, " room >>>>>> choices : ", room_choices)
+
+
+    chart_type = "bar"
+    results = {'chart_type': chart_type}
+
+    for choice in room_choices:
+        results[choice.title] = len(choice.votes)
+
+    print (" ==== dict ============ ", results)
+
+
+    # return render_template("react_test.html")
+    return results
 
 # ================= Development Related =================
 
@@ -581,7 +608,7 @@ def handle_message(message):
 
 
     if session['user_chat_color'] == None:
-        flash (" tell henry that the chat color setting is broken")
+        flash (" tell henry that the chat color setting is broken", "warning")
         session['user_chat_color'] = 'black'
 
 

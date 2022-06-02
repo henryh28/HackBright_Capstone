@@ -1,10 +1,97 @@
 
 
 /* ---------- General ----------*/
+
+:root {
+    --bg_color: #292F33;
+    --fg_color: seashell;
+    --font_color: snow;
+    --font_shadow_color: cornflowerblue;
+
+    --hover_fg: seashell;
+    --hover_bg: rgb(158, 181, 254);
+    --active_fg: lavender;
+    --active_bg: cornflowerblue;
+}
+
+
 html, body  {
     height: 100%;
     padding-top: 40px;
+    font-size: 30;
+
 }
+
+
+
+.navbar {
+    /* background-image: linear-gradient(to bottom right, var(--bg_color), var(--fg_color)); */
+    background-color: var(--bg_color);
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30;
+
+    color: var(--font_color);
+    -webkit-text-stroke: 0.5px lavender;
+	text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 1px var(--font_shadow_color),
+				  -1px -1px 1px var(--font_shadow_color);
+
+}
+
+.btn {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30;
+    color: var(--font_color);
+    -webkit-text-stroke: 0.5px lavender;
+	text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 1px var(--font_shadow_color),
+				  -1px -1px 1px var(--font_shadow_color);
+}
+
+.btn.btn-outline-light:hover {
+    background-color: var(--hover_bg);
+    color: var(--hover_fg);
+}
+
+.btn.btn-outline-light:active {
+    background-color: var(--active_fg);
+    color: var(--active_bg);
+}
+
+.btn.btn-bg-dark {
+    background-image: linear-gradient(to bottom right, lavender, silver);
+    border: 5px outset cornflowerblue;
+    color: snow;
+    -webkit-text-stroke: 1.5px white;
+	text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 5px var(--font_shadow_color),
+				  -1px -1px 5px var(--font_shadow_color);
+}
+
+
+
+
+.navbar a {
+    color: seashell;
+}
+
+.navbar a:hover {
+    background-color: var(--hover_bg);
+    color: var(--hover_fg);
+}
+
+.navbar a:active {
+    background-color: var(--active_bg);
+    color: var(--active_fg);
+}
+
+.navbar-nav > li > .dropdown-menu { 
+    background-color: #292F33; 
+}
+
 
 input[type='radio'] { 
     transform: scale(2); 
@@ -35,17 +122,61 @@ input[type='radio'] {
     color: white;
 }
 
-.flash-message {
-    color: red;
-    font-weight: bold;
-    font-size: 20px;
-}
-
 
 
 .copyleft {
     display: inline-block;
     transform: rotate(180deg);
+}
+
+.flash-error {
+    font-size: 40px;
+    background-color: darkred;
+    background-image: linear-gradient(to bottom right, lightpink, red);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;   
+    z-index: 1; 
+}
+
+
+.flash-warning {
+    font-size: 30px;
+    background-color: thistle;
+    background-image: linear-gradient(to bottom right, plum, 25%, lightpink, orchid);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;   
+    z-index: 1; 
+}
+
+
+.flash-message {
+    font-size: 30px;
+    background-color: white;
+    background-image: linear-gradient(to bottom, lightskyblue 35%, snow, 70%,hotpink);
+    background-size: 100%;
+    -webkit-background-clip: text;
+    -moz-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    -moz-text-fill-color: transparent;    
+    z-index: 1;
+}
+
+#flash_message_container {
+    display: flex;
+    justify-content: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    color: lightcoral;
+    font-weight: bolder;
+    font-style: italic;
+
+
 }
 
 
@@ -85,13 +216,24 @@ input[type='radio'] {
     flex-direction: column;
 }
 
+/* ---------- room_create.html ----------*/
+
+#account_container {
+    height: 95%;
+    width: 75%;
+    padding-top: 2em;
+    padding-left: 25%;
+}
+
+
 
 /* ---------- room_create.html ----------*/
 
 #room_container {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     height: 95%;
+    padding-left: 3em;
 }
 
 .voting_method_description {

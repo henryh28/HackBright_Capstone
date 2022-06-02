@@ -231,7 +231,6 @@ COPY public.choices (choice_id, type, title, art, event_id) FROM stdin;
 12	movie	Clerks		3
 13	movie	Your Name		3
 14	boardgame	Concordia	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629323022645.jpg	4
-15	boardgame	Lords of Waterdeep	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629324168873.jpg	4
 16	boardgame	Stone Age	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1559254167104-512BzBFksXNL.jpg	4
 18	boardgame	Splendor	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1559254164722-51AHDwGznvL.jpg	4
 19	boardgame	Viticulture	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1545169920564	4
@@ -272,6 +271,11 @@ COPY public.choices (choice_id, type, title, art, event_id) FROM stdin;
 61	boardgame	Wingspan	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629325193747.png	10
 62	tv	Arcane	https://image.tmdb.org/t/p/original/ohGz4HDYGTite1GmRhRuBMVAn03.jpg	10
 64	tv	The Legend of Korra	https://image.tmdb.org/t/p/original/nhP0VGO2GSZbL4PUgmA6Vja48aM.jpg	10
+65	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	4
+67	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+68	boardgame	Five Tribes	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1559254126853-611YVb5GCwL.jpg	\N
+70	boardgame	Lords of Waterdeep	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629324168873.jpg	\N
+71	boardgame	Scythe: Invaders from Afar	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1610393424024	\N
 \.
 
 
@@ -320,6 +324,11 @@ COPY public.users (user_id, first_name, last_name, user_name, password, email, c
 3	max	caulfield	max	$2b$12$itl4JfiUJ47hiYQ51Ml/HOwQJMszu/eauCnKqsSKHXMy6YoYa51hu	max@blackwell.edu	#3855dc	#ffffff
 4	chloe	price	chloe	$2b$12$faM4bwoXyPEYuZR8Hl9.pOQBYuTNzVw0toZ28/5u24QFd3WtzUEIG	chloe@arcadia.bay	#932093	#9ad7f3
 7	guest	user	guest	$2b$12$iM2y0IcgFPw1EmhTDHMU3eT5NkqwDW9vupSoh31mU3V.Gu/jtokRS	guest@user.com	#223CC1	#FFFFFF
+8	temp	user	temp	$2b$12$E9nCPZJKGn7AoCxDQHlwJOn6SKYMuVLugwoR22MupuwUCIA2/6Uwe	temp@user.com	#223CC1	#FFFFFF
+9	grey	bunny	grey	$2b$12$dboyuU46Ox6h40fOh/cX7.cSAnbkHR19eq//OwImeVxi8btCg1vbi	grey@bunny.com	#223CC1	#FFFFFF
+10	ellie	bunny	ellie	$2b$12$5t0G2kyP/HHCyYU/cD060eSa7R/p0uBGXXXwF3kWmpi.VRZBw9G/.	ellie@bunny.com	#223CC1	#FFFFFF
+11	fake	user	fake	$2b$12$H/YbmV6THSJWa2XMUvXSNOhvRO.lh0EHkrb7IL7NSPc4IOiAEUJTW	fake@user.com	#223CC1	#FFFFFF
+12	test	user	test	$2b$12$j/ANSLMlNlRVZ20UWj.D1.IzVrLnTzMYotySzHLbE1Jyss5Ms0d2e	test@user.com	#223CC1	#FFFFFF
 \.
 
 
@@ -337,7 +346,6 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 7	1	2	1
 8	1	3	1
 9	1	2	18
-10	1	6	14
 11	1	3	19
 13	1	2	43
 14	1	3	40
@@ -347,15 +355,28 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 17	1	2	51
 18	1	4	47
 19	1	6	48
-20	1	5	15
 21	1	5	45
 22	1	5	47
 23	1	7	50
 24	1	7	43
-25	1	7	18
 26	1	1	16
 27	1	1	44
 28	1	1	51
+10	1	6	\N
+20	1	5	\N
+29	1	\N	\N
+30	1	10	19
+31	1	10	42
+32	1	10	49
+33	1	9	65
+34	1	9	41
+35	1	9	47
+25	1	7	18
+37	1	12	2
+38	1	12	9
+36	1	12	14
+39	1	12	45
+40	1	6	18
 \.
 
 
@@ -363,28 +384,28 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 -- Name: choices_choice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.choices_choice_id_seq', 64, true);
+SELECT pg_catalog.setval('public.choices_choice_id_seq', 71, true);
 
 
 --
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.events_event_id_seq', 10, true);
+SELECT pg_catalog.setval('public.events_event_id_seq', 15, true);
 
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 7, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 12, true);
 
 
 --
 -- Name: votes_vote_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.votes_vote_id_seq', 28, true);
+SELECT pg_catalog.setval('public.votes_vote_id_seq', 40, true);
 
 
 --
