@@ -48,10 +48,10 @@ $(document).ready(function() {
         }
 
         if (data.choice.type != "custom") {
-            choice_item = choice_item + `<a href="/details/${data.choice.choice_id}" class="choice_title" target="popup"
+            choice_item = choice_item + `&nbsp;<a href="/details/${data.choice.choice_id}" class="choice_title" target="popup"
             onclick="window.open('/details/${data.choice.choice_id}', 'popup', 'width=1000, height=700'); return false;">${data.choice.title}</a>`
         } else {
-            choice_item = choice_item + `<span class="choice_title">${data.choice.title}</span>`
+            choice_item = choice_item + `&nbsp;<span class="choice_title">${data.choice.title}</span>`
         }
 
         choice_item = choice_item + `<button type="submit" class="btn btn-bg-dark" formaction = "/remove_choice" name="choice_id" value="${ data.choice.choice_id }"> Remove </button><br></div>`
@@ -225,8 +225,9 @@ function display_voting_method_info(event) {
         document.getElementById("donate").style.display="None";
     }
     else if (event.target.value == 'random') {
-        const content = "Once all options are entered, the room will be locked and a winning option will be randomly chosen"
-        anchor.textContent = content;
+        const content = 'Once all options are entered, the room will be locked and a winning option will be randomly chosen <br><br> \
+        <a href="https://en.wikipedia.org/wiki/Random_ballot">Random Ballot</a>'
+        anchor.innerHTML = content;
         document.getElementById("donate").style.display="None";
     }
     else if (event.target.value == 'alternative') {

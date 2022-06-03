@@ -112,6 +112,12 @@ def server_error(event):
 
     return render_template("500.html")
 
+@app.route ("/error")
+def simulate_500():
+    """ Simulate a 500 error for testing"""
+
+
+
 # ================= User related  =================
 
 @app.route ("/account", methods=["POST", "GET"])
@@ -390,20 +396,34 @@ def item_detail(item_code):
     results = requests.get(api_url, params=payload)
     data = results.json()
 
+    print (" &&&&&&&&&&& json results ]]]]]]]]] ", data)
+
     if choice.type == "boardgame":
         details = data['games'][0]
+
         return render_template("item_details_bg.html", details = details)
     elif choice.type == "movie" or choice.type =="tv":
         details = data['results'][0]
+        show_id = details['id']
+        show_data = requests.get(f"https://api.themoviedb.org/3/{choice.type}/{show_id}?api_key={TMDB_KEY}&language=en-US").json()
+
+        # print (" ========== MORE DATA : ", show_data)
+
         poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path'] if details['poster_path'] and details['poster_path'] != None else ""
-        return render_template("item_details_shows.html", details = details, poster_url = poster_url)
+        bg_url = "https://image.tmdb.org/t/p/original" + details['backdrop_path'] if details['backdrop_path'] and details['backdrop_path'] != None else ""
+        genres = ", ".join([genre['name'] for genre in show_data['genres'] ])
+        # print (" ======== genres : ", genres)
+
+        return render_template("item_details_shows.html", details = show_data, poster_url = poster_url, choice_type = choice.type, genres = genres)
     elif choice.type == "vgame":
         title= data['results'][0]['slug']
         game_url = api_url + f"/{title}"
         game_data = requests.get(game_url, params={"key": RAWG_KEY})
         details = game_data.json()
 
-        return render_template("item_details_vg.html", details = details)
+        platforms = ", ".join([item['platform']['name'] for item in details['parent_platforms']])
+
+        return render_template("item_details_vg.html", details = details, platforms = platforms)
 
 
 # Adds a choice to a room/event
