@@ -19,16 +19,23 @@ html, body  {
     height: 100%;
     padding-top: 40px;
     font-size: 30;
-
 }
 
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: thistle;
+    color: red;
+}
 
 
 .navbar {
     /* background-image: linear-gradient(to bottom right, var(--bg_color), var(--fg_color)); */
     background-color: var(--bg_color);
     font-family: 'Ubuntu', sans-serif;
-    font-size: 30;
+    font-size: 17px;
 
     color: var(--font_color);
     -webkit-text-stroke: 0.5px lavender;
@@ -61,8 +68,13 @@ html, body  {
 }
 
 .btn.btn-bg-dark {
+    display: flex;
     background-image: linear-gradient(to bottom right, lavender, silver);
-    border: 5px outset cornflowerblue;
+    border-radius: 12px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
+    border: 4px outset cornflowerblue;
     color: snow;
     -webkit-text-stroke: 1.5px white;
 	text-shadow: -1px 1px 1px var(--font_shadow_color),
@@ -70,6 +82,8 @@ html, body  {
 				  1px -1px 5px var(--font_shadow_color),
 				  -1px -1px 5px var(--font_shadow_color);
 }
+
+
 
 
 
@@ -165,6 +179,8 @@ input[type='radio'] {
     -webkit-text-fill-color: transparent; 
     -moz-text-fill-color: transparent;    
     z-index: 1;
+
+    -webkit-text-stroke: 1px thistle;
 }
 
 #flash_message_container {
@@ -206,8 +222,7 @@ input[type='radio'] {
     display: flex;
     flex-direction: column;
     padding: 1em;
-    border-style: solid;
-    border-width: 1px;
+    border: 3px ridge var(--font_shadow_color);
 }
 
 
@@ -216,7 +231,31 @@ input[type='radio'] {
     flex-direction: column;
 }
 
-/* ---------- room_create.html ----------*/
+/* ---------- view_profile.html ----------*/
+
+.header_text {
+    text-align: center;
+
+    background-color: var(--bg_color);
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+
+    color: var(--font_color);
+    -webkit-text-stroke: 0.5px lavender;
+	text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 1px var(--font_shadow_color),
+				  -1px -1px 1px var(--font_shadow_color);
+}
+
+.profile_container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 1em;
+}
+
+
+/* ---------- account.html ----------*/
 
 #account_container {
     height: 95%;
@@ -231,9 +270,12 @@ input[type='radio'] {
 
 #room_container {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     height: 95%;
-    padding-left: 3em;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30;
+
 }
 
 .voting_method_description {
@@ -244,6 +286,17 @@ input[type='radio'] {
     display: None;
 }
 
+.blink {
+    animation: blinker 1s linear infinite;
+    color: red;
+    font-size: large;
+}
+  
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
 
 
 /* ---------- room.html ----------*/
@@ -251,6 +304,9 @@ input[type='radio'] {
 .event_room {
     display: flex;
     height: 90%;
+
+    justify-content: space-evenly;
+
 }
 
 .search_result_container {
@@ -263,11 +319,19 @@ input[type='radio'] {
 .room_choices {
     display: flex;
     flex-direction: column;
-    background-color: plum;
+    background-color: snow;
     overflow-y: auto;
-    height: 150px;
+    height: 200px;
 }
 
+#form_add_choices {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+}
 
 .column_header_right {
     flex-grow: 1;
@@ -287,10 +351,28 @@ input[type='radio'] {
 
 .room_choice_items {
     display: flex;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    gap: 10px;
+    align-items: center;
+    gap: 8px;
 /*    height: 30px; */
+}
+
+
+.room_column_header {
+    display: flex;
+    justify-content: space-evenly;
+
+    text-align: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+
+    color: snow;
+    -webkit-text-stroke: 1px deepskyblue;
+	text-shadow: -1px 1px 2px var(--font_shadow_color),
+				  1px 1px 2px var(--font_shadow_color),
+				  1px -1px 2px var(--font_shadow_color),
+				  -1px -1px 2px var(--font_shadow_color);
+
 }
 
 
@@ -298,34 +380,33 @@ input[type='radio'] {
     flex-grow: 1;
 
     font-family: 'Ubuntu', sans-serif;
-    font-size: 16;
-    color: seashell;
-    -webkit-text-stroke: 0.5px lavender;
-	text-shadow: -1px 1px 2px cornflowerblue,
-				  1px 1px 2px cornflowerblue,
-				  1px -1px 5px cornflowerblue,
-				  -1px -1px 5px cornflowerblue;
+    font-size: 17px;
+    color: snow;
+    -webkit-text-stroke: 0.5px orchid;
+	text-shadow: -1px 1px 1px deepskyblue,
+				  1px 1px 1px deepskyblue,
+				  1px -1px 1px deepskyblue,
+				  -1px -1px 1px deepskyblue;
 
-}
-
-
-
-
-.btn_placeholder {
-    border-radius: 8px;
-}
-
-.btn_remove {
-    border-radius: 8px;
 }
 
 
 /* Chat related */
 .chat_window {
-    border-style: solid;
-    border-width: 1px;
+
+    display: flex;
+    flex-direction: column;
+    padding: 1em;
+
+    border: 3px ridge var(--font_shadow_color);
     overflow-y: auto;
-    height: 90%;
+    height: 95%;
+}
+
+#form_room_chat {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 #room_chat_box {
@@ -374,6 +455,25 @@ input[type='radio'] {
     overflow-y: auto;
 }
 
+
+/* ---------- base.html ----------*/
+
+#footer {
+    display: flex;
+    justify-content: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 17px;
+
+    color: violet;
+    -webkit-text-stroke: 0.5px skyblue;
+	/* text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 1px var(--font_shadow_color),
+				  -1px -1px 1px var(--font_shadow_color); */
+
+
+}
 
 /* ---------- results.html ----------*/
 
@@ -460,12 +560,15 @@ td, td a {
     font-family: 'Ubuntu', sans-serif;
     font-size: 20px;
     font-weight: bold;
-    color: var(--chat_color);
+    color: #9BA3EB;
     text-align: center;
     letter-spacing: 2px;
-    text-shadow: 3px 3px 20px var(--chat_bg_color),
-      -2px 1px 30px var(--chat_bg_color);
 
+    /* -webkit-text-stroke: 0.5px #FFE3A9; */
+	text-shadow: -1px 1px 0.5px #F806CC,
+				  1px 1px 0.5px #F806CC,
+				  1px -1px 0.5px #F806CC,
+				  -1px -1px 0.5px #F806CC;
 }
 
 
@@ -479,9 +582,6 @@ td, td a {
 
 .td_room_code {
     background-image: linear-gradient(to right, snow, white);
-}
-
-.td_room_link {
 }
 
 

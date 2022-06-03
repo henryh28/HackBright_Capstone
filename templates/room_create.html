@@ -9,6 +9,7 @@
 <div id="room_container">
     <div class = "voting_method_description col-md-6 animate__animated animate__backInLeft">
         <h2>Create a Room</h2>
+        <br>
         <div id="create_room_description">
             {% if bernie %}
                 <img src="/static/img/bernie.jpg" width="90%" />
@@ -27,7 +28,19 @@
                 </audio>
 
             {% else %}
-                <strong>California Primary is June 7th.  Don't forget to vote!</strong>
+                <span class="blink"><strong>California Primary is June 7th.  Don't forget to vote!</strong></span>
+
+                <br><br>                  
+
+                <strong>
+                    After you create a room, find the room in your user profile page. <br><br>
+                    From there, you can click on the room to enter the room directly. <br><br>
+                    You can also see the room's 4 character code that you cand give to <br>
+                    other site users to let them join your room via the "Join Room" <br>
+                    button and input field in the Navigation Bar on the top of the page. <br>
+                </strong>
+
+
             {% endif %}
 
         </div>
@@ -49,7 +62,7 @@
                 <input type="radio" name="voting_style" value="alternative" onclick="display_voting_method_info(event)">
                 <label for="voting_style">Alternative Vote</label><br><br>
 
-                <input type="submit" class="btn btn-bg-dark" value="Create Room">                
+                <button type="submit" class="btn btn-bg-dark">Create Room</button>
             </form>            
         </div> <!-- Closes form-group div-->
 

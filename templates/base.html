@@ -77,8 +77,6 @@
                                 {% if session['room_code'] != None %}
                                     <li><a href="/room/{{ session['room_code'] }}" class="dropdown-item">Rejoin Room [{{ session['room_code'] }}]</a> </li>
                                     <li><a href="/leave_room" class="dropdown-item">Leave Room</a> </li>
-                                {% else %}
-                                    <li><a href="#" class="dropdown-item">Make an account</a></li>
                                 {% endif %}
                             </ul>
 
@@ -120,7 +118,7 @@
                     </ul>
 
                     <form method="POST">
-                        <input type="text" id="btn-room-code" name="room_code" class="ms-4 me-2 col-md-2" maxlength="4" placeholder="code">
+                        <input type="text" id="btn-room-code" name="room_code" class="ms-4 me-2 col-md-2" maxlength="4" placeholder="code" style="text-align: center;">
                         <input type="submit" formaction = "/room/----" class="btn btn-outline-light" value="Join Room">
                     </form><br>                    
     
@@ -155,7 +153,7 @@
 
         {% block footer %}
             {% if self._TemplateReference__context.name != "results.html" %}
-                <div class="flex_container_min">
+                <div id="footer">
                     (for dev: {{ self._TemplateReference__context.name }})
                     <footer><span class="copyleft">&copy;</span> 2022 Henry Hsu</footer>
                 </div>

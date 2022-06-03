@@ -6,7 +6,7 @@
 
 {% block body %}
 
-<div id = "account_container">
+<div id = "account_container" class="animate__animated animate__zoomInDown">
     <h2>Create Account or Login</h2>
 
     <div id = "account_input">
@@ -37,7 +37,7 @@
                 <input type="text" class="form-control" name="password" minlength="8" required value={{ details.password }}><br>
             </div>
 
-            <input type="submit" class="btn btn-bg-dark" formaction = "/account" value="Create Account">
+            <button type="submit" class="btn btn-bg-dark" formaction = "/account">Create Account</button>
         </form>
     </div>    
 

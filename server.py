@@ -234,7 +234,6 @@ def create_room():
         description = request.form['description']
         admin_id = session['user'] if session['user'] != None else 0
         new_room = crud.create_event(description, request.form['voting_style'], admin_id)
-        print (" >>>>>>>>>> new room: ", new_room)
         
         if request.form['voting_style'] in ['fptp', 'random']:
             db.session.add(new_room)
@@ -243,7 +242,7 @@ def create_room():
         elif request.form['voting_style'] == 'alternative':
             return render_template("room_create.html", bernie=True)
 
-        return redirect("/all_rooms")
+        return redirect("/")
     else:
         return render_template("room_create.html", bernie=False)
 
@@ -256,7 +255,6 @@ def enter_room(room_code):
     # POST method allows for user to join a room based on 4 character code
 
     if request.method == "POST":
-        print (" &&&&&&&&&& req form: ", request.form)
         room_code = request.form['room_code']
 
     room = crud.get_events_by(room_code = room_code)
@@ -272,7 +270,6 @@ def enter_room(room_code):
 
     if room.completed == True:
         winner = crud.get_choice_by(choice_id = room.winner)
-        print (" &&&&&&&&&&&&& random winner : ", winner)
         return render_template("voting_result.html", room = room, winner = winner)
     else:
         socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
@@ -319,11 +316,20 @@ def lock_room():
             # room.completed = True
             # db.session.commit()            
 
-    elif room.voting_style == "random":
+    elif room.voting_style == "random":        
         if room.completed == False:
-            winner = random.choice(room.choices)
+            # Below to eliminate duplicate entries
+            titles, choices = [], []
+            for choice in room.choices:
+                if choice.title not in titles:
+                    titles.append(choice.title)
+                    choices.append(choice.choice_id)
 
-    room.winner = winner.choice_id
+            winner = random.choice(choices)
+
+            # winner = random.choice(room.choices)  (this to count duplicate entries)
+
+    room.winner = winner
     room.completed = True
     db.session.commit()
 
@@ -342,7 +348,7 @@ def remove_room():
     if session['user'] == remove_event.admin_id:
         db.session.delete(remove_event)
         db.session.commit()
-        flash("room deleted!", "message")
+        flash("Room deleted!", "message")
     else:
         flash("You're not authorized to delete this room", "error")
 
