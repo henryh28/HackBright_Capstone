@@ -4,11 +4,10 @@
 
 
 {% block body %}
+    <div id="room_container" class="col-md-12">
+        <div class="profile_container col-md-6">
 
-    <div id="room_container" class="col-md-11">
-        <div class="vertical_flex col-md-6">
-
-            <span>Created Rooms</span>
+            <span class="header_text">Created Rooms</span>
             <div class="user_created_rooms">
                 <form method="POST">
                     <table style="height: 500px;">
@@ -22,11 +21,11 @@
                         {% for room in user.rooms %}
                         <tr>
                             <td class="td_remove" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
-                                <button type="submit" class="btn_table_remove" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}" style="width: 30px;"> - </button>
+                                <button type="submit" class="btn btn-bg-dark" formaction = "/remove_event" name="event_id" value="{{ room.event_id }}" style="width: 30px;"> - </button>
                             </td>
 
                             <td class="td_sms" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
-                                <button id="btn-sms" type="button" value={{ room.room_code}} onClick="prep_sms(value)">SMS</button>
+                                <button id="btn-sms" type="button" class = "btn btn-bg-dark" value={{ room.room_code}} onClick="prep_sms(value)">SMS</button>
                             </td>
 
                             <td class="td_room_code" style="--chat_color: {{ user.chat_color }}; --chat_bg_color: {{ user.chat_bg_color }}">
@@ -43,7 +42,7 @@
     
         </div> <!-- Closes .vertical_flex -->
 
-        <div class="vertical_flex" >
+        <div class="profile_container" >
             <div class="flex_container_min">
                 <div class="vertical_flex_min">
                     First Name: <br>
@@ -73,8 +72,8 @@
                     <div class="vertical_flex_min">
                             &emsp; <input type="text" name="current_pw" maxlength="50"><br>
                             &emsp; <input type="text" name="new_pw" minlength="8" maxlength="50"><br>
-                            &emsp; <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br>
-                            <input type="submit" value="Change Password">
+                            &emsp; <input type="text" name="confirm_new_pw" minlength="8" maxlength="50"><br><br>
+                            <button type="submit" class="btn btn-bg-dark">Change Password</button>
     
                         </form>
                     </div>
@@ -82,13 +81,8 @@
             </div> <!-- Closes .flex_container_min (change password form)-->
             <br>
                 
-            <div class="col-md-10">
-                No, we don't enforce weird non-sense character combinationfor your password because there
-                 <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">are</a> 
-                <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">more</a> 
-                <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">important</a> 
-                <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">factors!</a>    
-    
+            <div class="col-md-10" style="text-align: center;">
+                No, we <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">don't</a> <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">enforce</a> weird <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">non-sense</a> character <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">combinations</a>                
             </div>
 
             <br><br>
@@ -113,17 +107,14 @@
             <div class="vertical_flex_min">
                 <form method="post">
                     <div class="flex_container_min">
-                        <span class="col-md-2" style="text-align: left;">Phone #:</span>
-                        <span class="col-md-7" style="text-align: left;">
-                            &emsp;Message: 
-                        </span>
-                            &emsp; <button type="submit" formaction="/send_sms">Send Text</button>
+                        <div class="col-md-2" style="text-align: left;">Phone #:</div>
+                        <div class="col-md-9" style="text-align: left;">&emsp;Message: </div>
                     </div>
 
                     <div class="flex_container_min">
                         &emsp; <input id="phone_number" class="col-md-2" name="phone_number" type="tel" style="text-align: center;" placeholder="123-456-7890">
-                        &emsp; <input id="sms_message" class="col-md-9" name="sms_message" type="text" value="Click the 'SMS' button for the room you want to send invite to">
-                        <span class="col-md-1"></span>
+                        &emsp; <input id="sms_message" class="col-md-8" name="sms_message" type="text" value="Click the 'SMS' button for the room you want to send invite to">
+                        &emsp; <button type="submit" class="btn btn-bg-dark" formaction="/send_sms">Send</button>
                     </div>
 
 

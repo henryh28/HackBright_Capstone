@@ -54,10 +54,9 @@ def get_events_by(**data):
 
 # ========== Choice related functions ==========
 
-def create_choice(type, title, event_id):
+def create_choice(type, title, event_id, art = None):
     """ Create and return a new choice """
-
-    return Choice(type = type, title = title, event_id = event_id)
+    return Choice(type = type, title = title, event_id = event_id, art = art)
 
 
 def get_all_choices():

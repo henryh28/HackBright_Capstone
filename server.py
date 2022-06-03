@@ -30,10 +30,12 @@ TMDB_KEY = os.environ['TMDB_KEY']
 STEAM_KEY = os.environ['STEAM_KEY']
 BGATLAS_KEY = os.environ['BGATLAS_KEY']
 RAWG_KEY = os.environ['RAWG_KEY']
-account_sid = os.environ['TWILIO_ACCOUNT_SID']
-auth_token = os.environ['TWILIO_AUTH_TOKEN']
+TWILIO_SID = os.environ['TWILIO_ACCOUNT_SID']
+TWILIO_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
+YELP_SID = os.environ['YELP_CLIENT_ID']
+YELP_KEY = os.environ['YELP_KEY']
 
-sms_client = Client(account_sid, auth_token)
+sms_client = Client(TWILIO_SID, TWILIO_TOKEN)
 
 
 # ================= System Related  =================
@@ -74,9 +76,9 @@ def login():
             session['user_chat_color'] = existing_user.chat_color
             session['user_chat_bg_color'] = existing_user.chat_bg_color
         else:
-            flash("Incorrect password")
+            flash("Incorrect password", "warning")
     else:
-        flash("Incorrect credentials")
+        flash("Incorrect credentials", "warning")
 
     return redirect("/")
 
@@ -103,6 +105,13 @@ def page_not_found(event):
 
     return render_template("404.html")
 
+@app.errorhandler(500)
+def server_error(event):
+    """ Custom error handler for 500 errors """
+
+
+    return render_template("500.html")
+
 # ================= User related  =================
 
 @app.route ("/account", methods=["POST", "GET"])
@@ -112,6 +121,7 @@ def create_account():
     # POST method processes form from account creation
 
     if request.method == "POST":
+
         fname = request.form['fname']
         lname = request.form['lname']
         uname = request.form['uname']
@@ -122,19 +132,22 @@ def create_account():
         existing_email = crud.get_user_by(email=email)
 
         if existing_user_name:
-            flash("That username is already in use")
+            flash("That username is already in use", "warning")
+            return render_template("account.html", details = dict(request.form))
         if existing_email:
-            flash("That email is already in use")
+            flash("That email is already in use", "warning")
+            return render_template("account.html", details = dict(request.form))
             
         if not existing_email and not existing_user_name:
             hashed_password = Bcrypt().generate_password_hash(pw).decode('UTF-8')
             new_user = crud.create_user(fname, lname, uname, hashed_password, email)
             db.session.add(new_user)
             db.session.commit()
+            flash(f"Account for {uname} created!", "message")
 
         return redirect("/")
     else:
-        return render_template("account.html")
+        return render_template("account.html", details = {})
 
 
 # View profile for current user
@@ -155,11 +168,11 @@ def view_user_profile():
                 current_user.password = Bcrypt().generate_password_hash(request.form['new_pw']).decode('UTF-8')
                 db.session.add(current_user)
                 db.session.commit()
-                flash ("Password successfully changed!")
+                flash ("Password successfully changed!", "message")
             else:
-                flash ("'New Password' and 'Confirm New Password' value does not match!")
+                flash ("'New Password' and 'Confirm New Password' value does not match!", "warning")
         else:
-            flash ("Invalid password, calling the Feds.")
+            flash ("Invalid password, calling the Feds.", "error")
 
         return redirect(request.url)
 
@@ -189,12 +202,11 @@ def set_chat_bg_color():
 
 @app.route ("/send_sms", methods=["POST"])
 def send_sms():
-    print (" =====++++++++++ sms : ", request.form)
 
     phone_number = "+1" + request.form['phone_number'].replace("-","")
     sms_content = request.form['sms_message']
 
-    print (phone_number, "  phone | msg ", sms_content)
+    print (phone_number, "  phone |**********| msg ", sms_content)
 
 
     message = sms_client.messages \
@@ -205,7 +217,7 @@ def send_sms():
                     )
 
     print(message.sid, " sent this message >>>>> ", message)
-
+    flash("Text message sent to " + phone_number, "message")
 
     return redirect("/")
 
@@ -222,7 +234,6 @@ def create_room():
         description = request.form['description']
         admin_id = session['user'] if session['user'] != None else 0
         new_room = crud.create_event(description, request.form['voting_style'], admin_id)
-        print (" >>>>>>>>>> new room: ", new_room)
         
         if request.form['voting_style'] in ['fptp', 'random']:
             db.session.add(new_room)
@@ -231,7 +242,7 @@ def create_room():
         elif request.form['voting_style'] == 'alternative':
             return render_template("room_create.html", bernie=True)
 
-        return redirect("/all_rooms")
+        return redirect("/")
     else:
         return render_template("room_create.html", bernie=False)
 
@@ -253,14 +264,12 @@ def enter_room(room_code):
         session['room_code'] = room_code
         username = session['user_name']
     else:
-        flash("Invalid room code")
+        flash("Invalid room code", "error")
         return redirect("/")    
-
 
 
     if room.completed == True:
         winner = crud.get_choice_by(choice_id = room.winner)
-        print (" &&&&&&&&&&&&& random winner : ", winner)
         return render_template("voting_result.html", room = room, winner = winner)
     else:
         socketio.emit('status', {'msg': username + " joined this room"}, room = session['room'])
@@ -292,6 +301,7 @@ def leave_room():
 def lock_room():
     room = crud.get_events_by(event_id = session['room'])
 
+    # Currently selects a random winner if tied for most votes
     if room.voting_style == "fptp":
         if room.completed == False:
             nominees = {}
@@ -306,11 +316,20 @@ def lock_room():
             # room.completed = True
             # db.session.commit()            
 
-    elif room.voting_style == "random":
+    elif room.voting_style == "random":        
         if room.completed == False:
-            winner = random.choice(room.choices)
+            # Below to eliminate duplicate entries
+            titles, choices = [], []
+            for choice in room.choices:
+                if choice.title not in titles:
+                    titles.append(choice.title)
+                    choices.append(choice.choice_id)
 
-    room.winner = winner.choice_id
+            winner = random.choice(choices)
+
+            # winner = random.choice(room.choices)  (this to count duplicate entries)
+
+    room.winner = winner
     room.completed = True
     db.session.commit()
 
@@ -329,9 +348,9 @@ def remove_room():
     if session['user'] == remove_event.admin_id:
         db.session.delete(remove_event)
         db.session.commit()
-        flash("room deleted!")
+        flash("Room deleted!", "message")
     else:
-        flash("You're not authorized to delete this room")
+        flash("You're not authorized to delete this room", "error")
 
 
     return redirect("/view_user_profile")
@@ -376,7 +395,7 @@ def item_detail(item_code):
         return render_template("item_details_bg.html", details = details)
     elif choice.type == "movie" or choice.type =="tv":
         details = data['results'][0]
-        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']
+        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path'] if details['poster_path'] and details['poster_path'] != None else ""
         return render_template("item_details_shows.html", details = details, poster_url = poster_url)
     elif choice.type == "vgame":
         title= data['results'][0]['slug']
@@ -399,6 +418,7 @@ def add_choice():
     event_id = itemData['event_id']
     room_code = itemData['room_code']
     create_choice = itemData['create_choice']  # 1 adds selected item as choice to room/event
+    art = itemData['art']
 
     rawg_title = "-".join(title.split(" ")).lower()  # used for searching to rawg.io
     room = crud.get_events_by(room_code=room_code)
@@ -421,7 +441,7 @@ def add_choice():
 
     # 1 adds selected item as choice to room/event
     if create_choice == "1":
-        new_choice = crud.create_choice(choice_type, title, event_id)
+        new_choice = crud.create_choice(choice_type, title, event_id, art)
         db.session.add(new_choice)
         db.session.commit()
 
@@ -430,29 +450,32 @@ def add_choice():
 
 
     if choice_type == "movie":
-#        poster_url = "https://image.tmdb.org/t/p/original" + details['poster_path']  // list slicing error for details['poster_path']
         for movie in data['results']:
-            details.append({"data": [movie['title'], choice_type, event_id, room_code]})
+            art = "https://image.tmdb.org/t/p/original" + movie['poster_path'] if movie['poster_path'] and movie['poster_path'] != None else ""
+            details.append({"data": [movie['title'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "tv":
         for item in data['results']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = "https://image.tmdb.org/t/p/original" + item['poster_path'] if item['poster_path'] and item['poster_path'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "boardgame":
         for item in data['games']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = item['thumb_url'] if item['thumb_url'] and item['thumb_url'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 #        return render_template("room.html", room = room, search_results = details, choice_type=choice_type)
 
     elif choice_type == "vgame":
         for item in data['results']:
-            details.append({"data": [item['name'], choice_type, event_id, room_code]})
+            art = item['background_image'] if item['background_image'] and item['background_image'] != None else ""
+            details.append({"data": [item['name'], choice_type, event_id, room_code, art]})
         return jsonify(details)
 
     elif choice_type == "custom":
-        details.append({"data": [title, choice_type, event_id, room_code]})
+        details.append({"data": [title, choice_type, event_id, room_code, art]})
 
         return jsonify(details)
 
@@ -512,9 +535,32 @@ def submit_vote():
         results[choice.title] = len(choice.votes)
 
 #    return render_template("results.html", room = room, room_choices=room_choices, all_votes_for_choices=all_votes_for_choices, data=data)
-    return render_template("results.html", room = room, results=results, chart_type=chart_type)
+    return render_template("results.html", room = room, results=results)
 
 
+@app.route ("/react_chart")
+def react_chart():
+    """ Fetch data to display chart using react """
+
+    print (" &&&&&&&&& Feed react chart data now!!!!!!!!!!")
+
+    room_code = "lv58"
+    room = crud.get_events_by(room_code = room_code)
+    room_choices = room.choices     # retuns a list
+    print (room, " room >>>>>> choices : ", room_choices)
+
+
+    chart_type = "bar"
+    results = {'chart_type': chart_type}
+
+    for choice in room_choices:
+        results[choice.title] = len(choice.votes)
+
+    print (" ==== dict ============ ", results)
+
+
+    # return render_template("react_test.html")
+    return results
 
 # ================= Development Related =================
 
@@ -568,7 +614,7 @@ def handle_message(message):
 
 
     if session['user_chat_color'] == None:
-        flash (" tell henry that the chat color setting is broken")
+        flash (" tell henry that the chat color setting is broken", "warning")
         session['user_chat_color'] = 'black'
 
 
@@ -608,5 +654,6 @@ def disconnect_request():
 if __name__ == "__main__":
     connect_to_db(app)
     #app.run(host="0.0.0.0", debug = True)
+    # socketio.run(app, debug = False)
     socketio.run(app, debug = True)
 

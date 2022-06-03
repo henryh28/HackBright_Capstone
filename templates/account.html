@@ -6,7 +6,7 @@
 
 {% block body %}
 
-<div class="container">
+<div id = "account_container" class="animate__animated animate__zoomInDown">
     <h2>Create Account or Login</h2>
 
     <div id = "account_input">
@@ -14,30 +14,30 @@
 
             <div class="form-group">
                 <label for="fname">First Name: </label>
-                <input type="text" class="form-control" name="fname" required autofocus><br>
+                <input type="text" class="form-control" name="fname" required autofocus value={{ details.fname }}><br>
             </div>
 
             <div class="form-group">
                 <label for="lname">Last Name: </label>
-                <input type="text" class="form-control" name="lname" required><br>
+                <input type="text" class="form-control" name="lname" required value={{ details.lname }} ><br>
             </div>
 
             <div class="form-group">
                 <label for="uname">User Name: </label>
-                <input type="text" class="form-control" name="uname" required><br>
+                <input type="text" class="form-control" name="uname" required value={{ details.uname }}><br>
             </div>
 
             <div class="form-group">
                 <label for="email"><a href="https://davidcel.is/2012/09/06/stop-validating-email.html">E-mail:</a> </label>
-                <input type="email" class="form-control" name="email" required><br>
+                <input type="email" class="form-control" name="email" required value={{ details.email }}><br>
             </div>
 
             <div class="form-group">
                 <label for="password">Password:  (Minimum length 8 characters) Go <a href="https://www.security.org/how-secure-is-my-password/">here</a> to check how secure your password is</label>
-                <input type="text" class="form-control" name="password" minlength="8" required><br>
+                <input type="text" class="form-control" name="password" minlength="8" required value={{ details.password }}><br>
             </div>
 
-            <input type="submit" formaction = "/account" value="Create Account">
+            <button type="submit" class="btn btn-bg-dark" formaction = "/account">Create Account</button>
         </form>
     </div>    
 

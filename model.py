@@ -76,6 +76,7 @@ class Choice (db.Model):
     choice_id = db.Column(db.Integer, primary_key = True, autoincrement = True)
     type = db.Column(db.String)
     title = db.Column(db.String)
+    art = db.Column(db.String)
 
     event_id = db.Column(db.Integer, db.ForeignKey("events.event_id"))
     event = db.relationship("Event", backref = "choices")
