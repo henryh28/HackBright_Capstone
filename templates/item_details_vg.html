@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'item_details_base.html' %}
 
 {% block title %} {{ details['name'] }} {% endblock %}
 
@@ -6,33 +6,31 @@
 
 {% block body %}
 
-<div class = "flex_container">
-    <div class = "vertical_flex_wide col-md-4">
-        <h2> {{ details['name'] }} </h2>
-
-        <div class = "bg_details">
-            Released: {{ details['released'] }}<br>
-            Metacritic: {{ details['metacritic'] }}<br>
+<div id = "flex_container_vg">
+    <div class="vg_details">
+        <div class = "vg_stats">
+            <!-- <span style="font-size: 30px; font-weight: bold;">{{ details['original_name'] }}</span><br> -->
+            {{ details['name'] }}
+            <div class="flex_row">
+                Released: {{ details['released'] }} <br>
+                Developers: {{ details['developers'][0]['name'] }} <br>
+                Metacritic: {{ details['metacritic'] }} <br>
+                Platoforms: {{ platforms }}
+            </div>
         </div>
 
-        <div class = "bg_thumb item_poster col-md-3">
-            <img src = {{ details['background_image'] }}>&nbsp;
-            <img src = {{ details['background_image_additional'] }}>
-        </div>    
+        <div class = "vg_description">
+            {{ details['description'] | safe }}
+        </div>
+    
     </div>
 
-
-    <div class = "item_description">
-        {{ details['description'] | safe }}
-    </div>
-
-
+    <div class="vg_picture">
+        <img src = {{ details['background_image'] }}>&nbsp;
+        <img src = {{ details['background_image_additional'] }}>
+</div>
 </div>
 
 
 
-
-
 {% endblock %}
-
-

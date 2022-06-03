@@ -1,0 +1,208 @@
+/* CSS for item detail pages */
+
+
+/* ---------- General ----------*/
+
+html, body  {
+    height: 100%;
+}
+
+
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: thistle;
+    color: red;
+}
+
+#footer {
+    display: flex;
+    justify-content: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 17px;
+
+    color: violet;
+    -webkit-text-stroke: 0.5px skyblue;
+}
+
+.bg_image {
+    opacity: 0.4;
+}
+
+
+
+
+/* ---------- item_details_x.html ----------*/
+
+.show_details {
+    height: 300px;
+    font-size: 1.5em;
+    padding: .5em;
+    margin-bottom: 1em;
+}
+
+
+.item_poster > img {
+    width: 400px;
+    height: auto;
+}
+
+
+.item_description {
+    padding: 1em;
+    margin-bottom: 1em;
+    height: 350px;
+    overflow-y: auto;
+}
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: left;
+}
+
+
+/* ---------- item_details_bg.html ----------*/
+#flex_container_bg {
+    padding-top: 1.5em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.bg_details {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.bg_stats {
+    text-align: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    color: skyblue;
+    /* background-color: black; */
+    -webkit-text-stroke: 1.5px orchid;
+	text-shadow: -1px 1px 1px cornsilk,
+				  1px 1px 1px cornsilk,
+				  1px -1px 2px cornsilk,
+				  -1px -1px 2px cornsilk;
+
+    min-height: 250px;
+}
+
+.bg_description {
+    padding: 1em;
+    font-size: 20px;
+}
+
+
+.bg_picture {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    border: 1px solid black;
+}
+
+
+/* ---------- item_details_bg.html ----------*/
+
+#flex_container_show {
+    padding-top: 1.5em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.show_details {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.show_stats {
+    text-align: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    color: skyblue;
+    /* background-color: black; */
+    -webkit-text-stroke: 1.5px orchid;
+	text-shadow: -1px 1px 1px cornsilk,
+				  1px 1px 1px cornsilk,
+				  1px -1px 2px cornsilk,
+				  -1px -1px 2px cornsilk;
+
+    min-height: 250px;
+}
+
+.show_description {
+    padding: 1em;
+    font-size: 20px;
+}
+
+
+.show_picture {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+/* ---------- item_details_vg.html ----------*/
+
+#flex_container_vg {
+    padding-top: 1.5em;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+
+.vg_details {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.vg_stats {
+    text-align: center;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    color: skyblue;
+    /* background-color: black; */
+    -webkit-text-stroke: 1.5px orchid;
+	text-shadow: -1px 1px 1px cornsilk,
+				  1px 1px 1px cornsilk,
+				  1px -1px 2px cornsilk,
+				  -1px -1px 2px cornsilk;
+
+    min-height: 250px;
+}
+
+.vg_description {
+    padding: 1em;
+    font-size: 20px;
+}
+
+
+.vg_picture {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+

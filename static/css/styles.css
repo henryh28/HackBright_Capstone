@@ -198,7 +198,7 @@ input[type='radio'] {
 
 /* ---------- Flex container related ----------*/
 
-.grid_containger {
+.grid_container {
     display: grid;
     grid-template-columns: 2fr 3fr 2fr;
 }
@@ -253,6 +253,72 @@ input[type='radio'] {
     flex-direction: column;
     padding-top: 1em;
 }
+
+
+/* ---------- item_details_bg.html ----------*/
+
+#flex_container_bg {
+    padding-top: 0px;
+    display: flex;
+    justify-content: space-evenly;
+    border: 2px double red;
+}
+
+
+.bg_details {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+
+    border: 1px solid black;    
+
+}
+
+.bg_stats {
+    /* text-align: center; */
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 25px;
+    padding-left: 1em;
+    padding-right: 1em;
+
+    color: plum;
+    -webkit-text-stroke: 1.5px skyblue;
+	text-shadow: -1px 1px 1px var(--font_shadow_color),
+				  1px 1px 1px var(--font_shadow_color),
+				  1px -1px 2px var(--font_shadow_color),
+				  -1px -1px 2px var(--font_shadow_color);
+}
+
+.bg_description {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+
+.bg_picture {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+    border: 1px solid black;
+}
+
+
+
+
+/* ---------- item_details_show.html ----------*/
+
+#flex_container_show {
+    display: flex;
+    justify-content: space-evenly;
+
+}
+
+#flex_container_show_bg {
+    z-index: -1;
+    opacity: 0.2;
+}
+
 
 
 /* ---------- account.html ----------*/
@@ -319,7 +385,7 @@ input[type='radio'] {
 .room_choices {
     display: flex;
     flex-direction: column;
-    background-color: snow;
+    background-color: floralwhite;
     overflow-y: auto;
     height: 200px;
 }
@@ -366,7 +432,7 @@ input[type='radio'] {
     font-family: 'Ubuntu', sans-serif;
     font-size: 25px;
 
-    color: snow;
+    color: ghostwhite;
     -webkit-text-stroke: 1px deepskyblue;
 	text-shadow: -1px 1px 2px var(--font_shadow_color),
 				  1px 1px 2px var(--font_shadow_color),
@@ -378,10 +444,9 @@ input[type='radio'] {
 
 .choice_title {
     flex-grow: 1;
-
     font-family: 'Ubuntu', sans-serif;
     font-size: 17px;
-    color: snow;
+    color: thistle;
     -webkit-text-stroke: 0.5px orchid;
 	text-shadow: -1px 1px 1px deepskyblue,
 				  1px 1px 1px deepskyblue,
@@ -443,10 +508,6 @@ input[type='radio'] {
     height: auto;
 }
 
-.bg_details {
-    padding-top: 1em;
-    font-size: 1.5em;
-}
 
 .item_description {
     padding: 1em;

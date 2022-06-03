@@ -76,9 +76,9 @@
                             {% endif %}
     
                             {% if choice.type != "custom" %}
-                                <a href="/details/{{ choice.choice_id }}" class="choice_title" target="popup" onclick="window.open('/details/{{ choice.choice_id }}', 'popup', 'width=1000, height=700'); return false;">{{ choice.title }}</a>
+                                &nbsp;<a href="/details/{{ choice.choice_id }}" class="choice_title" target="popup" onclick="window.open('/details/{{ choice.choice_id }}', 'popup', 'width=1200px, height=750px'); return false;">{{ choice.title }}</a>
                             {% else %}
-                                <span class="choice_title">{{ choice.title }}</span>
+                                &nbsp;<span class="choice_title">{{ choice.title }}</span>
                             {% endif %}
                             
                             <button type="submit" class="btn btn-bg-dark" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
