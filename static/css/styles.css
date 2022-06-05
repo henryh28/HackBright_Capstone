@@ -17,9 +17,11 @@
 
 html, body  {
     height: 100%;
-    padding-top: 40px;
+    padding-top: 27px;
     font-size: 30;
 }
+
+
 
 a:link {
     text-decoration: none;
@@ -69,21 +71,19 @@ a:hover {
 
 .btn.btn-bg-dark {
     display: flex;
-    background-image: linear-gradient(to bottom right, lavender, silver);
+    background-image: linear-gradient(to bottom right, lavender, rgb(119, 118, 118));
     border-radius: 12px;
     height: 35px;
     align-items: center;
     justify-content: center;
     border: 4px outset cornflowerblue;
     color: snow;
-    -webkit-text-stroke: 1.5px white;
-	text-shadow: -1px 1px 1px var(--font_shadow_color),
+    /* -webkit-text-stroke: .5px white; */
+	/* text-shadow: -1px 1px 1px var(--font_shadow_color),
 				  1px 1px 1px var(--font_shadow_color),
 				  1px -1px 5px var(--font_shadow_color),
-				  -1px -1px 5px var(--font_shadow_color);
+				  -1px -1px 5px var(--font_shadow_color); */
 }
-
-
 
 
 
@@ -194,6 +194,16 @@ input[type='radio'] {
 
 
 }
+
+
+/* ---------- index.html ----------*/
+#intro {
+    color: seashell;
+    font-size: 30px;
+    list-style-type: none;
+    margin-left: 20px;
+}
+
 
 
 /* ---------- Flex container related ----------*/
@@ -342,6 +352,9 @@ input[type='radio'] {
     font-family: 'Ubuntu', sans-serif;
     font-size: 30;
 
+    background-image: url("/static/img/bg_wall.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;    
 }
 
 .voting_method_description {
@@ -375,11 +388,26 @@ input[type='radio'] {
 
 }
 
+.room_control_container {
+    background-color: rgba(255, 250, 250, 0.135);
+    color: ghostwhite;
+
+}
+
+.search_container {
+    background-color: rgba(255, 250, 250, 0.135);
+    color: ghostwhite;
+
+}
+
 .search_result_container {
     border-style: solid;
     border-width: 2px;
     height: 40%;
     overflow-y: auto;
+    background-color: rgb(32, 46, 75);
+    padding: 5px;
+    padding-left: 10px;
 }
 
 .room_choices {
@@ -388,6 +416,8 @@ input[type='radio'] {
     background-color: floralwhite;
     overflow-y: auto;
     height: 200px;
+    background-color: rgb(32, 46, 75);
+    border: 2px solid white;
 }
 
 #form_add_choices {
@@ -446,13 +476,19 @@ input[type='radio'] {
     flex-grow: 1;
     font-family: 'Ubuntu', sans-serif;
     font-size: 17px;
-    color: thistle;
-    -webkit-text-stroke: 0.5px orchid;
-	text-shadow: -1px 1px 1px deepskyblue,
-				  1px 1px 1px deepskyblue,
-				  1px -1px 1px deepskyblue,
-				  -1px -1px 1px deepskyblue;
+    color: rgb(220, 169, 220);
+    /* -webkit-text-stroke: 0.5px orchid; */
+	text-shadow: -1px 1px 1px black,
+				  1px 1px 1px black,
+				  1px -1px 1px black,
+				  -1px -1px 1px black;
+    padding-left: 5px;
+}
 
+
+.choice_title:hover {
+    color: rgb(220, 169, 220);
+    background-color: rgb(52, 75, 121);
 }
 
 
@@ -466,6 +502,7 @@ input[type='radio'] {
     border: 3px ridge var(--font_shadow_color);
     overflow-y: auto;
     height: 95%;
+    background-color: rgba(255, 250, 250, 0.135);
 }
 
 #form_room_chat {
@@ -476,6 +513,7 @@ input[type='radio'] {
 
 #room_chat_box {
     margin-top: auto;
+    color: floralwhite;
 }
 
 #room_chat_input {

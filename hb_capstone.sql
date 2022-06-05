@@ -276,6 +276,15 @@ COPY public.choices (choice_id, type, title, art, event_id) FROM stdin;
 68	boardgame	Five Tribes	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1559254126853-611YVb5GCwL.jpg	\N
 70	boardgame	Lords of Waterdeep	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629324168873.jpg	\N
 71	boardgame	Scythe: Invaders from Afar	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1610393424024	\N
+72	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+73	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+74	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+75	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+76	boardgame	Scoville	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1541702883246	\N
+77	boardgame	Lords of Waterdeep	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629324168873.jpg	\N
+82	boardgame	Lords of Waterdeep	https://s3-us-west-1.amazonaws.com/5cc.images/games/uploaded/1629324168873.jpg	4
+88	tv	BoJack Horseman	https://image.tmdb.org/t/p/original/pB9L0jAnEQLMKgexqCEocEW8TA.jpg	5
+93	vgame	Legend of Kyrandia, The (Book One)	https://media.rawg.io/media/games/542/542b3c366fc7c3decc928e22c49b8336.jpg	18
 \.
 
 
@@ -293,6 +302,7 @@ COPY public.events (event_id, room_code, voting_style, description, winner, comp
 8	1zw4	fptp	Co-op game options	\N	f	6
 9	zyxo	fptp	Chloe's movie option (pick something!)	\N	f	4
 10	nxpc	random	Random mixed options!	\N	f	6
+18	zpy6	random	testing room	\N	f	6
 \.
 
 
@@ -319,8 +329,8 @@ COPY public.user_events (user_id, event_id) FROM stdin;
 COPY public.users (user_id, first_name, last_name, user_name, password, email, chat_color, chat_bg_color) FROM stdin;
 1	korra	korra	avatar	$2b$12$Nl2Rg1FoZ78IcKM.//mNWOfIXGd6foBJQ4Lf9h.sU1JuHh8eJGsyW	korra@test.com	#223CC1	#FFFFFF
 5	rachel	amber	rachel	$2b$12$eBHEzuKcDjv/g6bcA.NQcOCF4Upria7hs8Qif6Zht4MnmwVfl0pCS	rachel@blackwell.edu	#223CC1	#FFFFFF
+6	shanny	bunny	shan	$2b$12$v5ek.nOcKPU6cVYIYoM1euuq8yhfpSm23h6Epv/C2olPc/1donSVu	shanny@bunny.com	#a9e79d	#ca53ba
 2	asami	sato	korrasami	$2b$12$Nv11sLMtOOthkkCQGntjxed/ExVYN7xK1HJ8ykSjcK6B2mvTV2D5m	asami@test.com	#000000	#e67a7a
-6	shanny	bunny	shan	$2b$12$TesWh5uES1oRYpNaG3X4TO/qeGS.Ro5bgoTG08HLz6S2e1ioR9loW	shanny@bunny.com	#ffffff	#000000
 3	max	caulfield	max	$2b$12$itl4JfiUJ47hiYQ51Ml/HOwQJMszu/eauCnKqsSKHXMy6YoYa51hu	max@blackwell.edu	#3855dc	#ffffff
 4	chloe	price	chloe	$2b$12$faM4bwoXyPEYuZR8Hl9.pOQBYuTNzVw0toZ28/5u24QFd3WtzUEIG	chloe@arcadia.bay	#932093	#9ad7f3
 7	guest	user	guest	$2b$12$iM2y0IcgFPw1EmhTDHMU3eT5NkqwDW9vupSoh31mU3V.Gu/jtokRS	guest@user.com	#223CC1	#FFFFFF
@@ -329,6 +339,7 @@ COPY public.users (user_id, first_name, last_name, user_name, password, email, c
 10	ellie	bunny	ellie	$2b$12$5t0G2kyP/HHCyYU/cD060eSa7R/p0uBGXXXwF3kWmpi.VRZBw9G/.	ellie@bunny.com	#223CC1	#FFFFFF
 11	fake	user	fake	$2b$12$H/YbmV6THSJWa2XMUvXSNOhvRO.lh0EHkrb7IL7NSPc4IOiAEUJTW	fake@user.com	#223CC1	#FFFFFF
 12	test	user	test	$2b$12$j/ANSLMlNlRVZ20UWj.D1.IzVrLnTzMYotySzHLbE1Jyss5Ms0d2e	test@user.com	#223CC1	#FFFFFF
+13	dog	cat	dogcat	$2b$12$90TjCMuAU60JoMAa5gtDeOZ7exAKpVf.MLEm4ZLfoaHigxrv6GbLy	dog@clat	#223CC1	#FFFFFF
 \.
 
 
@@ -376,7 +387,7 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 38	1	12	9
 36	1	12	14
 39	1	12	45
-40	1	6	18
+40	1	6	14
 \.
 
 
@@ -384,21 +395,21 @@ COPY public.votes (vote_id, amount, user_id, choice_id) FROM stdin;
 -- Name: choices_choice_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.choices_choice_id_seq', 71, true);
+SELECT pg_catalog.setval('public.choices_choice_id_seq', 100, true);
 
 
 --
 -- Name: events_event_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.events_event_id_seq', 15, true);
+SELECT pg_catalog.setval('public.events_event_id_seq', 19, true);
 
 
 --
 -- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: echo
 --
 
-SELECT pg_catalog.setval('public.users_user_id_seq', 12, true);
+SELECT pg_catalog.setval('public.users_user_id_seq', 13, true);
 
 
 --

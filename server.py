@@ -322,6 +322,7 @@ def lock_room():
             # room.completed = True
             # db.session.commit()            
 
+
     elif room.voting_style == "random":        
         if room.completed == False:
             # Below to eliminate duplicate entries
@@ -332,10 +333,11 @@ def lock_room():
                     choices.append(choice.choice_id)
 
             winner = random.choice(choices)
+            winner = crud.get_choice_by(choice_id=winner)
 
             # winner = random.choice(room.choices)  (this to count duplicate entries)
 
-    room.winner = winner
+    room.winner = winner.choice_id
     room.completed = True
     db.session.commit()
 
