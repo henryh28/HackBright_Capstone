@@ -139,7 +139,7 @@ async function searchAPI(evt) {
 // Drag & drop API search results to attach it into room/event choices
 function onDragStart(event) {
     event.dataTransfer.setData('text/plain', event.target.id);
-    event.currentTarget.style.backgroundColor = 'lavender';
+    event.currentTarget.style.backgroundColor = 'steelblue';
 }
 
 function onDragEnd(event) {

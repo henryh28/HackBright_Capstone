@@ -86,6 +86,7 @@ def login():
 def logout():
     """ Logs current user out of the system """
 
+    # username=session['user_name']
     session.clear()
 
 #    session['user'] = None
@@ -96,7 +97,7 @@ def logout():
 #    session['user_chat_bg_color'] = None
 
 
-    return redirect("/")
+    return render_template("logout.html")
 
 
 @app.errorhandler(404)

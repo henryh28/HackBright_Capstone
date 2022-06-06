@@ -85,6 +85,19 @@ a:hover {
 				  -1px -1px 5px var(--font_shadow_color); */
 }
 
+#room_container {
+    display: flex;
+    justify-content: space-around;
+    height: 100%;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30;
+
+    background-image: url("/static/img/bg_wall.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: snow;
+}
 
 
 
@@ -188,23 +201,68 @@ input[type='radio'] {
     justify-content: center;
 
     font-family: 'Ubuntu', sans-serif;
-    color: lightcoral;
+    /* color: lightcoral; */
     font-weight: bolder;
     font-style: italic;
-
+    z-index: 10;
 
 }
 
 
 /* ---------- index.html ----------*/
+
+#index_container {
+
+    position: fixed;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    padding: 20px;
+
+    display: flex;
+    justify-content: space-around;
+    height: 95%;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30;
+
+    color: snow;
+}
+
 #intro {
-    color: seashell;
-    font-size: 30px;
+    font-size: 28px;
     list-style-type: none;
     margin-left: 20px;
+
+    
+    color: seashell;
+    -webkit-text-stroke: 0.5px skyblue;
+	text-shadow: -1px 1px 1px orchid,
+				  1px 1px 1px orchid,
+				  1px -1px 1px orchid,
+				  -1px -1px 1px orchid;
+    
+}
+
+#video_container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: hidden;
 }
 
 
+#intro_video {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+}
 
 /* ---------- Flex container related ----------*/
 
@@ -262,6 +320,95 @@ input[type='radio'] {
     display: flex;
     flex-direction: column;
     padding-top: 1em;
+}
+
+#view_profile_container {
+    display: flex;
+    justify-content: space-around;
+    height: 95%;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 17px;
+    
+
+    background-image: url("/static/img/beach_town.jpg");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: snow;
+}
+
+.password_blurb a {
+    color: var(--font_color);
+    -webkit-text-stroke: 0.5px orchid;
+	text-shadow: -1px 1px 1px black,
+				  1px 1px 1px black,
+				  1px -1px 1px black,
+				  -1px -1px 1px black;
+}
+
+.user_created_rooms {
+    overflow-y: auto;
+    height: 100%;
+}
+
+table {
+    width: 100%;
+    border: 2px double lightskyblue;
+    border-collapse: collapse;
+    padding: 0.5 rem;
+}
+
+th {
+    background-color: aliceblue;
+    position: sticky;
+    height: 30px;
+    text-align: center;    
+
+    font-size: 20px;
+    color: seashell;
+    -webkit-text-stroke: 0.5px #5E0063;
+	text-shadow: -1px 1px 2px cornflowerblue,
+				  1px 1px 2px cornflowerblue,
+				  1px -1px 5px cornflowerblue,
+				  -1px -1px 5px cornflowerblue;
+}
+
+td, td a {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: floralwhite;
+    text-align: center;
+    letter-spacing: 2px;
+
+}
+
+td a {
+    /* -webkit-text-stroke: 0.5px #FFE3A9; */
+	text-shadow: -1px 1px 0.5px #F806CC,
+    1px 1px 0.5px #F806CC,
+    1px -1px 0.5px #F806CC,
+    -1px -1px 0.5px #F806CC;
+}
+
+ .td_remove {
+    /* background-image: linear-gradient(to right, aliceblue, mintcream); */
+    padding-left: 20px;
+}
+
+/*
+.td_sms {
+    background-image: linear-gradient(to right, mintcream, floralwhite);
+}
+
+.td_room_code {
+    background-image: linear-gradient(to right, snow, white);
+} */
+
+
+.btn_table_remove {
+    transform: scale(0.75); 
+    width: 80%;
 }
 
 
@@ -333,28 +480,65 @@ input[type='radio'] {
 
 /* ---------- account.html ----------*/
 
-#account_container {
+#account_bg {
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 18px;
+
+    background-image: url("/static/img/neon.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: snow;
     height: 95%;
+}
+
+#account_bg a {
+    color: cornsilk;
+    /* -webkit-text-stroke: 0.5px hotpink; */
+	text-shadow: -1px 1px 1px orchid,
+				  1px 1px 1px orchid,
+				  1px -1px 1px orchid,
+				  -1px -1px 1px orchid;
+}
+
+#account_container {
     width: 75%;
-    padding-top: 2em;
+    padding-top: 1.5em;
     padding-left: 25%;
+
+
+
 }
 
 
 
 /* ---------- room_create.html ----------*/
 
-#room_container {
+#create_room_container {
     display: flex;
     justify-content: space-around;
-    height: 95%;
+    height: 100%;
 
     font-family: 'Ubuntu', sans-serif;
-    font-size: 30;
+    font-size: 20px;
 
-    background-image: url("/static/img/bg_wall.png");
+    background-image: url("/static/img/window.jpg");
     background-size: 100% 100%;
-    background-repeat: no-repeat;    
+    background-repeat: no-repeat;
+
+    color: floralwhite;
+    -webkit-text-stroke: 0.25px hotpink;
+	text-shadow: -1px 1px 1px black,
+				  1px 1px 1px black,
+				  1px -1px 1px black,
+				  -1px -1px 1px black;
+
+
+}
+
+#create_room_description {
+    /* background-color: rgba(255, 250, 250, 0.175);
+    height: 450px; */
+    /* font-size: 30px; */
 }
 
 .voting_method_description {
@@ -408,6 +592,14 @@ input[type='radio'] {
     background-color: rgb(32, 46, 75);
     padding: 5px;
     padding-left: 10px;
+}
+
+.search_result_item {
+    color: floralwhite;
+	text-shadow: -1px 1px 0.5px orchid,
+				  1px 1px 0.5px orchid,
+				  1px -1px 0.5px orchid,
+				  -1px -1px 0.5px orchid;
 }
 
 .room_choices {
@@ -475,20 +667,20 @@ input[type='radio'] {
 .choice_title {
     flex-grow: 1;
     font-family: 'Ubuntu', sans-serif;
-    font-size: 17px;
+    font-size: 20px;
     color: rgb(220, 169, 220);
-    /* -webkit-text-stroke: 0.5px orchid; */
-	text-shadow: -1px 1px 1px black,
-				  1px 1px 1px black,
-				  1px -1px 1px black,
-				  -1px -1px 1px black;
+    /* -webkit-text-stroke: 0.5px thistle; */
+	text-shadow: -1px 1px 0.5px black,
+				  1px 1px 0.5px black,
+				  1px -1px 0.5px black,
+				  -1px -1px 0.5px black;
     padding-left: 5px;
 }
 
 
 .choice_title:hover {
     color: rgb(220, 169, 220);
-    background-color: rgb(52, 75, 121);
+    background-color: rgb(52, 75, 125);
 }
 
 
@@ -502,7 +694,7 @@ input[type='radio'] {
     border: 3px ridge var(--font_shadow_color);
     overflow-y: auto;
     height: 95%;
-    background-color: rgba(255, 250, 250, 0.135);
+    background-color: rgba(255, 250, 250, 0.175);
 }
 
 #form_room_chat {
@@ -625,69 +817,48 @@ input[type='radio'] {
 }
 
 
+/* ---------- logout.html ----------*/
 
-/* User Profile Related */
+#logout_bg {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    height: 95%;
 
-.user_created_rooms {
-    overflow-y: auto;
-    height: 750px;
-}
-
-table {
-    width: 100%;
-    border: 2px double royalblue;
-    border-collapse: collapse;
-    padding: 0.5 rem;
-}
-
-th {
-    background-color: aliceblue;
-    position: sticky;
-    height: 30px;
-    text-align: center;    
-
-    font-size: 20px;
-    color: seashell;
-    -webkit-text-stroke: 0.5px #5E0063;
-	text-shadow: -1px 1px 2px cornflowerblue,
-				  1px 1px 2px cornflowerblue,
-				  1px -1px 5px cornflowerblue,
-				  -1px -1px 5px cornflowerblue;
-}
-
-td, td a {
     font-family: 'Ubuntu', sans-serif;
-    font-size: 20px;
-    font-weight: bold;
-    color: #9BA3EB;
-    text-align: center;
-    letter-spacing: 2px;
+    font-size: 30px;
+    
 
-    /* -webkit-text-stroke: 0.5px #FFE3A9; */
-	text-shadow: -1px 1px 0.5px #F806CC,
-				  1px 1px 0.5px #F806CC,
-				  1px -1px 0.5px #F806CC,
-				  -1px -1px 0.5px #F806CC;
+    background-image: url("/static/img/goodbye.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: snow;
 }
 
+#bye_message {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 
-.td_remove {
-    background-image: linear-gradient(to right, aliceblue, mintcream);
+    color: floralwhite;
+    -webkit-text-stroke: 0.5px hotpink;
+	text-shadow: -1px 1px 1px orchid,
+				  1px 1px 1px orchid,
+				  1px -1px 1px orchid,
+				  -1px -1px 1px orchid;
+
 }
 
-.td_sms {
-    background-image: linear-gradient(to right, mintcream, floralwhite);
+#bye_image {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    bottom: 30px;
+    left: 40%;
+    transform: scaleX(-1);
 }
 
-.td_room_code {
-    background-image: linear-gradient(to right, snow, white);
-}
-
-
-.btn_table_remove {
-    transform: scale(0.75); 
-    width: 80%;
-}
 
 
 

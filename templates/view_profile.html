@@ -4,7 +4,7 @@
 
 
 {% block body %}
-    <div id="room_container" class="col-md-12">
+    <div id="view_profile_container" class="col-md-12">
         <div class="profile_container col-md-6">
 
             <span class="header_text">Created Rooms</span>
@@ -48,14 +48,14 @@
                     First Name: <br>
                     Last Name:  <br>
                     email: <br>
-                    password hash: <br>    
+                    <!-- password hash: <br>     -->
                 </div>
 
                 <div class="vertical_flex_min" style="text-align: left; padding-left: 1em;">
                     {{ user.first_name }} <br>
                     {{ user.last_name }} <br>
                     {{ user.email }} <br>
-                    {{ user.password }} <br>              
+                    <!-- {{ user.password }} <br>               -->
                 </div>        
             </div> <!-- Closes .flex_container_min (User name/email display)-->
 
@@ -81,7 +81,7 @@
             </div> <!-- Closes .flex_container_min (change password form)-->
             <br>
                 
-            <div class="col-md-10" style="text-align: center;">
+            <div class="col-md-10 password_blurb">
                 No, we <a href="https://www.explainxkcd.com/wiki/index.php/936:_Password_Strength">don't</a> <a href="https://gizmodo.com/the-guy-who-invented-those-annoying-password-rules-now-1797643987">enforce</a> weird <a href="https://www.technologyreview.com/2015/10/19/165746/youve-been-misled-about-what-makes-a-good-password/">non-sense</a> character <a href="https://www.eventsentry.com/blog/2011/08/why-complex-passwords-can-be-i.html">combinations</a>                
             </div>
 
