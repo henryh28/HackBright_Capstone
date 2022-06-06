@@ -11,12 +11,21 @@ BunnyBeenz is a platform that lets a group of people make decisions on what to d
 + Room owners can send SMS messages to invite users to their voting rooms
 
 
+## Tech Stack
 Category: | Tech used |
 -----------|----------------- |
 **Backend** | Python, Flask, Postgresql, SQLAlchemy
 **Frontend** | HTML, CSS, Javascript, Bootstrap, jQuery, chartJS
 **API** | Boardgame Atlas, TMDB (The Movie Database), RAWG.io, Twilio
 **Other** | Jinja, BCrypt, Paypal
+
+
+## Installation Instruction
+
+
+```
+git clone https://github.com/henryh28/HackBright_Capstone
+```
 
 
 #### Project Files
