@@ -2,20 +2,17 @@
 
 {% block title %} {{ details['name'] }} {% endblock %}
 
-
-
 {% block body %}
 
-<div id = "flex_container_show">
+<div id="flex_container_show">
     <div class="show_details">
-        <div class = "show_stats">
+        <div class="show_stats">
             {% if choice_type == "tv" %}
                 <span style="font-size: 30px; font-weight: bold;">{{ details['original_name'] }}</span><br>
             {% elif choice_type == "movie" %}
                 <span style="font-size: 30px; font-weight: bold;">{{ details['original_title'] }}</span><br>
                 <span style="font-size: 24px; font-weight: bold;">{{ details['tagline'] }}</span><br>
             {% endif %}
-
 
             <div class="flex_row">
                 Genres: {{ genres }} <br>
@@ -29,29 +26,26 @@
                     {% elif choice_type == "movie" %}
                         Release: {{ details['release_date'] }} <br>
                     {% endif %}
-
                 </div>
+
                 <div style="flex-direction: row;">
                     {% if choice_type == "tv" %}
                         Seasons: {{ details['number_of_seasons'] }} <br>
                         Episodes: {{ details['number_of_episodes'] }} <br>
                     {% endif %}
-
                 </div>
             </div>    
-        </div>
+        </div>  <!-- Closes .show_stats -->
 
         <div class = "show_description">
             {{ details['overview'] }}
         </div>
     
-    </div>
+    </div>  <!-- Closes .show_details -->
 
     <div class="show_picture">
         <img src={{ poster_url }}>
     </div>
-</div>
-
-
+</div>  <!-- Closes #flex_container_show -->
 
 {% endblock %}

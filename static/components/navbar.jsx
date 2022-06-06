@@ -17,8 +17,6 @@ function CreateRoom(props) {
 }
 
 function Navbar() {
-
-
     return (
         <ReactRouterDOM.BrowserRouter>
             <ReactRouterDOM.Route exact path="/">

@@ -2,13 +2,11 @@
 
 {% block title %} {{ details['name'] }} {% endblock %}
 
-
-
 {% block body %}
 
-<div id = "flex_container_vg">
+<div id="flex_container_vg">
     <div class="vg_details">
-        <div class = "vg_stats">
+        <div class="vg_stats">
             <!-- <span style="font-size: 30px; font-weight: bold;">{{ details['original_name'] }}</span><br> -->
             {{ details['name'] }}
             <div class="flex_row">
@@ -19,7 +17,7 @@
             </div>
         </div>
 
-        <div class = "vg_description">
+        <div class="vg_description">
             {{ details['description'] | safe }}
         </div>
     
@@ -28,9 +26,7 @@
     <div class="vg_picture">
         <img src = {{ details['background_image'] }}>&nbsp;
         <img src = {{ details['background_image_additional'] }}>
-</div>
-</div>
-
-
+    </div>
+</div> <!-- Closes #flex_container_vg -->
 
 {% endblock %}

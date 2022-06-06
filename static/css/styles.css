@@ -817,6 +817,45 @@ td a {
 }
 
 
+
+
+/* ---------- voting_result.html ----------*/
+
+#winner_container {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    height: 100%;
+
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 30px;
+    font-style: italic;
+
+    background-image: url("/static/img/bg_wall.png");
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    color: snow;
+}
+
+#winner_display {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    letter-spacing: 3px;
+    font-size: 60px;
+    text-align: center;
+    justify-content: center;
+
+    color: orchid;
+    -webkit-text-stroke: 1px lightskyblue;
+	text-shadow: -1px 1px 1px floralwhite,
+				  1px 1px 1px floralwhite,
+				  1px -1px 1px floralwhite,
+				  -1px -1px 1px floralwhite;
+    padding-left: 5px;
+}
+
 /* ---------- logout.html ----------*/
 
 #logout_bg {
