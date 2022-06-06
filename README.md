@@ -12,7 +12,7 @@ BunnyBeenz is a platform that lets a group of people make decisions on what to d
 
 
 Category: | Tech used |
----------------------------- |
+-----------|----------------- |
 **Backend** | Python, Flask, Postgresql, SQLAlchemy
 **Frontend** | HTML, CSS, Javascript, Bootstrap, jQuery, chartJS
 **API** | Boardgame Atlas, TMDB (The Movie Database), RAWG.io, Twilio
