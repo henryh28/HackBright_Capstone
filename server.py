@@ -86,6 +86,7 @@ def login():
 def logout():
     """ Logs current user out of the system """
 
+    # username=session['user_name']
     session.clear()
 
 #    session['user'] = None
@@ -96,7 +97,7 @@ def logout():
 #    session['user_chat_bg_color'] = None
 
 
-    return redirect("/")
+    return render_template("logout.html")
 
 
 @app.errorhandler(404)
@@ -322,6 +323,7 @@ def lock_room():
             # room.completed = True
             # db.session.commit()            
 
+
     elif room.voting_style == "random":        
         if room.completed == False:
             # Below to eliminate duplicate entries
@@ -332,10 +334,11 @@ def lock_room():
                     choices.append(choice.choice_id)
 
             winner = random.choice(choices)
+            winner = crud.get_choice_by(choice_id=winner)
 
             # winner = random.choice(room.choices)  (this to count duplicate entries)
 
-    room.winner = winner
+    room.winner = winner.choice_id
     room.completed = True
     db.session.commit()
 

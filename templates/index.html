@@ -4,33 +4,39 @@
 
 {% block body %}
 
-<div id = "room_container" style="justify-content: space-cent;">
-    
-    <div id = "index_welcome_pic">
-        <img src="/static/img/spirit_animal.jpg"/>
+<div id="video_container">
+    <video autoplay muted loop id="intro_Video">
+        <source src="/static/media/sparkle_rain.mp4" type="video/mp4">
+    </video>    
+</div>
+
+<div id = "index_container" class="container-fluid">
+    <div id = "index_welcome_pic" style="display: flex; flex-direction: column;">
+        <div style="height: 400px; text-align: center;"></div>
+
+        <ol id="intro"><br>
+            <li> Create an account</li><br>
+            <li> Create (or join) a room</li><br>
+            <li> Add stuff that you want to vote for</li><br>
+            <li> Vote on the choices!</li>
+        </ol>
+
+
+        <!-- <img src="/static/img/spirit_animal.jpg"/> -->
     </div>
 
     <div class="col-md-2">
 
     </div>
 
-    <div id = "index_main">
-        <ul><br>
-            <li> Create an account</li><br>
-            <li> Create a room (or join an existing room with its 4 character code)</li><br>
-            <li> Look for stuff that you want to vote on</li><br>
-            <li> Vote on the stuff!</li>
-        </ul>
-<!--        
-        <p><a href="/account"> Account Creation / Login</a></p>
-
-        <p><a href="/test">Feature Test</a></p>
-
-        <p><a href="/react_test">React Test</a></p>
-
-        <p><a href="/all_rooms">List all rooms</a></p>
--->        
+    <div id = "index_main" style="display: flex; flex-direction: column;">
+        <div style="height: 100px">
+        </div>
+        
     </div> <!-- Ends #index_main -->
+    <div class="col-md-2"></div>
+
+
 </div>
 {% endblock %}
 

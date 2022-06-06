@@ -6,13 +6,16 @@
 
 {% block body %}
 
-<div id="room_container">
+<div id="create_room_container">
+    <div class="col-md-1">
+
+    </div>
     <div class = "voting_method_description col-md-6 animate__animated animate__backInLeft">
+        <br><br>
         <h2 class="room_column_header">Create a Room</h2>
-        <br>
         <div id="create_room_description">
             {% if bernie %}
-                <img src="/static/img/bernie.jpg" width="90%" />
+                <img src="/static/img/bernie.jpg" width="80%" />
 
                 <form action="https://www.paypal.com/donate" method="post" target="_top">
                     <input type="hidden" name="business" value="QLNZ9L373K9G2" />
@@ -21,7 +24,7 @@
                     <input type="hidden" name="currency_code" value="USD" />
                     <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" title="PayPal - The safer, easier way to pay online!" alt="Donate with PayPal button" />
                     <img alt="" border="0" src="https://www.paypal.com/en_US/i/scr/pixel.gif" width="1" height="1" />
-                </form>'                
+                </form>   
 
                 <!-- enable me to play bernie audio clip
                 <audio autoplay>
@@ -29,8 +32,6 @@
                 </audio> -->
 
             {% else %}
-                <span class="blink"><strong>California Primary is June 7th.  Don't forget to vote!</strong></span>
-
                 <br><br>                  
 
                 <strong>
@@ -49,6 +50,7 @@
 
     <div id = "create_room" class="col-md-3 animate__animated animate__backInUp">
         <div class="form-group">
+            <br><br>
             <form method="POST" action="/create_room">
 
                 <label for="description">Description: </label>
@@ -80,7 +82,9 @@
             </form>'
 
         </div>
-    </div>    
+    </div>  
+    <div class="col-md-1">
+    </div>  
   </div>
 
 
