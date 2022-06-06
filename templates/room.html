@@ -2,26 +2,23 @@
 
 {% block title %} {{ room.description }} {% endblock %}
 
-
 {% block body %}
 
 <div id="room_container">
     <div class="vertical_flex_wide col-md-12">
-        <div class = "room_column_header">
+        <div class="room_column_header">
             <h2 class="column_header_left col-md-5">[ {{ room.admin.user_name }} ]: {{ room.description }} [ {{ room.room_code }} ]</h2>
             <h2 class="column_header_middle col-md-4">Chat Window</h2>
             <h2 class="column_header_right col-md-2">Room Control</h2>        
         </div>
 
-
         <div class="event_room">
-
             <!-- Left Vertical flex box column for searching/adding choices -->
-            <div class = "vertical_flex col-md-5 search_container">
+            <div class="vertical_flex col-md-5 search_container">
                 <!-- Top Left, Form for searching for choices -->
         
         
-                <div class = "add_choices">
+                <div class="add_choices">
                     <form id='form_add_choices' method="POST">
                         <input type="hidden" name="event_id" value={{ room.event_id }} />
                         <input type="hidden" name="form_room_code" value={{ room.room_code }} />
@@ -45,34 +42,22 @@
                 </div><br>
         
                 <!-- Left middle, display matching search results -->
-                <div class = "search_result_container">
+                <div class="search_result_container">
                     {% for record in search_results %}
-                    <div class = "search_result_item" id = "{{ record.title }}" draggable = "true" onDragStart="onDragStart(event)" onDragEnd="onDragEnd(event)" choice_title = "{{ record.title }}" choice_type = {{ choice_type }} event_id = {{ room.event_id }} room_code = {{ room.room_code }} create_choice = "1">
-                        {{ record.title }}
-                    </div>
-                    <!--- 
-                        <form method="POST">
-                            <div class = "search_result_item">
-                                <button type="submit" formaction = "/add_choice" name="choice_title" value="{{ record.title }}"> {{ record.title }} </button>
-                                <input type="hidden" name="choice_type" value={{ choice_type }} />
-                                <input type="hidden" name="event_id" value={{ room.event_id }} />
-                                <input type="hidden" name="room_code" value={{ room.room_code }} />
-                                <input type="hidden" name="create_choice" value=1 />
-                            </div>
-                        </form>
-                    --->                
+                        <div class="search_result_item" id="{{ record.title }}" draggable="true" onDragStart="onDragStart(event)" onDragEnd="onDragEnd(event)" choice_title="{{ record.title }}" choice_type={{ choice_type }} event_id={{ room.event_id }} room_code={{ room.room_code }} create_choice="1">
+                            {{ record.title }}
+                        </div>
                     {% endfor %}
                 </div><br>
         
                 <!-- Flexbox container to list current choices, also target for drag n drop -->
                 <form method="POST">
-                <div class = "room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
+                <div class="room_choices" ondragover="onDragOver(event);" ondrop="onDrop(event);">
         
                     {% for choice in room.choices %}
-                        <div class = "room_choice_items">
+                        <div class="room_choice_items">
                             {% if room.voting_style == 'fptp' %}
-                                &emsp;
-                                <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
+                                &emsp; <input type="radio" name="choice_id" value={{ choice.choice_id }}>&nbsp;
                             {% endif %}
     
                             {% if choice.type != "custom" %}
@@ -81,11 +66,11 @@
                                 &nbsp;<span class="choice_title">{{ choice.title }}</span>
                             {% endif %}
                             
-                            <button type="submit" class="btn btn-bg-dark" formaction = "/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
+                            <button type="submit" class="btn btn-bg-dark" formaction="/remove_choice" name="choice_id" value="{{ choice.choice_id }}"> Remove </button><br>
                         </div>
                     {% endfor %}
                     <input type="hidden" name="room_code" value={{ room.room_code }} />                    
-                    <input type="hidden" name="vote_strength" value= "1" />                    
+                    <input type="hidden" name="vote_strength" value="1" />
                 </div> <!-- Closes .room_choices -->
 
                     {% if room.voting_style == "fptp" %}
@@ -108,7 +93,7 @@
         
             <!-- Center column for chat functions -->
             <div class="vertical_flex_wide col-md-4">
-                <div class = "chat_window">
+                <div class="chat_window">
                     <div id="room_chat_box">
                         <!-- Chat messages will be appended here -->
                     </div>            
@@ -125,7 +110,7 @@
         
         
             <!-- Far right column listing room participants & room functions -->
-            <div class = "vertical_flex col-md-2 room_control_container">
+            <div class="vertical_flex col-md-2 room_control_container">
                 <!-- <div id = "room_participants">
                     Participant names will be displayed here
                 </div> -->
@@ -141,28 +126,10 @@
                         <a href="/leave_room" class="btn btn-bg-dark">Leave Room</a>
                     </div>
                 </div>
-            </div>
-        </div>
-        
-    
-    
-    
-    
-    </div>
-    
-
-
-
-
-    </div>
-
-
-    <div>
-
-        {{ search_results }}
-    </div>
-
-
+            </div>  <!-- Closes .room_control_container -->
+        </div>  <!-- Closes .event_room -->
+    </div>  <!-- Closes main vertical flex div that contains all 3 columns-->
+</div> <!-- Closes #room_container -->
 
 {% endblock %}
 

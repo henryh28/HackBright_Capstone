@@ -2,23 +2,12 @@
 
 {% block title %} {{ room.description }} results {% endblock %}
 
-
-
 {% block body %}
 
-<div id="room_container">
-
-    <div class="vertical_flex_wide">
-        <h1>{{ room.description }} results!</h1>
-
-        <br>The winner is: 
-
+<div id="winner_container">
+    <h1>[ {{ room.description }} ] Winner!</h1>
+    <div id="winner_display">
         <br><strong>{{ winner.title }}</strong>
-
-        <br><br>
-
-        {{ winner }}
-
     </div>
 
 </div>

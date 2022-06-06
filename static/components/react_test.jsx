@@ -1,16 +1,12 @@
 
 
 function drawChart() {
-    alert("hi 2 u")
-
     return (
         <React.Fragment>
-            <p> it's me mario</p>
+            <p> chart goes here</p>
         </React.Fragment>
     )
 }
-
-
 
 
 function Test() {
@@ -28,7 +24,6 @@ function Test() {
 
                 <div>
                     2nd column
-
                     <button onClick={()=> click_test()}>click testing</button>
                 </div>
             </div>
@@ -37,6 +32,6 @@ function Test() {
 }
 
 
-// ReactDOM.render(<Test />, document.querySelector('#react_anchor'));
+ReactDOM.render(<Test />, document.querySelector('#react_anchor'));
 // ReactDOM.render(<drawChart />, document.querySelector('#react_anchor'));
 

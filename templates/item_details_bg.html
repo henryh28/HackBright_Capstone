@@ -2,8 +2,6 @@
 
 {% block title %} {{ details['name'] }} {% endblock %}
 
-
-
 {% block body %}
 
 <div id = "flex_container_bg">
@@ -11,31 +9,30 @@
         <div class = "bg_stats">
             <span style="font-size: 30px; font-weight: bold;">{{ details['name'] }}</span><br>
             Publisher: {{ details['primary_publisher']['name'] }}<br>
+
             <div class="flex_row">
                 <div style="flex-direction: row;">
                     Year: {{ details['year_published'] }} <br>
                     Min. Age: {{ details['min_age'] }}
                 </div>
+                
                 <div style="flex-direction: row;">
                     Players: {{ details['min_players']}} - {{ details['max_players']}} <br>  
                     Playtime: {{ details['min_playtime']}} - {{ details['max_playtime']}}    
                 </div>
-    
             </div>    
-        </div>
+        </div>  <!-- Closes .bg_stats -->
 
         <div class = "bg_description">
             {{ details['description'] | safe }}
         </div>
     
-    </div>
+    </div>  <!-- Closes .bg_details -->
 
     <div class="bg_picture">
         <img src={{ details['thumb_url'] }}>
     </div>
-</div>
-
-
+</div>  <!-- Closess #flex_container_bg -->
 
 {% endblock %}
 
