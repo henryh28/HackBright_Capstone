@@ -22,10 +22,61 @@ Category: | Tech used |
 
 ## Installation Instruction
 
-
+To begin, clone this repository to your local machine via the below command
 ```
 git clone https://github.com/henryh28/HackBright_Capstone
 ```
+
+Once the repo is cloned, use your CLI to navigate to the project root directory, and 
+initialize a virtual environment using the below command
+
+```
+virtualenv env
+source env/bin/activate
+```
+
+Follow that by installing the required project dependencies by typing in
+
+```
+pip3 install -r requirements.txt
+```
+
+Next, create a database for the project with the below command
+
+```
+createdb hb_capstone
+```
+
+Once done, create a file that contains the necessary API keys for the 
+application to function.  You can name it whatever you like but ensure 
+that the following API keys are present
+
+```
+export TMDB_KEY="your api key here"
+export STEAM_KEY="your api key here"
+export BGATLAS_KEY="your api key here"
+export RAWG_KEY="your api key here"
+export TWILIO_ACCOUNT_SID="your api key here"
+export TWILIO_AUTH_TOKEN="your api key here"
+```
+
+Now run the file that you have just created with the API key by typing in
+
+```
+source filename_that_contains_the_above_API_keys
+```
+
+and lastly, start the server with 
+
+```
+python server.py
+```
+
+
+
+
+
+
 
 
 #### Project Files
