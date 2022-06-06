@@ -10,7 +10,9 @@ BunnyBeenz is a platform that lets a group of people make decisions on what to d
 + For First Pass The Post rooms, users can view the current result of voting displayed in a variety of chart types using chart.js
 + Room owners can send SMS messages to invite users to their voting rooms
 
+
 Techologies used:
+---------------------------- |
 **Backend** | Python, Flask, Postgresql, SQLAlchemy
 **Frontend** | HTML, CSS, Javascript, Bootstrap, jQuery, chartJS
 **API** | Boardgame Atlas, TMDB (The Movie Database), RAWG.io, Twilio
