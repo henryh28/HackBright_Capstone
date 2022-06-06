@@ -11,7 +11,7 @@ BunnyBeenz is a platform that lets a group of people make decisions on what to d
 + Room owners can send SMS messages to invite users to their voting rooms
 
 
-Category: | Tech used
+Category: | Tech used |
 ---------------------------- |
 **Backend** | Python, Flask, Postgresql, SQLAlchemy
 **Frontend** | HTML, CSS, Javascript, Bootstrap, jQuery, chartJS
