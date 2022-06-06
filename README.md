@@ -1,9 +1,21 @@
 # HackBright Capstone Project &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp; ![logo](static/img/ch_logo.png?raw=true")
 
-{project name} is a platform that lets a group of people make decisions on what to do, faster so they spend more time doing and less time deciding.
+BunnyBeenz is a platform that lets a group of people make decisions on what to do, faster so they spend more time doing and less time deciding.
 
 ## Features
-+ TBA
++ User can create rooms using different voting methodology (Currently supports First Pass The Post and Random)
++ User can search for options to vote on and pull data from various APIs for boardgames, videogames, TV shows, and movies
++ Users in the same room can see real time update of available choices through the use of web sockets
++ User can chat with other users that are in the same room
++ For First Pass The Post rooms, users can view the current result of voting displayed in a variety of chart types using chart.js
++ Room owners can send SMS messages to invite users to their voting rooms
+
+Techologies used:
+**Backend** | Python, Flask, Postgresql, SQLAlchemy
+**Frontend** | HTML, CSS, Javascript, Bootstrap, jQuery, chartJS
+**API** | Boardgame Atlas, TMDB (The Movie Database), RAWG.io, Twilio
+**Other** | Jinja, BCrypt, Paypal
+
 
 #### Project Files
 
@@ -22,7 +34,7 @@ Filename | Description |
 
 
 ## Bugs
-+ No known bugs at this time.
++ Drag & drop incompatibility with firefox browsers
 
 ## Contributing Author
 *Henry Hsu* [Github](https://github.com/henryh28)
