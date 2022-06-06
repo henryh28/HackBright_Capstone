@@ -20,7 +20,7 @@ Category: | Tech used |
 **Other** | Jinja, BCrypt, Paypal
 
 
-## Installation Instruction
+## Installation
 
 To begin, clone this repository to your local machine via the below command
 ```
@@ -79,7 +79,7 @@ python server.py
 
 
 
-#### Project Files
+## Project Files
 
 Filename | Description |
 -------- | ----------- |
