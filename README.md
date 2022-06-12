@@ -74,11 +74,6 @@ python server.py
 
 
 
-
-
-
-
-
 ## Project Files
 
 Filename | Description |
@@ -97,6 +92,9 @@ Filename | Description |
 
 ## Bugs
 + Drag & drop incompatibility with firefox browsers
+
+## Youtube Demo Link
+[Youtube video](https://www.youtube.com/watch?v=AboZrC8oO08)
 
 ## Contributing Author
 *Henry Hsu* [Github](https://github.com/henryh28)
